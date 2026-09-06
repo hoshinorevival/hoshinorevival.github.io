@@ -17,7 +17,7 @@ const NODE_ENV = process.env.NODE_ENV || "development";
 
 const FRONTEND_URL =
     process.env.FRONTEND_URL ||
-    "http://localhost:5500";
+    "http://localhost:5500,http://127.0.0.1:5500";
 
 const SESSION_SECRET =
     process.env.SESSION_SECRET ||
