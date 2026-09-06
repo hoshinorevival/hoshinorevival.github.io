@@ -1,23 +1,14 @@
 <!DOCTYPE html>
 <html lang="en">
-
 <head>
     <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
 
-    <meta
-        name="viewport"
-        content="width=device-width, initial-scale=1.0"
-    >
+    <title>Hoshino - Home</title>
 
-    <title>Hoshino</title>
-
-    <link
-        rel="icon"
-        href="images/hoshinologotransparent.ico"
-    >
+    <link rel="icon" href="images/hoshinologotransparent.ico">
 
     <style>
-
         * {
             box-sizing: border-box;
         }
@@ -25,307 +16,226 @@
         html,
         body {
             margin: 0;
+            padding: 0;
             min-height: 100%;
-
-            font-family:
-                Arial,
-                Helvetica,
-                sans-serif;
-
+            font-family: Arial, Helvetica, sans-serif;
             background: #f2f2f2;
             color: #222;
         }
 
+        body {
+            min-height: 100vh;
+        }
 
         /* =========================
            TOP BAR
         ========================= */
 
         .topbar {
+            width: 100%;
             height: 64px;
-
-            background: white;
-
+            background: #ffffff;
             border-bottom: 2px solid #222;
-
             display: flex;
             align-items: center;
-
-            padding: 0 25px;
-
-            position: sticky;
-            top: 0;
-
-            z-index: 1000;
+            padding: 0 24px;
+            gap: 30px;
         }
 
-
-        .logo-link {
+        .brand {
             display: flex;
             align-items: center;
+            gap: 10px;
+            text-decoration: none;
+            color: #222;
+            font-weight: bold;
+            font-size: 22px;
         }
 
-
-        .logo {
-            width: 42px;
-            height: 42px;
-
+        .brand img {
+            width: 38px;
+            height: 38px;
             object-fit: contain;
         }
 
-
         .nav {
             display: flex;
-
-            gap: 22px;
-
-            margin-left: 30px;
+            align-items: center;
+            gap: 20px;
+            flex: 1;
         }
-
 
         .nav a {
-            color: #222;
-
             text-decoration: none;
-
+            color: #444;
             font-weight: bold;
-
-            font-size: 15px;
+            font-size: 14px;
         }
-
 
         .nav a:hover {
-            text-decoration: underline;
+            color: #000;
         }
-
 
         .account {
-            margin-left: auto;
-
             display: flex;
             align-items: center;
-
-            gap: 15px;
+            gap: 12px;
         }
 
-
-        .username {
+        #username {
             font-weight: bold;
         }
 
-
-        .logout {
+        #logout {
             border: 2px solid #222;
-
-            background: white;
-
+            background: #fff;
             padding: 8px 14px;
-
             font-weight: bold;
-
             cursor: pointer;
         }
 
-
-        .logout:hover {
+        #logout:hover {
             background: #222;
-            color: white;
+            color: #fff;
         }
 
-
-        .logout:disabled {
-            opacity: 0.5;
-            cursor: not-allowed;
+        #logout:disabled {
+            opacity: 0.6;
+            cursor: wait;
         }
-
 
         /* =========================
-           MAIN
+           PAGE
         ========================= */
 
-        .container {
-            width: min(1200px, 92%);
-
-            margin: 35px auto;
+        .page {
+            width: min(1100px, 92%);
+            margin: 35px auto 60px;
         }
 
-
-        .welcome {
-            background: white;
-
+        .hero {
+            background: #fff;
             border: 2px solid #222;
-
-            padding: 30px;
-
-            box-shadow: 7px 7px 0 #222;
+            padding: 40px;
+            box-shadow: 8px 8px 0 #222;
+            margin-bottom: 30px;
         }
 
-
-        .welcome h1 {
+        .hero h1 {
             margin: 0 0 10px;
-
-            font-size: 32px;
+            font-size: 38px;
         }
 
-
-        .welcome p {
+        .hero p {
             margin: 0;
-
-            color: #666;
-
-            font-size: 16px;
+            font-size: 17px;
+            color: #555;
+            line-height: 1.6;
         }
-
 
         /* =========================
            STATUS
         ========================= */
 
-        .status {
-            margin-top: 30px;
-
+        .status-grid {
             display: grid;
-
-            grid-template-columns:
-                repeat(3, 1fr);
-
-            gap: 18px;
+            grid-template-columns: repeat(2, 1fr);
+            gap: 20px;
+            margin-bottom: 30px;
         }
-
 
         .status-card {
-            background: white;
-
+            background: #fff;
             border: 2px solid #222;
-
-            padding: 22px;
+            padding: 24px;
         }
 
-
-        .status-title {
-            font-size: 13px;
-
-            text-transform: uppercase;
-
-            font-weight: bold;
-
-            color: #777;
-
-            margin-bottom: 8px;
+        .status-card h2 {
+            margin: 0 0 12px;
+            font-size: 19px;
         }
-
 
         .status-value {
-            font-size: 21px;
-
+            font-size: 18px;
             font-weight: bold;
         }
 
-
         .online {
-            color: #16833b;
+            color: #16852b;
         }
 
-
         /* =========================
-           GAMES
+           SECTIONS
         ========================= */
 
         .section {
-            margin-top: 35px;
+            margin-bottom: 30px;
         }
 
-
-        .section h2 {
-            margin-bottom: 15px;
+        .section-title {
+            font-size: 25px;
+            margin: 0 0 15px;
         }
-
 
         .games {
             display: grid;
-
-            grid-template-columns:
-                repeat(
-                    auto-fit,
-                    minmax(220px, 1fr)
-                );
-
-            gap: 18px;
+            grid-template-columns: repeat(2, 1fr);
+            gap: 20px;
         }
 
-
-        .game {
-            background: white;
-
+        .game-card {
+            background: #fff;
             border: 2px solid #222;
-
-            min-height: 180px;
-
-            padding: 20px;
-
-            display: flex;
-
-            flex-direction: column;
-
-            justify-content: flex-end;
+            padding: 25px;
         }
 
-
-        .game h3 {
-            margin: 0 0 7px;
+        .game-card h3 {
+            margin: 0 0 10px;
+            font-size: 21px;
         }
 
-
-        .game p {
-            margin: 0;
-
-            color: #777;
+        .game-card p {
+            color: #555;
+            line-height: 1.5;
+            margin: 0 0 15px;
         }
 
-
-        .coming {
-            opacity: 0.65;
+        .game-status {
+            display: inline-block;
+            border: 2px solid #222;
+            padding: 6px 10px;
+            font-size: 13px;
+            font-weight: bold;
         }
-
 
         /* =========================
            PROFILE
         ========================= */
 
         .profile {
-            background: white;
-
+            background: #fff;
             border: 2px solid #222;
-
             padding: 25px;
         }
 
-
         .profile-row {
             display: flex;
-
             justify-content: space-between;
-
-            padding: 12px 0;
-
+            padding: 13px 0;
             border-bottom: 1px solid #ddd;
         }
-
 
         .profile-row:last-child {
             border-bottom: none;
         }
 
-
         .profile-label {
             font-weight: bold;
         }
 
-
         .profile-value {
-            color: #666;
+            color: #555;
         }
-
 
         /* =========================
            LOADING
@@ -333,360 +243,310 @@
 
         #loading {
             position: fixed;
-
             inset: 0;
-
             background: #f2f2f2;
-
             display: flex;
-
             justify-content: center;
-
             align-items: center;
-
-            z-index: 5000;
-
-            font-size: 20px;
-
-            font-weight: bold;
+            z-index: 9999;
         }
 
-
-        #content {
-            display: none;
+        .loading-box {
+            background: #fff;
+            border: 2px solid #222;
+            padding: 30px 40px;
+            text-align: center;
+            box-shadow: 6px 6px 0 #222;
         }
 
+        .loading-box h2 {
+            margin: 0 0 10px;
+        }
+
+        .loading-box p {
+            margin: 0;
+            color: #666;
+        }
+
+        /* =========================
+           FOOTER
+        ========================= */
+
+        footer {
+            text-align: center;
+            color: #777;
+            font-size: 13px;
+            margin-top: 50px;
+        }
 
         /* =========================
            MOBILE
         ========================= */
 
-        @media (max-width: 700px) {
+        @media (max-width: 750px) {
 
             .topbar {
-                padding: 0 15px;
+                height: auto;
+                min-height: 64px;
+                flex-wrap: wrap;
+                padding: 12px 16px;
+                gap: 15px;
             }
-
 
             .nav {
-                gap: 12px;
-
-                margin-left: 15px;
+                order: 3;
+                width: 100%;
+                flex-basis: 100%;
+                padding-bottom: 5px;
             }
 
-
-            .nav a:nth-child(2),
-            .nav a:nth-child(3) {
-                display: none;
+            .account {
+                margin-left: auto;
             }
 
-
-            .username {
-                display: none;
+            .hero {
+                padding: 28px;
             }
 
+            .hero h1 {
+                font-size: 30px;
+            }
 
-            .status {
+            .status-grid,
+            .games {
                 grid-template-columns: 1fr;
             }
 
-
-            .welcome h1 {
-                font-size: 26px;
+            .profile-row {
+                flex-direction: column;
+                gap: 5px;
             }
-
         }
-
     </style>
-
 </head>
-
 
 <body>
 
-
-<!-- =========================
-     LOADING
-========================= -->
+<!-- LOADING SCREEN -->
 
 <div id="loading">
-    Loading Hoshino...
+    <div class="loading-box">
+        <h2>Hoshino</h2>
+        <p>Loading your account...</p>
+    </div>
 </div>
 
 
-<!-- =========================
-     HOMEPAGE
-========================= -->
+<!-- MAIN WEBSITE -->
 
-<div id="content">
+<header class="topbar">
 
-
-    <!-- =========================
-         NAVIGATION
-    ========================== -->
-
-    <header class="topbar">
-
-        <a
-            href="homepage.html"
-            class="logo-link"
+    <a class="brand" href="homepage.html">
+        <img
+            src="images/hoshinofulllogotransparent.ico"
+            alt="Hoshino"
         >
 
-            <img
-                src="images/hoshinologotransparent.ico"
-                class="logo"
-                alt="Hoshino"
+        <span>Hoshino</span>
+    </a>
+
+    <nav class="nav">
+        <a href="homepage.html">Home</a>
+        <a href="#">Games</a>
+        <a href="#">Catalog</a>
+        <a href="#">Community</a>
+    </nav>
+
+    <div class="account">
+
+        <span id="username">
+            Guest
+        </span>
+
+        <button id="logout" type="button">
+            Log Out
+        </button>
+
+    </div>
+
+</header>
+
+
+<main class="page">
+
+    <!-- HERO -->
+
+    <section class="hero">
+
+        <h1>
+            Welcome to Hoshino<span id="welcomeUsername"></span>!
+        </h1>
+
+        <p>
+            Hoshino is currently being rebuilt.
+            More features are coming soon.
+        </p>
+
+    </section>
+
+
+    <!-- STATUS -->
+
+    <section class="status-grid">
+
+        <div class="status-card">
+
+            <h2>Hoshino API</h2>
+
+            <div
+                id="apiStatus"
+                class="status-value"
             >
-
-        </a>
-
-
-        <nav class="nav">
-
-            <a href="homepage.html">
-                Home
-            </a>
-
-            <a href="#">
-                Games
-            </a>
-
-            <a href="#">
-                Catalog
-            </a>
-
-            <a href="#">
-                Community
-            </a>
-
-        </nav>
-
-
-        <div class="account">
-
-            <span
-                class="username"
-                id="username"
-            >
-                Loading...
-            </span>
-
-
-            <button
-                class="logout"
-                id="logout"
-            >
-                Logout
-            </button>
+                Checking...
+            </div>
 
         </div>
 
-    </header>
+
+        <div class="status-card">
+
+            <h2>Account</h2>
+
+            <div
+                id="accountStatus"
+                class="status-value"
+            >
+                Checking...
+            </div>
+
+        </div>
+
+    </section>
 
 
-    <!-- =========================
-         CONTENT
-    ========================== -->
+    <!-- GAMES -->
 
-    <main class="container">
+    <section class="section">
 
+        <h2 class="section-title">
+            Games
+        </h2>
 
-        <section class="welcome">
+        <div class="games">
 
-            <h1>
-                Welcome to Hoshino
-            </h1>
+            <div class="game-card">
 
-            <p>
-                Welcome back,
-                <strong id="welcomeUsername">
-                    Hoshino Player
-                </strong>.
-            </p>
+                <h3>Hoshino Games</h3>
 
-        </section>
+                <p>
+                    Game servers are currently being developed.
+                    They will appear here when the game system is ready.
+                </p>
 
+                <span class="game-status">
+                    COMING SOON
+                </span>
 
-        <!-- =========================
-             STATUS
-        ========================== -->
-
-        <section class="status">
+            </div>
 
 
-            <div class="status-card">
+            <div class="game-card">
 
-                <div class="status-title">
-                    Hoshino API
-                </div>
+                <h3>2016 Client</h3>
 
-                <div
-                    class="status-value"
-                    id="apiStatus"
+                <p>
+                    Hoshino's client and launcher infrastructure
+                    are currently under development.
+                </p>
+
+                <span class="game-status">
+                    IN DEVELOPMENT
+                </span>
+
+            </div>
+
+        </div>
+
+    </section>
+
+
+    <!-- PROFILE -->
+
+    <section class="section">
+
+        <h2 class="section-title">
+            Your Profile
+        </h2>
+
+        <div class="profile">
+
+            <div class="profile-row">
+
+                <span class="profile-label">
+                    Username
+                </span>
+
+                <span
+                    id="profileUsername"
+                    class="profile-value"
                 >
-                    Checking...
-                </div>
+                    Loading...
+                </span>
 
             </div>
 
 
-            <div class="status-card">
+            <div class="profile-row">
 
-                <div class="status-title">
-                    Account
-                </div>
+                <span class="profile-label">
+                    Account ID
+                </span>
 
-                <div
-                    class="status-value"
-                    id="accountStatus"
+                <span
+                    id="profileID"
+                    class="profile-value"
                 >
-                    Signed In
-                </div>
+                    Loading...
+                </span>
 
             </div>
 
 
-            <div class="status-card">
+            <div class="profile-row">
 
-                <div class="status-title">
-                    Game Servers
-                </div>
+                <span class="profile-label">
+                    Role
+                </span>
 
-                <div class="status-value">
-                    Coming Soon
-                </div>
-
-            </div>
-
-
-        </section>
-
-
-        <!-- =========================
-             GAMES
-        ========================== -->
-
-        <section class="section">
-
-            <h2>
-                Games
-            </h2>
-
-
-            <div class="games">
-
-
-                <div class="game coming">
-
-                    <h3>
-                        Hoshino Games
-                    </h3>
-
-                    <p>
-                        Game services are
-                        currently being developed.
-                    </p>
-
-                </div>
-
-
-                <div class="game coming">
-
-                    <h3>
-                        More Games
-                    </h3>
-
-                    <p>
-                        Coming soon.
-                    </p>
-
-                </div>
-
+                <span
+                    id="profileRole"
+                    class="profile-value"
+                >
+                    Loading...
+                </span>
 
             </div>
 
-        </section>
+        </div>
+
+    </section>
 
 
-        <!-- =========================
-             PROFILE
-        ========================== -->
+    <footer>
+        Hoshino &copy; 2026
+    </footer>
 
-        <section class="section">
-
-            <h2>
-                Your Profile
-            </h2>
+</main>
 
 
-            <div class="profile">
+<!--
+    IMPORTANT:
+    homepage.html itself NEVER redirects to login.html.
 
-
-                <div class="profile-row">
-
-                    <span class="profile-label">
-                        Username
-                    </span>
-
-                    <span
-                        class="profile-value"
-                        id="profileUsername"
-                    >
-                        -
-                    </span>
-
-                </div>
-
-
-                <div class="profile-row">
-
-                    <span class="profile-label">
-                        Account ID
-                    </span>
-
-                    <span
-                        class="profile-value"
-                        id="profileID"
-                    >
-                        -
-                    </span>
-
-                </div>
-
-
-                <div class="profile-row">
-
-                    <span class="profile-label">
-                        Role
-                    </span>
-
-                    <span
-                        class="profile-value"
-                        id="profileRole"
-                    >
-                        -
-                    </span>
-
-                </div>
-
-
-            </div>
-
-        </section>
-
-
-    </main>
-
-</div>
-
-
-<!-- =========================
-     HOMEPAGE JAVASCRIPT
-========================= -->
+    All account/session handling is inside homepage.js.
+-->
 
 <script src="homepage.js"></script>
 
-
 </body>
-
 </html>
