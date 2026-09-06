@@ -16,7 +16,6 @@
         html,
         body {
             margin: 0;
-            padding: 0;
             min-height: 100%;
             font-family: Arial, Helvetica, sans-serif;
             background: #f2f2f2;
@@ -28,16 +27,17 @@
         }
 
         /* =========================
-           TOP BAR
+           HEADER
         ========================= */
 
         .topbar {
-            width: 100%;
             height: 64px;
-            background: #ffffff;
+            background: white;
             border-bottom: 2px solid #222;
+
             display: flex;
             align-items: center;
+
             padding: 0 24px;
             gap: 30px;
         }
@@ -46,30 +46,31 @@
             display: flex;
             align-items: center;
             gap: 10px;
-            text-decoration: none;
+
             color: #222;
-            font-weight: bold;
+            text-decoration: none;
+
             font-size: 22px;
+            font-weight: bold;
         }
 
         .brand img {
-            width: 38px;
-            height: 38px;
+            width: 40px;
+            height: 40px;
             object-fit: contain;
         }
 
         .nav {
             display: flex;
-            align-items: center;
-            gap: 20px;
+            gap: 22px;
             flex: 1;
         }
 
         .nav a {
-            text-decoration: none;
             color: #444;
-            font-weight: bold;
+            text-decoration: none;
             font-size: 14px;
+            font-weight: bold;
         }
 
         .nav a:hover {
@@ -88,7 +89,7 @@
 
         #logout {
             border: 2px solid #222;
-            background: #fff;
+            background: white;
             padding: 8px 14px;
             font-weight: bold;
             cursor: pointer;
@@ -96,7 +97,7 @@
 
         #logout:hover {
             background: #222;
-            color: #fff;
+            color: white;
         }
 
         #logout:disabled {
@@ -105,7 +106,7 @@
         }
 
         /* =========================
-           PAGE
+           MAIN
         ========================= */
 
         .page {
@@ -114,22 +115,23 @@
         }
 
         .hero {
-            background: #fff;
+            background: white;
             border: 2px solid #222;
-            padding: 40px;
             box-shadow: 8px 8px 0 #222;
+
+            padding: 40px;
             margin-bottom: 30px;
         }
 
         .hero h1 {
-            margin: 0 0 10px;
+            margin: 0 0 12px;
             font-size: 38px;
         }
 
         .hero p {
             margin: 0;
-            font-size: 17px;
             color: #555;
+            font-size: 17px;
             line-height: 1.6;
         }
 
@@ -145,7 +147,7 @@
         }
 
         .status-card {
-            background: #fff;
+            background: white;
             border: 2px solid #222;
             padding: 24px;
         }
@@ -173,9 +175,13 @@
         }
 
         .section-title {
-            font-size: 25px;
             margin: 0 0 15px;
+            font-size: 25px;
         }
+
+        /* =========================
+           GAMES
+        ========================= */
 
         .games {
             display: grid;
@@ -184,7 +190,7 @@
         }
 
         .game-card {
-            background: #fff;
+            background: white;
             border: 2px solid #222;
             padding: 25px;
         }
@@ -195,15 +201,16 @@
         }
 
         .game-card p {
+            margin: 0 0 15px;
             color: #555;
             line-height: 1.5;
-            margin: 0 0 15px;
         }
 
         .game-status {
             display: inline-block;
             border: 2px solid #222;
             padding: 6px 10px;
+
             font-size: 13px;
             font-weight: bold;
         }
@@ -213,7 +220,7 @@
         ========================= */
 
         .profile {
-            background: #fff;
+            background: white;
             border: 2px solid #222;
             padding: 25px;
         }
@@ -221,6 +228,7 @@
         .profile-row {
             display: flex;
             justify-content: space-between;
+
             padding: 13px 0;
             border-bottom: 1px solid #ddd;
         }
@@ -238,45 +246,15 @@
         }
 
         /* =========================
-           LOADING
-        ========================= */
-
-        #loading {
-            position: fixed;
-            inset: 0;
-            background: #f2f2f2;
-            display: flex;
-            justify-content: center;
-            align-items: center;
-            z-index: 9999;
-        }
-
-        .loading-box {
-            background: #fff;
-            border: 2px solid #222;
-            padding: 30px 40px;
-            text-align: center;
-            box-shadow: 6px 6px 0 #222;
-        }
-
-        .loading-box h2 {
-            margin: 0 0 10px;
-        }
-
-        .loading-box p {
-            margin: 0;
-            color: #666;
-        }
-
-        /* =========================
            FOOTER
         ========================= */
 
         footer {
+            margin-top: 50px;
             text-align: center;
+
             color: #777;
             font-size: 13px;
-            margin-top: 50px;
         }
 
         /* =========================
@@ -290,7 +268,6 @@
                 min-height: 64px;
                 flex-wrap: wrap;
                 padding: 12px 16px;
-                gap: 15px;
             }
 
             .nav {
@@ -327,43 +304,51 @@
 
 <body>
 
-<!-- LOADING SCREEN -->
-
-<div id="loading">
-    <div class="loading-box">
-        <h2>Hoshino</h2>
-        <p>Loading your account...</p>
-    </div>
-</div>
-
-
-<!-- MAIN WEBSITE -->
-
 <header class="topbar">
 
     <a class="brand" href="homepage.html">
+
         <img
             src="images/hoshinofulllogotransparent.ico"
             alt="Hoshino"
         >
 
         <span>Hoshino</span>
+
     </a>
 
+
     <nav class="nav">
-        <a href="homepage.html">Home</a>
-        <a href="#">Games</a>
-        <a href="#">Catalog</a>
-        <a href="#">Community</a>
+
+        <a href="homepage.html">
+            Home
+        </a>
+
+        <a href="#">
+            Games
+        </a>
+
+        <a href="#">
+            Catalog
+        </a>
+
+        <a href="#">
+            Community
+        </a>
+
     </nav>
+
 
     <div class="account">
 
         <span id="username">
-            Guest
+            Loading...
         </span>
 
-        <button id="logout" type="button">
+        <button
+            id="logout"
+            type="button"
+        >
             Log Out
         </button>
 
@@ -374,8 +359,6 @@
 
 <main class="page">
 
-    <!-- HERO -->
-
     <section class="hero">
 
         <h1>
@@ -383,20 +366,20 @@
         </h1>
 
         <p>
-            Hoshino is currently being rebuilt.
-            More features are coming soon.
+            Welcome to Hoshino.
+            Your account and Hoshino services are connected here.
         </p>
 
     </section>
 
 
-    <!-- STATUS -->
-
     <section class="status-grid">
 
         <div class="status-card">
 
-            <h2>Hoshino API</h2>
+            <h2>
+                Hoshino API
+            </h2>
 
             <div
                 id="apiStatus"
@@ -410,7 +393,9 @@
 
         <div class="status-card">
 
-            <h2>Account</h2>
+            <h2>
+                Account
+            </h2>
 
             <div
                 id="accountStatus"
@@ -424,23 +409,24 @@
     </section>
 
 
-    <!-- GAMES -->
-
     <section class="section">
 
         <h2 class="section-title">
             Games
         </h2>
 
+
         <div class="games">
 
             <div class="game-card">
 
-                <h3>Hoshino Games</h3>
+                <h3>
+                    Hoshino Games
+                </h3>
 
                 <p>
-                    Game servers are currently being developed.
-                    They will appear here when the game system is ready.
+                    Hoshino game servers are currently
+                    being developed.
                 </p>
 
                 <span class="game-status">
@@ -452,11 +438,14 @@
 
             <div class="game-card">
 
-                <h3>2016 Client</h3>
+                <h3>
+                    2016 Client
+                </h3>
 
                 <p>
-                    Hoshino's client and launcher infrastructure
-                    are currently under development.
+                    The Hoshino launcher and client
+                    connection system are currently
+                    being developed.
                 </p>
 
                 <span class="game-status">
@@ -470,13 +459,12 @@
     </section>
 
 
-    <!-- PROFILE -->
-
     <section class="section">
 
         <h2 class="section-title">
             Your Profile
         </h2>
+
 
         <div class="profile">
 
@@ -538,13 +526,6 @@
 
 </main>
 
-
-<!--
-    IMPORTANT:
-    homepage.html itself NEVER redirects to login.html.
-
-    All account/session handling is inside homepage.js.
--->
 
 <script src="homepage.js"></script>
 
