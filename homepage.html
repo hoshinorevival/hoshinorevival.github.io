@@ -1,0 +1,287 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+    <title>Hoshino - Home</title>
+
+    <link rel="icon" href="images/hoshinologotransparent.ico">
+
+    <style>
+        * {
+            box-sizing: border-box;
+        }
+
+        body {
+            margin: 0;
+            font-family: Arial, Helvetica, sans-serif;
+            background: #f2f2f2;
+            color: #222;
+        }
+
+        header {
+            height: 60px;
+            background: white;
+            border-bottom: 1px solid #ddd;
+
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+
+            padding: 0 25px;
+        }
+
+        .logo {
+            height: 42px;
+            width: auto;
+        }
+
+        .account {
+            display: flex;
+            align-items: center;
+            gap: 15px;
+        }
+
+        #username {
+            font-weight: bold;
+        }
+
+        button {
+            border: none;
+            border-radius: 5px;
+            padding: 9px 16px;
+
+            background: #ff69b4;
+            color: white;
+
+            font-weight: bold;
+            cursor: pointer;
+        }
+
+        button:hover {
+            opacity: 0.85;
+        }
+
+        main {
+            max-width: 1100px;
+            margin: 40px auto;
+            padding: 0 20px;
+        }
+
+        .welcome-box {
+            background: white;
+            border: 1px solid #ddd;
+            border-radius: 8px;
+            padding: 30px;
+        }
+
+        .welcome-box h1 {
+            margin-top: 0;
+        }
+
+        .account-info {
+            margin-top: 25px;
+            padding: 20px;
+
+            background: #fafafa;
+            border: 1px solid #ddd;
+            border-radius: 6px;
+        }
+
+        .account-info p {
+            margin: 10px 0;
+        }
+
+        .label {
+            font-weight: bold;
+        }
+
+        #loading {
+            text-align: center;
+            margin-top: 100px;
+            font-size: 18px;
+        }
+    </style>
+</head>
+
+<body>
+
+    <!-- Shown while checking the session -->
+    <div id="loading">
+        Loading Hoshino...
+    </div>
+
+    <!-- Hidden until we confirm the user is logged in -->
+    <div id="app" style="display: none;">
+
+        <header>
+
+            <img
+                src="images/hoshinofulllogotransparent.ico"
+                class="logo"
+                alt="Hoshino"
+            >
+
+            <div class="account">
+
+                <span id="username"></span>
+
+                <button onclick="logout()">
+                    Logout
+                </button>
+
+            </div>
+
+        </header>
+
+        <main>
+
+            <div class="welcome-box">
+
+                <h1>
+                    Welcome to Hoshino,
+                    <span id="welcomeUsername"></span>!
+                </h1>
+
+                <p>
+                    Welcome back to Hoshino.
+                </p>
+
+                <div class="account-info">
+
+                    <p>
+                        <span class="label">Username:</span>
+                        <span id="accountUsername"></span>
+                    </p>
+
+                    <p>
+                        <span class="label">User ID:</span>
+                        <span id="userId"></span>
+                    </p>
+
+                    <p>
+                        <span class="label">Role:</span>
+                        <span id="role"></span>
+                    </p>
+
+                </div>
+
+            </div>
+
+        </main>
+
+    </div>
+
+
+    <script>
+
+        const API = "http://localhost:3000";
+
+
+        // Check whether the user is logged in
+        async function checkLogin() {
+
+            try {
+
+                const response = await fetch(
+                    API + "/api/me",
+                    {
+                        method: "GET",
+                        credentials: "include"
+                    }
+                );
+
+                const data = await response.json();
+
+
+                // User is NOT logged in
+                if (!data.loggedIn) {
+
+                    window.location.href = "welcome.html";
+
+                    return;
+                }
+
+
+                // User IS logged in
+                const user = data.user;
+
+
+                document.getElementById("username").textContent =
+                    user.username;
+
+                document.getElementById("welcomeUsername").textContent =
+                    user.username;
+
+                document.getElementById("accountUsername").textContent =
+                    user.username;
+
+                document.getElementById("userId").textContent =
+                    user.id;
+
+                document.getElementById("role").textContent =
+                    user.role;
+
+
+                // Show the homepage
+                document.getElementById("loading").style.display =
+                    "none";
+
+                document.getElementById("app").style.display =
+                    "block";
+
+            }
+
+            catch (error) {
+
+                console.error(
+                    "Could not connect to Hoshino API:",
+                    error
+                );
+
+                document.getElementById("loading").textContent =
+                    "Unable to connect to Hoshino.";
+
+            }
+
+        }
+
+
+        // Logout
+        async function logout() {
+
+            try {
+
+                await fetch(
+                    API + "/api/logout",
+                    {
+                        method: "POST",
+                        credentials: "include"
+                    }
+                );
+
+                // Send the user back to the logged-out welcome page
+                window.location.href = "welcome.html";
+
+            }
+
+            catch (error) {
+
+                console.error(
+                    "Logout failed:",
+                    error
+                );
+
+            }
+
+        }
+
+
+        // Run immediately when the page loads
+        checkLogin();
+
+    </script>
+
+</body>
+</html>
