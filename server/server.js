@@ -8,16 +8,11 @@ const session = require("express-session");
 const app = express();
 
 /* =========================================================
-   CONFIGURATION
+   CONFIG
 ========================================================= */
 
 const PORT = Number(process.env.PORT) || 3000;
-
 const NODE_ENV = process.env.NODE_ENV || "development";
-
-const FRONTEND_URL =
-    process.env.FRONTEND_URL ||
-    "http://localhost:5500,http://127.0.0.1:5500";
 
 const SESSION_SECRET =
     process.env.SESSION_SECRET ||
@@ -26,52 +21,56 @@ const SESSION_SECRET =
 const IS_PRODUCTION = NODE_ENV === "production";
 
 /* =========================================================
-   BASIC APP CONFIG
+   APP
 ========================================================= */
-
-app.disable("x-powered-by");
 
 if (IS_PRODUCTION) {
     app.set("trust proxy", 1);
 }
 
-/* =========================================================
-   SECURITY HEADERS
-========================================================= */
+app.disable("x-powered-by");
 
 app.use(
     helmet({
-        crossOriginResourcePolicy: {
-            policy: "cross-origin"
-        }
+        crossOriginResourcePolicy: false
     })
 );
+
+app.use(express.json({ limit: "100kb" }));
+app.use(express.urlencoded({
+    extended: false,
+    limit: "100kb"
+}));
 
 /* =========================================================
    CORS
 ========================================================= */
 
-const allowedOrigins = FRONTEND_URL
-    .split(",")
-    .map(origin => origin.trim())
-    .filter(Boolean);
-
 app.use(
     cors({
         origin: function (origin, callback) {
-            // Allow requests with no Origin header.
-            // Useful for direct API checks/server-side requests.
+            // Requests without an Origin header are allowed.
             if (!origin) {
                 return callback(null, true);
             }
 
-            if (allowedOrigins.includes(origin)) {
+            // Allow ANY localhost / 127.0.0.1 port.
+            const localOrigin =
+                /^http:\/\/localhost(:\d+)?$/.test(origin) ||
+                /^http:\/\/127\.0\.0\.1(:\d+)?$/.test(origin);
+
+            if (localOrigin) {
+                console.log(`[CORS] Allowed local origin: ${origin}`);
                 return callback(null, true);
             }
 
-            console.warn(
-                `[CORS] Blocked origin: ${origin}`
-            );
+            // GitHub Pages
+            if (origin === "https://hoshinorevival.github.io") {
+                console.log(`[CORS] Allowed Hoshino website: ${origin}`);
+                return callback(null, true);
+            }
+
+            console.warn(`[CORS] Blocked origin: ${origin}`);
 
             return callback(
                 new Error("Origin not allowed by Hoshino CORS policy.")
@@ -97,23 +96,6 @@ app.use(
 );
 
 /* =========================================================
-   BODY PARSING
-========================================================= */
-
-app.use(
-    express.json({
-        limit: "100kb"
-    })
-);
-
-app.use(
-    express.urlencoded({
-        extended: false,
-        limit: "100kb"
-    })
-);
-
-/* =========================================================
    DATABASE
 ========================================================= */
 
@@ -124,13 +106,13 @@ db.pragma("foreign_keys = ON");
 db.pragma("busy_timeout = 5000");
 
 /* =========================================================
-   DATABASE TABLES
+   TABLES
 ========================================================= */
 
 db.exec(`
     CREATE TABLE IF NOT EXISTS users (
         id INTEGER PRIMARY KEY AUTOINCREMENT,
-        username TEXT UNIQUE NOT NULL,
+        username TEXT NOT NULL UNIQUE,
         password_hash TEXT NOT NULL,
         birth_date TEXT NOT NULL,
         role TEXT NOT NULL DEFAULT 'user',
@@ -139,7 +121,7 @@ db.exec(`
 
     CREATE TABLE IF NOT EXISTS badges (
         id INTEGER PRIMARY KEY AUTOINCREMENT,
-        name TEXT UNIQUE NOT NULL,
+        name TEXT NOT NULL UNIQUE,
         description TEXT NOT NULL,
         icon TEXT,
         created_at TEXT NOT NULL DEFAULT CURRENT_TIMESTAMP
@@ -160,68 +142,42 @@ db.exec(`
             REFERENCES badges(id)
             ON DELETE CASCADE
     );
+`);
 
+/* =========================================================
+   INDEXES
+========================================================= */
+
+db.exec(`
     CREATE INDEX IF NOT EXISTS idx_users_username
-        ON users(username);
+    ON users(username);
 
     CREATE INDEX IF NOT EXISTS idx_user_badges_user
-        ON user_badges(user_id);
+    ON user_badges(user_id);
 
     CREATE INDEX IF NOT EXISTS idx_user_badges_badge
-        ON user_badges(badge_id);
+    ON user_badges(badge_id);
 `);
 
 /* =========================================================
    DEFAULT BADGES
 ========================================================= */
 
-const defaultBadges = [
-    [
-        "Owner",
-        "The owner of Hoshino.",
-        "👑"
-    ],
-
-    [
-        "Developer",
-        "Hoshino developer.",
-        "🛠️"
-    ],
-
-    [
-        "Administrator",
-        "Hoshino administrator.",
-        "🛡️"
-    ],
-
-    [
-        "Moderator",
-        "Hoshino moderator.",
-        "🔨"
-    ],
-
-    [
-        "Early Supporter",
-        "Supported Hoshino early.",
-        "⭐"
-    ],
-
-    [
-        "Beta Tester",
-        "Participated in Hoshino beta testing.",
-        "🎮"
-    ]
-];
-
 const insertBadge = db.prepare(`
     INSERT OR IGNORE INTO badges
-    (
-        name,
-        description,
-        icon
-    )
-    VALUES (?, ?, ?)
+        (name, description, icon)
+    VALUES
+        (?, ?, ?)
 `);
+
+const defaultBadges = [
+    ["Owner", "The owner of Hoshino.", "👑"],
+    ["Developer", "A Hoshino developer.", "🛠️"],
+    ["Administrator", "A Hoshino administrator.", "🛡️"],
+    ["Moderator", "A Hoshino moderator.", "🔨"],
+    ["Early Supporter", "Supported Hoshino early in development.", "⭐"],
+    ["Beta Tester", "Participated in Hoshino beta testing.", "🎮"]
+];
 
 for (const badge of defaultBadges) {
     insertBadge.run(...badge);
@@ -252,12 +208,7 @@ app.use(
                 ? "none"
                 : "lax",
 
-            maxAge:
-                1000 *
-                60 *
-                60 *
-                24 *
-                30
+            maxAge: 1000 * 60 * 60 * 24 * 30
         }
     })
 );
@@ -267,18 +218,9 @@ app.use(
 ========================================================= */
 
 app.use((req, res, next) => {
-    const start = Date.now();
-
-    res.on("finish", () => {
-        const duration = Date.now() - start;
-
-        console.log(
-            `[${new Date().toISOString()}] ` +
-            `${req.method} ${req.originalUrl} ` +
-            `${res.statusCode} ` +
-            `${duration}ms`
-        );
-    });
+    console.log(
+        `[${new Date().toISOString()}] ${req.method} ${req.originalUrl}`
+    );
 
     next();
 });
@@ -295,16 +237,12 @@ function isValidUsername(username) {
     return /^[A-Za-z0-9_]{3,20}$/.test(username);
 }
 
-function isValidBirthDate(value) {
-    if (typeof value !== "string") {
+function isValidBirthDate(birthDate) {
+    if (!/^\d{4}-\d{2}-\d{2}$/.test(birthDate)) {
         return false;
     }
 
-    if (!/^\d{4}-\d{2}-\d{2}$/.test(value)) {
-        return false;
-    }
-
-    const date = new Date(`${value}T00:00:00`);
+    const date = new Date(`${birthDate}T00:00:00`);
 
     return !Number.isNaN(date.getTime());
 }
@@ -338,20 +276,19 @@ function publicUser(user) {
     return {
         id: user.id,
         username: user.username,
-        birth_date: user.birth_date,
         role: user.role,
-        created_at: user.created_at
+        birthDate: user.birth_date,
+        createdAt: user.created_at
     };
 }
 
 /* =========================================================
-   AUTH MIDDLEWARE
+   AUTH
 ========================================================= */
 
 function requireAuth(req, res, next) {
-    if (!req.session || !req.session.userId) {
+    if (!req.session.userId) {
         return res.status(401).json({
-            success: false,
             error: "You must be logged in."
         });
     }
@@ -360,31 +297,22 @@ function requireAuth(req, res, next) {
 }
 
 function requireOwner(req, res, next) {
-    if (!req.session || !req.session.userId) {
+    if (!req.session.userId) {
         return res.status(401).json({
-            success: false,
             error: "You must be logged in."
         });
     }
 
-    const user = db.prepare(`
-        SELECT id, role
-        FROM users
-        WHERE id = ?
-    `).get(req.session.userId);
+    const user = db
+        .prepare(`
+            SELECT id, username, role
+            FROM users
+            WHERE id = ?
+        `)
+        .get(req.session.userId);
 
-    if (!user) {
-        req.session.destroy(() => {});
-
-        return res.status(401).json({
-            success: false,
-            error: "Your session is no longer valid."
-        });
-    }
-
-    if (user.role !== "owner") {
+    if (!user || user.role !== "owner") {
         return res.status(403).json({
-            success: false,
             error: "Owner access required."
         });
     }
@@ -393,60 +321,54 @@ function requireOwner(req, res, next) {
 }
 
 /* =========================================================
-   ROOT / API STATUS
+   ROOT
 ========================================================= */
 
 app.get("/", (req, res) => {
-    res.status(200).json({
+    res.json({
         name: "Hoshino",
         status: "online",
-        message: "Hoshino API is running.",
-        version: "1.0.0"
+        message: "Hoshino API is running."
     });
 });
 
 /* =========================================================
-   HEALTH CHECK
+   HEALTH
 ========================================================= */
 
 app.get("/api/health", (req, res) => {
-    let databaseOnline = false;
-
     try {
         db.prepare("SELECT 1").get();
-        databaseOnline = true;
+
+        res.json({
+            ok: true,
+            service: "Hoshino API",
+            status: "online",
+            database: "online",
+            timestamp: new Date().toISOString()
+        });
     } catch (error) {
-        console.error(
-            "[HEALTH] Database error:",
-            error.message
-        );
+        console.error("[HEALTH ERROR]", error);
+
+        res.status(500).json({
+            ok: false,
+            service: "Hoshino API",
+            status: "online",
+            database: "offline"
+        });
     }
-
-    const healthy = databaseOnline;
-
-    res.status(healthy ? 200 : 503).json({
-        ok: healthy,
-        service: "Hoshino API",
-        status: healthy
-            ? "online"
-            : "degraded",
-        database: databaseOnline
-            ? "online"
-            : "offline",
-        timestamp: new Date().toISOString()
-    });
 });
 
 /* =========================================================
-   API STATUS
+   STATUS
 ========================================================= */
 
 app.get("/api/status", (req, res) => {
     res.json({
         name: "Hoshino",
         status: "online",
-        environment: NODE_ENV,
-        timestamp: new Date().toISOString()
+        version: "2016",
+        environment: NODE_ENV
     });
 });
 
@@ -454,120 +376,113 @@ app.get("/api/status", (req, res) => {
    REGISTER
 ========================================================= */
 
-app.post("/api/register", async (req, res, next) => {
+app.post("/api/register", async (req, res) => {
     try {
-        let {
-            username,
-            password,
-            birth_date
-        } = req.body;
+        const username =
+            normalizeUsername(req.body.username);
 
-        username = normalizeUsername(username);
+        const password =
+            String(req.body.password || "");
 
-        if (
-            !username ||
-            !password ||
-            !birth_date
-        ) {
-            return res.status(400).json({
-                success: false,
-                error:
-                    "Username, password and birth date are required."
-            });
-        }
+        const birthDate =
+            String(req.body.birthDate || "");
 
         if (!isValidUsername(username)) {
             return res.status(400).json({
-                success: false,
                 error:
-                    "Username must be 3-20 characters and contain only letters, numbers and underscores."
+                    "Username must be 3-20 characters and use only letters, numbers, or underscores."
             });
         }
 
-        if (typeof password !== "string") {
+        if (password.length < 8) {
             return res.status(400).json({
-                success: false,
-                error: "Invalid password."
-            });
-        }
-
-        if (
-            password.length < 6 ||
-            password.length > 128
-        ) {
-            return res.status(400).json({
-                success: false,
                 error:
-                    "Password must be between 6 and 128 characters."
+                    "Password must be at least 8 characters."
             });
         }
 
-        if (!isValidBirthDate(birth_date)) {
+        if (!isValidBirthDate(birthDate)) {
             return res.status(400).json({
-                success: false,
                 error: "Invalid birth date."
             });
         }
 
-        const age = calculateAge(birth_date);
-
-        if (age < 13) {
+        if (calculateAge(birthDate) < 13) {
             return res.status(400).json({
-                success: false,
                 error:
-                    "You must be at least 13 years old to create a Hoshino account."
+                    "You must be at least 13 years old to use Hoshino."
             });
         }
 
-        const existing = db.prepare(`
-            SELECT id
-            FROM users
-            WHERE username = ?
-        `).get(username);
+        const existing = db
+            .prepare(`
+                SELECT id
+                FROM users
+                WHERE username = ?
+            `)
+            .get(username);
 
         if (existing) {
             return res.status(409).json({
-                success: false,
-                error: "Username is already taken."
+                error:
+                    "That username is already taken."
             });
         }
 
         const passwordHash =
             await bcrypt.hash(password, 12);
 
-        const result = db.prepare(`
-            INSERT INTO users
-            (
+        const result = db
+            .prepare(`
+                INSERT INTO users
+                    (username, password_hash, birth_date)
+                VALUES
+                    (?, ?, ?)
+            `)
+            .run(
                 username,
-                password_hash,
-                birth_date,
-                role
-            )
-            VALUES (?, ?, ?, 'user')
-        `).run(
-            username,
-            passwordHash,
-            birth_date
-        );
+                passwordHash,
+                birthDate
+            );
 
-        const newUser = db.prepare(`
-            SELECT
-                id,
-                username,
-                birth_date,
-                role,
-                created_at
-            FROM users
-            WHERE id = ?
-        `).get(result.lastInsertRowid);
+        const user = db
+            .prepare(`
+                SELECT *
+                FROM users
+                WHERE id = ?
+            `)
+            .get(result.lastInsertRowid);
 
-        return res.status(201).json({
-            success: true,
-            user: publicUser(newUser)
+        req.session.userId = user.id;
+
+        req.session.save(error => {
+            if (error) {
+                console.error(
+                    "[SESSION ERROR]",
+                    error
+                );
+
+                return res.status(500).json({
+                    error:
+                        "Could not create login session."
+                });
+            }
+
+            res.status(201).json({
+                message: "Account created.",
+                user: publicUser(user)
+            });
         });
 
     } catch (error) {
-        next(error);
+        console.error(
+            "[REGISTER ERROR]",
+            error
+        );
+
+        res.status(500).json({
+            error: "Registration failed."
+        });
     }
 });
 
@@ -575,49 +490,44 @@ app.post("/api/register", async (req, res, next) => {
    LOGIN
 ========================================================= */
 
-app.post("/api/login", async (req, res, next) => {
+app.post("/api/login", async (req, res) => {
     try {
-        let {
-            username,
-            password
-        } = req.body;
+        const username =
+            normalizeUsername(req.body.username);
 
-        username = normalizeUsername(username);
+        const password =
+            String(req.body.password || "");
 
-        if (
-            !username ||
-            !password
-        ) {
+        if (!username || !password) {
             return res.status(400).json({
-                success: false,
                 error:
                     "Username and password are required."
             });
         }
 
-        const user = db.prepare(`
-            SELECT *
-            FROM users
-            WHERE username = ?
-        `).get(username);
+        const user = db
+            .prepare(`
+                SELECT *
+                FROM users
+                WHERE username = ?
+            `)
+            .get(username);
 
         if (!user) {
             return res.status(401).json({
-                success: false,
                 error:
                     "Invalid username or password."
             });
         }
 
-        const validPassword =
+        const passwordCorrect =
             await bcrypt.compare(
                 password,
                 user.password_hash
             );
 
-        if (!validPassword) {
+        if (!passwordCorrect) {
             return res.status(401).json({
-                success: false,
                 error:
                     "Invalid username or password."
             });
@@ -625,60 +535,69 @@ app.post("/api/login", async (req, res, next) => {
 
         req.session.userId = user.id;
 
-        req.session.save((error) => {
+        req.session.save(error => {
             if (error) {
-                return next(error);
+                console.error(
+                    "[LOGIN SESSION ERROR]",
+                    error
+                );
+
+                return res.status(500).json({
+                    error:
+                        "Could not save login session."
+                });
             }
 
-            return res.json({
-                success: true,
+            res.json({
+                message: "Login successful.",
                 user: publicUser(user)
             });
         });
 
     } catch (error) {
-        next(error);
+        console.error(
+            "[LOGIN ERROR]",
+            error
+        );
+
+        res.status(500).json({
+            error: "Login failed."
+        });
     }
 });
 
 /* =========================================================
-   CURRENT SESSION
+   CURRENT USER
 ========================================================= */
 
 app.get("/api/me", (req, res) => {
-    if (
-        !req.session ||
-        !req.session.userId
-    ) {
+    if (!req.session.userId) {
         return res.json({
             loggedIn: false,
             user: null
         });
     }
 
-    const user = db.prepare(`
-        SELECT
-            id,
-            username,
-            birth_date,
-            role,
-            created_at
-        FROM users
-        WHERE id = ?
-    `).get(req.session.userId);
+    const user = db
+        .prepare(`
+            SELECT *
+            FROM users
+            WHERE id = ?
+        `)
+        .get(req.session.userId);
 
     if (!user) {
-        return req.session.destroy(() => {
-            res.json({
-                loggedIn: false,
-                user: null
-            });
+        req.session.destroy(() => {});
+
+        return res.json({
+            loggedIn: false,
+            user: null
         });
     }
 
     res.json({
         loggedIn: true,
-        user
+        user: publicUser(user)
     });
 });
 
@@ -686,22 +605,23 @@ app.get("/api/me", (req, res) => {
    LOGOUT
 ========================================================= */
 
-app.post("/api/logout", (req, res, next) => {
-    if (!req.session) {
-        return res.json({
-            success: true
-        });
-    }
-
-    req.session.destroy((error) => {
+app.post("/api/logout", (req, res) => {
+    req.session.destroy(error => {
         if (error) {
-            return next(error);
+            console.error(
+                "[LOGOUT ERROR]",
+                error
+            );
+
+            return res.status(500).json({
+                error: "Logout failed."
+            });
         }
 
         res.clearCookie("hoshino.sid");
 
         res.json({
-            success: true
+            message: "Logged out."
         });
     });
 });
@@ -714,30 +634,28 @@ app.get(
     "/api/profile",
     requireAuth,
     (req, res) => {
-        const user = db.prepare(`
-            SELECT
-                id,
-                username,
-                birth_date,
-                role,
-                created_at
-            FROM users
-            WHERE id = ?
-        `).get(req.session.userId);
+        const user = db
+            .prepare(`
+                SELECT *
+                FROM users
+                WHERE id = ?
+            `)
+            .get(req.session.userId);
 
         if (!user) {
             return res.status(404).json({
-                success: false,
                 error: "User not found."
             });
         }
 
-        res.json(user);
+        res.json({
+            user: publicUser(user)
+        });
     }
 );
 
 /* =========================================================
-   PUBLIC USER BADGES
+   USER BADGES
 ========================================================= */
 
 app.get(
@@ -748,26 +666,29 @@ app.get(
 
         if (!Number.isInteger(userId)) {
             return res.status(400).json({
-                success: false,
                 error: "Invalid user ID."
             });
         }
 
-        const badges = db.prepare(`
-            SELECT
-                b.id,
-                b.name,
-                b.description,
-                b.icon,
-                ub.awarded_at
-            FROM user_badges ub
-            JOIN badges b
-                ON b.id = ub.badge_id
-            WHERE ub.user_id = ?
-            ORDER BY ub.awarded_at ASC
-        `).all(userId);
+        const badges = db
+            .prepare(`
+                SELECT
+                    b.id,
+                    b.name,
+                    b.description,
+                    b.icon,
+                    ub.awarded_at
+                FROM user_badges ub
+                JOIN badges b
+                    ON b.id = ub.badge_id
+                WHERE ub.user_id = ?
+                ORDER BY ub.awarded_at ASC
+            `)
+            .all(userId);
 
-        res.json(badges);
+        res.json({
+            badges
+        });
     }
 );
 
@@ -779,21 +700,25 @@ app.get(
     "/api/my-badges",
     requireAuth,
     (req, res) => {
-        const badges = db.prepare(`
-            SELECT
-                b.id,
-                b.name,
-                b.description,
-                b.icon,
-                ub.awarded_at
-            FROM user_badges ub
-            JOIN badges b
-                ON b.id = ub.badge_id
-            WHERE ub.user_id = ?
-            ORDER BY ub.awarded_at ASC
-        `).all(req.session.userId);
+        const badges = db
+            .prepare(`
+                SELECT
+                    b.id,
+                    b.name,
+                    b.description,
+                    b.icon,
+                    ub.awarded_at
+                FROM user_badges ub
+                JOIN badges b
+                    ON b.id = ub.badge_id
+                WHERE ub.user_id = ?
+                ORDER BY ub.awarded_at ASC
+            `)
+            .all(req.session.userId);
 
-        res.json(badges);
+        res.json({
+            badges
+        });
     }
 );
 
@@ -801,10 +726,9 @@ app.get(
    ALL BADGES
 ========================================================= */
 
-app.get(
-    "/api/badges",
-    (req, res) => {
-        const badges = db.prepare(`
+app.get("/api/badges", (req, res) => {
+    const badges = db
+        .prepare(`
             SELECT
                 id,
                 name,
@@ -813,14 +737,16 @@ app.get(
                 created_at
             FROM badges
             ORDER BY id ASC
-        `).all();
+        `)
+        .all();
 
-        res.json(badges);
-    }
-);
+    res.json({
+        badges
+    });
+});
 
 /* =========================================================
-   OWNER: AWARD BADGE
+   OWNER - AWARD BADGE
 ========================================================= */
 
 app.post(
@@ -831,65 +757,64 @@ app.post(
             Number(req.params.userId);
 
         const badgeId =
-            Number(req.body.badge_id);
+            Number(req.body.badgeId);
 
         if (
             !Number.isInteger(userId) ||
             !Number.isInteger(badgeId)
         ) {
             return res.status(400).json({
-                success: false,
                 error:
-                    "Valid userId and badge_id are required."
+                    "Invalid user or badge ID."
             });
         }
 
-        const user = db.prepare(`
-            SELECT id
-            FROM users
-            WHERE id = ?
-        `).get(userId);
+        const user = db
+            .prepare(`
+                SELECT id
+                FROM users
+                WHERE id = ?
+            `)
+            .get(userId);
 
         if (!user) {
             return res.status(404).json({
-                success: false,
                 error: "User not found."
             });
         }
 
-        const badge = db.prepare(`
-            SELECT id
-            FROM badges
-            WHERE id = ?
-        `).get(badgeId);
+        const badge = db
+            .prepare(`
+                SELECT id
+                FROM badges
+                WHERE id = ?
+            `)
+            .get(badgeId);
 
         if (!badge) {
             return res.status(404).json({
-                success: false,
                 error: "Badge not found."
             });
         }
 
         db.prepare(`
             INSERT OR IGNORE INTO user_badges
-            (
-                user_id,
-                badge_id
-            )
-            VALUES (?, ?)
+                (user_id, badge_id)
+            VALUES
+                (?, ?)
         `).run(
             userId,
             badgeId
         );
 
         res.json({
-            success: true
+            message: "Badge awarded."
         });
     }
 );
 
 /* =========================================================
-   OWNER: REMOVE BADGE
+   OWNER - REMOVE BADGE
 ========================================================= */
 
 app.delete(
@@ -907,29 +832,31 @@ app.delete(
             !Number.isInteger(badgeId)
         ) {
             return res.status(400).json({
-                success: false,
-                error: "Invalid ID."
+                error:
+                    "Invalid user or badge ID."
             });
         }
 
-        const result = db.prepare(`
-            DELETE FROM user_badges
-            WHERE user_id = ?
-            AND badge_id = ?
-        `).run(
-            userId,
-            badgeId
-        );
+        const result = db
+            .prepare(`
+                DELETE FROM user_badges
+                WHERE user_id = ?
+                AND badge_id = ?
+            `)
+            .run(
+                userId,
+                badgeId
+            );
 
         if (result.changes === 0) {
             return res.status(404).json({
-                success: false,
-                error: "Badge award not found."
+                error:
+                    "Badge was not awarded to this user."
             });
         }
 
         res.json({
-            success: true
+            message: "Badge removed."
         });
     }
 );
@@ -941,58 +868,47 @@ app.delete(
 app.post(
     "/api/change-password",
     requireAuth,
-    async (req, res, next) => {
+    async (req, res) => {
         try {
-            const {
-                currentPassword,
-                newPassword
-            } = req.body;
+            const currentPassword =
+                String(
+                    req.body.currentPassword || ""
+                );
 
-            if (
-                !currentPassword ||
-                !newPassword
-            ) {
+            const newPassword =
+                String(
+                    req.body.newPassword || ""
+                );
+
+            if (newPassword.length < 8) {
                 return res.status(400).json({
-                    success: false,
                     error:
-                        "Current and new passwords are required."
+                        "New password must be at least 8 characters."
                 });
             }
 
-            if (
-                typeof newPassword !== "string" ||
-                newPassword.length < 6 ||
-                newPassword.length > 128
-            ) {
-                return res.status(400).json({
-                    success: false,
-                    error:
-                        "New password must be between 6 and 128 characters."
-                });
-            }
-
-            const user = db.prepare(`
-                SELECT password_hash
-                FROM users
-                WHERE id = ?
-            `).get(req.session.userId);
+            const user = db
+                .prepare(`
+                    SELECT *
+                    FROM users
+                    WHERE id = ?
+                `)
+                .get(req.session.userId);
 
             if (!user) {
                 return res.status(404).json({
-                    success: false,
                     error: "User not found."
                 });
             }
 
-            const valid =
+            const correct =
                 await bcrypt.compare(
                     currentPassword,
                     user.password_hash
                 );
 
-            if (!valid) {
+            if (!correct) {
                 return res.status(401).json({
-                    success: false,
                     error:
                         "Current password is incorrect."
                 });
@@ -1010,15 +926,24 @@ app.post(
                 WHERE id = ?
             `).run(
                 newHash,
-                req.session.userId
+                user.id
             );
 
             res.json({
-                success: true
+                message:
+                    "Password changed successfully."
             });
 
         } catch (error) {
-            next(error);
+            console.error(
+                "[PASSWORD ERROR]",
+                error
+            );
+
+            res.status(500).json({
+                error:
+                    "Password change failed."
+            });
         }
     }
 );
@@ -1031,24 +956,44 @@ app.get(
     "/api/my-stats",
     requireAuth,
     (req, res) => {
-        const achievements =
-            db.prepare(`
+        const user = db
+            .prepare(`
+                SELECT
+                    id,
+                    username,
+                    role,
+                    created_at
+                FROM users
+                WHERE id = ?
+            `)
+            .get(req.session.userId);
+
+        if (!user) {
+            return res.status(404).json({
+                error: "User not found."
+            });
+        }
+
+        const badgeCount = db
+            .prepare(`
                 SELECT COUNT(*) AS count
                 FROM user_badges
                 WHERE user_id = ?
-            `).get(
-                req.session.userId
-            ).count;
+            `)
+            .get(user.id);
 
         res.json({
-            gamesPlayed: 0,
-            achievements
+            userId: user.id,
+            username: user.username,
+            role: user.role,
+            accountCreated: user.created_at,
+            badgeCount: badgeCount.count
         });
     }
 );
 
 /* =========================================================
-   OWNER: USER LOOKUP
+   OWNER - USER LOOKUP
 ========================================================= */
 
 app.get(
@@ -1060,41 +1005,43 @@ app.get(
 
         if (!Number.isInteger(userId)) {
             return res.status(400).json({
-                success: false,
                 error: "Invalid user ID."
             });
         }
 
-        const user = db.prepare(`
-            SELECT
-                id,
-                username,
-                birth_date,
-                role,
-                created_at
-            FROM users
-            WHERE id = ?
-        `).get(userId);
+        const user = db
+            .prepare(`
+                SELECT
+                    id,
+                    username,
+                    birth_date,
+                    role,
+                    created_at
+                FROM users
+                WHERE id = ?
+            `)
+            .get(userId);
 
         if (!user) {
             return res.status(404).json({
-                success: false,
                 error: "User not found."
             });
         }
 
-        res.json(user);
+        res.json({
+            user: publicUser(user)
+        });
     }
 );
 
 /* =========================================================
-   API 404 HANDLER
+   API 404
 ========================================================= */
 
 app.use("/api", (req, res) => {
     res.status(404).json({
-        success: false,
-        error: "Hoshino API endpoint not found."
+        error:
+            "Hoshino API endpoint not found."
     });
 });
 
@@ -1102,32 +1049,23 @@ app.use("/api", (req, res) => {
    GLOBAL ERROR HANDLER
 ========================================================= */
 
-app.use((error, req, res, next) => {
-    console.error(
-        "[HOSHINO ERROR]",
-        error
-    );
+app.use(
+    (err, req, res, next) => {
+        console.error(
+            "[HOSHINO ERROR]",
+            err
+        );
 
-    if (res.headersSent) {
-        return next(error);
-    }
+        if (res.headersSent) {
+            return next(err);
+        }
 
-    if (
-        error.message ===
-        "Origin not allowed by Hoshino CORS policy."
-    ) {
-        return res.status(403).json({
-            success: false,
-            error: "Origin not allowed."
+        res.status(500).json({
+            error:
+                "Internal Hoshino server error."
         });
     }
-
-    res.status(500).json({
-        success: false,
-        error:
-            "An internal Hoshino server error occurred."
-    });
-});
+);
 
 /* =========================================================
    START SERVER
@@ -1135,59 +1073,63 @@ app.use((error, req, res, next) => {
 
 const server = app.listen(
     PORT,
+    "0.0.0.0",
     () => {
         console.log("");
-        console.log("======================================");
-        console.log("        HOSHINO API SERVER");
-        console.log("======================================");
+        console.log("=================================");
+        console.log("        HOSHINO SERVER");
+        console.log("=================================");
+        console.log("");
         console.log(
-            `Status:       ONLINE`
+            `Local API: http://localhost:${PORT}`
         );
         console.log(
-            `Environment:  ${NODE_ENV}`
+            `Network API: http://0.0.0.0:${PORT}`
         );
         console.log(
-            `Port:         ${PORT}`
+            `Environment: ${NODE_ENV}`
+        );
+        console.log("");
+        console.log(
+            "Allowed local website origins:"
         );
         console.log(
-            `Frontend:     ${FRONTEND_URL}`
+            " - localhost (any port)"
         );
         console.log(
-            `Health:       /api/health`
+            " - 127.0.0.1 (any port)"
         );
         console.log(
-            `Database:     hoshino.db`
+            " - hoshinorevival.github.io"
         );
-        console.log("======================================");
+        console.log("");
+        console.log(
+            "Hoshino API is running."
+        );
+        console.log("=================================");
         console.log("");
     }
 );
 
 /* =========================================================
-   GRACEFUL SHUTDOWN
+   SHUTDOWN
 ========================================================= */
 
 function shutdown(signal) {
+    console.log("");
     console.log(
-        `\n[HOSHINO] ${signal} received.`
+        `Received ${signal}. Shutting down...`
     );
 
     server.close(() => {
-        console.log(
-            "[HOSHINO] HTTP server closed."
-        );
-
         try {
             db.close();
 
             console.log(
-                "[HOSHINO] Database closed."
+                "Database closed."
             );
         } catch (error) {
-            console.error(
-                "[HOSHINO] Database shutdown error:",
-                error
-            );
+            console.error(error);
         }
 
         process.exit(0);
