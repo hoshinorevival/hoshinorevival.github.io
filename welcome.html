@@ -25,10 +25,6 @@
             color: #333;
         }
 
-        /* =========================
-           TOP BAR
-        ========================= */
-
         .topbar {
             height: 62px;
             background: #fff;
@@ -45,30 +41,24 @@
         .logo-link {
             display: flex;
             align-items: center;
-
             text-decoration: none;
-
             cursor: pointer;
         }
 
         .logo {
             height: 42px;
             width: auto;
-
             display: block;
 
-            transition: opacity .15s ease,
-                        transform .15s ease;
+            transition:
+                opacity .15s ease,
+                transform .15s ease;
         }
 
         .logo-link:hover .logo {
             opacity: .85;
             transform: scale(1.03);
         }
-
-        /* =========================
-           PAGE
-        ========================= */
 
         .page {
             min-height: calc(100vh - 62px);
@@ -124,10 +114,6 @@
             padding: 30px;
         }
 
-        /* =========================
-           FORM
-        ========================= */
-
         label {
             display: block;
 
@@ -155,8 +141,9 @@
 
             outline: none;
 
-            transition: border-color .15s ease,
-                        box-shadow .15s ease;
+            transition:
+                border-color .15s ease,
+                box-shadow .15s ease;
         }
 
         input:focus {
@@ -195,10 +182,6 @@
             cursor: wait;
         }
 
-        /* =========================
-           MESSAGE
-        ========================= */
-
         #message {
             min-height: 20px;
 
@@ -232,10 +215,6 @@
             background: #aaa;
         }
 
-        /* =========================
-           FOOTER
-        ========================= */
-
         .footer {
             padding: 15px;
 
@@ -266,7 +245,6 @@
 
 <header class="topbar">
 
-    <!-- CLICKABLE HOSHINO LOGO -->
     <a
         class="logo-link"
         href="welcome.html"
@@ -369,7 +347,27 @@
 
 <script>
 
+/* =========================================================
+   HOSHINO API
+========================================================= */
+
+/*
+    LOCAL DEVELOPMENT:
+
+    http://localhost:3000
+
+    If localhost doesn't work on your machine,
+    change this to:
+
+    http://127.0.0.1:3000
+*/
+
 const API = "http://localhost:3000";
+
+
+/* =========================================================
+   ELEMENTS
+========================================================= */
 
 const form =
     document.getElementById("loginForm");
@@ -387,23 +385,66 @@ const statusDot =
     document.getElementById("statusDot");
 
 
-// =========================
-// CHECK SERVER
-// =========================
+/* =========================================================
+   API REQUEST HELPER
+========================================================= */
+
+async function api(path, options = {}) {
+
+    const response = await fetch(
+        API + path,
+        {
+            ...options,
+
+            credentials: "include",
+
+            headers: {
+                ...(options.body
+                    ? {
+                        "Content-Type":
+                            "application/json"
+                    }
+                    : {}),
+
+                ...(options.headers || {})
+            }
+        }
+    );
+
+    return response;
+}
+
+
+/* =========================================================
+   SERVER CHECK
+========================================================= */
 
 async function checkServer() {
+
+    serverStatus.textContent =
+        "Checking Hoshino server...";
+
+    statusDot.style.background =
+        "#aaa";
 
     try {
 
         const response =
-            await fetch(API + "/", {
-                method: "GET",
-                credentials: "include"
-            });
+            await api("/api/health");
 
         if (!response.ok) {
-            throw new Error();
+            throw new Error(
+                "HTTP " + response.status
+            );
         }
+
+        const data =
+            await response.json();
+
+        console.log(
+            "[Hoshino] API health:",
+            data
+        );
 
         serverStatus.textContent =
             "Hoshino server online";
@@ -411,29 +452,36 @@ async function checkServer() {
         statusDot.style.background =
             "#48a868";
 
-    } catch {
+        return true;
+
+    } catch (error) {
+
+        console.error(
+            "[Hoshino] Server connection failed:",
+            error
+        );
 
         serverStatus.textContent =
             "Unable to connect to Hoshino server";
 
         statusDot.style.background =
             "#d9534f";
+
+        return false;
     }
 }
 
 
-// =========================
-// CHECK EXISTING SESSION
-// =========================
+/* =========================================================
+   SESSION CHECK
+========================================================= */
 
 async function checkSession() {
 
     try {
 
         const response =
-            await fetch(API + "/api/me", {
-                credentials: "include"
-            });
+            await api("/api/me");
 
         if (!response.ok) {
             return;
@@ -442,6 +490,11 @@ async function checkSession() {
         const data =
             await response.json();
 
+        console.log(
+            "[Hoshino] Session:",
+            data
+        );
+
         if (data.loggedIn === true) {
 
             window.location.replace(
@@ -449,22 +502,26 @@ async function checkSession() {
             );
         }
 
-    } catch {
+    } catch (error) {
 
-        // Server check handles connection message.
+        console.warn(
+            "[Hoshino] Session check failed:",
+            error
+        );
     }
 }
 
 
-// =========================
-// LOGIN
-// =========================
+/* =========================================================
+   LOGIN
+========================================================= */
 
 form.addEventListener(
     "submit",
-    async (event) => {
+    async function(event) {
 
         event.preventDefault();
+
 
         const username =
             document
@@ -476,6 +533,18 @@ form.addEventListener(
             document
                 .getElementById("password")
                 .value;
+
+
+        if (!username || !password) {
+
+            message.textContent =
+                "Please enter your username and password.";
+
+            message.style.color =
+                "#d9534f";
+
+            return;
+        }
 
 
         message.textContent =
@@ -490,28 +559,37 @@ form.addEventListener(
         try {
 
             const response =
-                await fetch(
-                    API + "/api/login",
+                await api(
+                    "/api/login",
                     {
                         method: "POST",
 
-                        headers: {
-                            "Content-Type":
-                                "application/json"
-                        },
-
-                        credentials: "include",
-
                         body: JSON.stringify({
-                            username,
-                            password
+                            username: username,
+                            password: password
                         })
                     }
                 );
 
 
-            const data =
-                await response.json();
+            let data = {};
+
+            try {
+
+                data =
+                    await response.json();
+
+            } catch {
+
+                data = {};
+            }
+
+
+            console.log(
+                "[Hoshino] Login response:",
+                response.status,
+                data
+            );
 
 
             if (!response.ok) {
@@ -537,11 +615,29 @@ form.addEventListener(
                 "#48a868";
 
 
-            window.location.replace(
-                "homepage.html"
+            /*
+                Give the browser a moment to
+                store the session cookie before
+                moving to the homepage.
+            */
+
+            setTimeout(
+                function() {
+
+                    window.location.replace(
+                        "homepage.html"
+                    );
+
+                },
+                150
             );
 
-        } catch {
+        } catch (error) {
+
+            console.error(
+                "[Hoshino] Login connection error:",
+                error
+            );
 
             message.textContent =
                 "Unable to connect to the Hoshino server.";
@@ -557,9 +653,22 @@ form.addEventListener(
 );
 
 
-// Start
-checkServer();
-checkSession();
+/* =========================================================
+   STARTUP
+========================================================= */
+
+(async function() {
+
+    const online =
+        await checkServer();
+
+    if (online) {
+
+        await checkSession();
+
+    }
+
+})();
 
 </script>
 
