@@ -1,11 +1,100 @@
 <!DOCTYPE html>
-<html>
+<html lang="en">
 <head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
     <title>Hoshino</title>
     <link rel="icon" type="image/x-icon" href="/images/hoshinologotransparent.ico">
+
+    <style>
+        * {
+            box-sizing: border-box;
+        }
+
+        html, body {
+            margin: 0;
+            width: 100%;
+            min-height: 100%;
+        }
+
+        body {
+            min-height: 100vh;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+
+            font-family: Arial, Helvetica, sans-serif;
+            background: #f7e8ee;
+            color: #333;
+        }
+
+        .maintenance {
+            width: 100%;
+            max-width: 700px;
+            padding: 40px 25px;
+            text-align: center;
+        }
+
+        .logo {
+            display: block;
+            width: 360px;
+            max-width: 85%;
+            height: auto;
+            margin: 0 auto 35px;
+        }
+
+        h1 {
+            margin: 0;
+            font-size: 32px;
+            font-weight: 700;
+        }
+
+        .line {
+            width: 80px;
+            height: 3px;
+            margin: 22px auto;
+            background: #d88fa3;
+            border-radius: 10px;
+        }
+
+        p {
+            margin: 0;
+            font-size: 17px;
+            color: #666;
+        }
+
+        @media (max-width: 600px) {
+            .logo {
+                width: 280px;
+            }
+
+            h1 {
+                font-size: 25px;
+            }
+
+            p {
+                font-size: 15px;
+            }
+        }
+    </style>
 </head>
 
 <body>
-    Hoshino is under maintenance
+    <main class="maintenance">
+
+        <img
+            class="logo"
+            src="/images/hoshinofulllogotransparent.ico"
+            alt="Hoshino"
+        >
+
+        <h1>Hoshino is under maintenance</h1>
+
+        <div class="line"></div>
+
+        <p>We're working on something awesome. Please check back soon.</p>
+
+    </main>
 </body>
 </html>
