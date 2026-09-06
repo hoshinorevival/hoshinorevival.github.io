@@ -1,0 +1,613 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+    <title>Sign Up - Hoshino</title>
+
+    <link rel="icon" href="images/hoshinologotransparent.ico">
+
+    <style>
+        * {
+            box-sizing: border-box;
+        }
+
+        html,
+        body {
+            margin: 0;
+            min-height: 100%;
+            font-family: Arial, Helvetica, sans-serif;
+            background: #f2f2f2;
+            color: #333;
+        }
+
+        body {
+            min-height: 100vh;
+        }
+
+        .topbar {
+            height: 60px;
+            background: #fff;
+            border-bottom: 1px solid #ddd;
+            display: flex;
+            align-items: center;
+            padding: 0 25px;
+        }
+
+        .logo-link {
+            display: inline-flex;
+            align-items: center;
+            text-decoration: none;
+        }
+
+        .logo {
+            width: 145px;
+            height: auto;
+            display: block;
+        }
+
+        .page {
+            display: flex;
+            justify-content: center;
+            padding: 45px 20px;
+        }
+
+        .card {
+            width: 100%;
+            max-width: 430px;
+            background: #fff;
+            border: 1px solid #ddd;
+            border-radius: 4px;
+            padding: 30px;
+            box-shadow: 0 2px 7px rgba(0, 0, 0, 0.08);
+        }
+
+        h1 {
+            margin: 0 0 8px;
+            text-align: center;
+            font-size: 28px;
+            font-weight: 700;
+        }
+
+        .subtitle {
+            margin: 0 0 25px;
+            text-align: center;
+            color: #777;
+            font-size: 14px;
+        }
+
+        .field {
+            margin-bottom: 18px;
+        }
+
+        label {
+            display: block;
+            margin-bottom: 7px;
+            font-size: 14px;
+            font-weight: bold;
+        }
+
+        input {
+            width: 100%;
+            height: 42px;
+            padding: 0 12px;
+            border: 1px solid #ccc;
+            border-radius: 3px;
+            font-size: 15px;
+            outline: none;
+            background: #fff;
+        }
+
+        input:focus {
+            border-color: #ff69b4;
+            box-shadow: 0 0 0 2px rgba(255, 105, 180, 0.15);
+        }
+
+        .hint {
+            margin-top: 6px;
+            color: #888;
+            font-size: 12px;
+        }
+
+        .rules {
+            margin: 20px 0;
+            padding: 15px;
+            background: #fafafa;
+            border: 1px solid #ddd;
+            border-radius: 3px;
+        }
+
+        .rules-title {
+            font-weight: bold;
+            margin-bottom: 10px;
+            font-size: 14px;
+        }
+
+        .rules ul {
+            margin: 0 0 12px 18px;
+            padding: 0;
+            color: #555;
+            font-size: 12px;
+            line-height: 1.6;
+        }
+
+        .agreement {
+            display: flex;
+            align-items: flex-start;
+            gap: 9px;
+            font-size: 13px;
+            font-weight: normal;
+            cursor: pointer;
+        }
+
+        .agreement input {
+            width: 16px;
+            height: 16px;
+            margin: 1px 0 0;
+            flex-shrink: 0;
+            accent-color: #ff69b4;
+        }
+
+        .agreement span {
+            line-height: 1.4;
+        }
+
+        button {
+            width: 100%;
+            height: 44px;
+            border: none;
+            border-radius: 3px;
+            background: #ff69b4;
+            color: white;
+            font-size: 15px;
+            font-weight: bold;
+            cursor: pointer;
+            transition: background 0.15s;
+        }
+
+        button:hover:not(:disabled) {
+            background: #ff4fa5;
+        }
+
+        button:disabled {
+            background: #ccc;
+            cursor: not-allowed;
+        }
+
+        .message {
+            display: none;
+            margin-bottom: 18px;
+            padding: 11px;
+            border-radius: 3px;
+            font-size: 13px;
+            text-align: center;
+        }
+
+        .message.error {
+            display: block;
+            background: #ffe8e8;
+            border: 1px solid #e0a0a0;
+            color: #a00000;
+        }
+
+        .message.success {
+            display: block;
+            background: #e8ffe8;
+            border: 1px solid #9ad09a;
+            color: #176b17;
+        }
+
+        .login-link {
+            display: block;
+            margin-top: 20px;
+            text-align: center;
+            color: #ff69b4;
+            text-decoration: none;
+            font-size: 14px;
+            font-weight: bold;
+        }
+
+        .login-link:hover {
+            text-decoration: underline;
+        }
+
+        .server-status {
+            margin-top: 18px;
+            text-align: center;
+            font-size: 12px;
+            color: #888;
+        }
+
+        .status-online {
+            color: #188518;
+        }
+
+        .status-offline {
+            color: #a00000;
+        }
+    </style>
+</head>
+
+<body>
+
+    <header class="topbar">
+        <a class="logo-link"
+           href="login.html"
+           title="Hoshino Home"
+           aria-label="Hoshino Home">
+
+            <img
+                class="logo"
+                src="images/hoshinofulllogotransparent.ico"
+                alt="Hoshino">
+        </a>
+    </header>
+
+    <main class="page">
+
+        <section class="card">
+
+            <h1>Create Your Account</h1>
+
+            <p class="subtitle">
+                Join Hoshino and start your adventure.
+            </p>
+
+            <div id="message" class="message"></div>
+
+            <form id="signupForm">
+
+                <div class="field">
+                    <label for="username">Username</label>
+
+                    <input
+                        id="username"
+                        type="text"
+                        autocomplete="username"
+                        minlength="3"
+                        maxlength="20"
+                        pattern="[A-Za-z0-9_]+"
+                        placeholder="Enter a username"
+                        required>
+
+                    <div class="hint">
+                        3–20 characters. Letters, numbers, and underscores only.
+                    </div>
+                </div>
+
+                <div class="field">
+                    <label for="password">Password</label>
+
+                    <input
+                        id="password"
+                        type="password"
+                        autocomplete="new-password"
+                        minlength="6"
+                        placeholder="Enter a password"
+                        required>
+
+                    <div class="hint">
+                        Your password must be at least 6 characters.
+                    </div>
+                </div>
+
+                <div class="field">
+                    <label for="confirmPassword">Confirm Password</label>
+
+                    <input
+                        id="confirmPassword"
+                        type="password"
+                        autocomplete="new-password"
+                        placeholder="Enter your password again"
+                        required>
+                </div>
+
+                <div class="field">
+                    <label for="birthDate">Birthday</label>
+
+                    <input
+                        id="birthDate"
+                        type="date"
+                        required>
+
+                    <div class="hint">
+                        You must be at least 13 years old to create an account.
+                    </div>
+                </div>
+
+                <div class="rules">
+
+                    <div class="rules-title">
+                        Hoshino Rules
+                    </div>
+
+                    <ul>
+                        <li>One account per person. Alternate accounts are not allowed.</li>
+                        <li>Be respectful to other users.</li>
+                        <li>Do not cheat, exploit, or abuse bugs.</li>
+                        <li>Do not post inappropriate content.</li>
+                        <li>Do not impersonate Hoshino staff or other users.</li>
+                        <li>Do not spam or intentionally disrupt Hoshino.</li>
+                        <li>Do not attempt unauthorized access to Hoshino systems.</li>
+                        <li>Follow reasonable instructions from Hoshino staff.</li>
+                        <li>Rules may be updated as Hoshino develops.</li>
+                        <li>Breaking the rules may result in warnings, temporary bans, or permanent bans.</li>
+                    </ul>
+
+                    <label class="agreement">
+                        <input
+                            id="agreeRules"
+                            type="checkbox">
+
+                        <span>
+                            I have read and agree to the Hoshino Rules.
+                        </span>
+                    </label>
+
+                </div>
+
+                <button
+                    id="signupButton"
+                    type="submit"
+                    disabled>
+                    Sign Up
+                </button>
+
+            </form>
+
+            <a class="login-link" href="login.html">
+                Already have an account? Log In
+            </a>
+
+            <div id="serverStatus" class="server-status">
+                Checking Hoshino server...
+            </div>
+
+        </section>
+
+    </main>
+
+    <script>
+        const API = "http://localhost:3000";
+
+        const form = document.getElementById("signupForm");
+        const usernameInput = document.getElementById("username");
+        const passwordInput = document.getElementById("password");
+        const confirmPasswordInput = document.getElementById("confirmPassword");
+        const birthDateInput = document.getElementById("birthDate");
+        const agreeRulesInput = document.getElementById("agreeRules");
+        const signupButton = document.getElementById("signupButton");
+        const message = document.getElementById("message");
+        const serverStatus = document.getElementById("serverStatus");
+
+        function showMessage(text, type) {
+            message.textContent = text;
+            message.className = "message " + type;
+        }
+
+        function clearMessage() {
+            message.textContent = "";
+            message.className = "message";
+        }
+
+        function calculateAge(birthDate) {
+            const today = new Date();
+
+            let age =
+                today.getFullYear() -
+                birthDate.getFullYear();
+
+            const monthDifference =
+                today.getMonth() -
+                birthDate.getMonth();
+
+            if (
+                monthDifference < 0 ||
+                (
+                    monthDifference === 0 &&
+                    today.getDate() < birthDate.getDate()
+                )
+            ) {
+                age--;
+            }
+
+            return age;
+        }
+
+        function validateForm() {
+            const username = usernameInput.value.trim();
+            const password = passwordInput.value;
+            const confirmPassword = confirmPasswordInput.value;
+            const birthDateValue = birthDateInput.value;
+
+            const usernameValid =
+                /^[A-Za-z0-9_]{3,20}$/.test(username);
+
+            const passwordValid =
+                password.length >= 6;
+
+            const passwordsMatch =
+                password === confirmPassword;
+
+            let ageValid = false;
+
+            if (birthDateValue) {
+                const birthDate = new Date(
+                    birthDateValue + "T00:00:00"
+                );
+
+                ageValid =
+                    !isNaN(birthDate.getTime()) &&
+                    calculateAge(birthDate) >= 13;
+            }
+
+            const valid =
+                usernameValid &&
+                passwordValid &&
+                passwordsMatch &&
+                ageValid &&
+                agreeRulesInput.checked;
+
+            signupButton.disabled = !valid;
+
+            return {
+                usernameValid,
+                passwordValid,
+                passwordsMatch,
+                ageValid,
+                agreed: agreeRulesInput.checked
+            };
+        }
+
+        [
+            usernameInput,
+            passwordInput,
+            confirmPasswordInput,
+            birthDateInput,
+            agreeRulesInput
+        ].forEach(element => {
+            element.addEventListener("input", validateForm);
+            element.addEventListener("change", validateForm);
+        });
+
+        async function checkServer() {
+            try {
+                const response = await fetch(API + "/api/health");
+
+                if (!response.ok) {
+                    throw new Error("Server unavailable");
+                }
+
+                serverStatus.textContent =
+                    "Hoshino server: Online";
+
+                serverStatus.className =
+                    "server-status status-online";
+
+            } catch (error) {
+
+                serverStatus.textContent =
+                    "Hoshino server: Offline";
+
+                serverStatus.className =
+                    "server-status status-offline";
+            }
+        }
+
+        form.addEventListener("submit", async function(event) {
+
+            event.preventDefault();
+
+            clearMessage();
+
+            const validation = validateForm();
+
+            if (!validation.usernameValid) {
+                showMessage(
+                    "Username must be 3–20 characters and use only letters, numbers, and underscores.",
+                    "error"
+                );
+                return;
+            }
+
+            if (!validation.passwordValid) {
+                showMessage(
+                    "Password must be at least 6 characters.",
+                    "error"
+                );
+                return;
+            }
+
+            if (!validation.passwordsMatch) {
+                showMessage(
+                    "Passwords do not match.",
+                    "error"
+                );
+                return;
+            }
+
+            if (!validation.ageValid) {
+                showMessage(
+                    "You must be at least 13 years old to create a Hoshino account.",
+                    "error"
+                );
+                return;
+            }
+
+            if (!validation.agreed) {
+                showMessage(
+                    "You must agree to the Hoshino Rules.",
+                    "error"
+                );
+                return;
+            }
+
+            signupButton.disabled = true;
+            signupButton.textContent = "Creating Account...";
+
+            try {
+
+                const response = await fetch(API + "/api/register", {
+                    method: "POST",
+
+                    headers: {
+                        "Content-Type": "application/json"
+                    },
+
+                    credentials: "include",
+
+                    body: JSON.stringify({
+                        username: usernameInput.value.trim(),
+                        password: passwordInput.value,
+                        birthDate: birthDateInput.value
+                    })
+                });
+
+                let data = {};
+
+                try {
+                    data = await response.json();
+                } catch {
+                    data = {};
+                }
+
+                if (!response.ok) {
+                    throw new Error(
+                        data.error ||
+                        data.message ||
+                        "Unable to create account."
+                    );
+                }
+
+                showMessage(
+                    "Account created successfully! Redirecting to login...",
+                    "success"
+                );
+
+                form.reset();
+                validateForm();
+
+                setTimeout(() => {
+                    window.location.href = "login.html";
+                }, 1500);
+
+            } catch (error) {
+
+                showMessage(
+                    error.message ||
+                    "Unable to connect to Hoshino.",
+                    "error"
+                );
+
+                signupButton.textContent = "Sign Up";
+                validateForm();
+            }
+        });
+
+        checkServer();
+        validateForm();
+    </script>
+
+</body>
+</html>
