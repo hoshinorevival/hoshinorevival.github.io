@@ -4,9 +4,7 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
 
-    <title>Hoshino - Home</title>
-
-    <link rel="icon" href="images/hoshinologotransparent.ico">
+    <title>Hoshino</title>
 
     <style>
         * {
@@ -15,29 +13,40 @@
 
         body {
             margin: 0;
-            font-family: Arial, Helvetica, sans-serif;
-            background: #f2f2f2;
+            font-family: Arial, sans-serif;
+            background: #f5f5f7;
             color: #222;
         }
 
         header {
-            height: 60px;
+            height: 64px;
             background: white;
             border-bottom: 1px solid #ddd;
 
             display: flex;
             align-items: center;
-            justify-content: space-between;
 
             padding: 0 25px;
+
+            justify-content: space-between;
         }
 
-        .logo {
-            height: 42px;
-            width: auto;
+        .brand {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+
+            font-size: 22px;
+            font-weight: bold;
         }
 
-        .account {
+        .brand img {
+            width: 40px;
+            height: 40px;
+            object-fit: contain;
+        }
+
+        .user-area {
             display: flex;
             align-items: center;
             gap: 15px;
@@ -47,241 +56,545 @@
             font-weight: bold;
         }
 
-        button {
-            border: none;
-            border-radius: 5px;
-            padding: 9px 16px;
-
-            background: #ff69b4;
-            color: white;
-
-            font-weight: bold;
+        .logout {
+            border: 0;
+            background: #eee;
+            padding: 9px 15px;
+            border-radius: 8px;
             cursor: pointer;
         }
 
-        button:hover {
-            opacity: 0.85;
+        .logout:hover {
+            background: #ddd;
         }
 
         main {
             max-width: 1100px;
-            margin: 40px auto;
+            margin: 35px auto;
             padding: 0 20px;
         }
 
-        .welcome-box {
+        .welcome {
             background: white;
-            border: 1px solid #ddd;
-            border-radius: 8px;
+            border-radius: 16px;
             padding: 30px;
+            margin-bottom: 25px;
+            box-shadow: 0 5px 20px rgba(0,0,0,0.06);
         }
 
-        .welcome-box h1 {
+        .welcome h1 {
             margin-top: 0;
         }
 
-        .account-info {
-            margin-top: 25px;
-            padding: 20px;
-
-            background: #fafafa;
-            border: 1px solid #ddd;
-            border-radius: 6px;
+        .cards {
+            display: grid;
+            grid-template-columns: repeat(3, 1fr);
+            gap: 20px;
         }
 
-        .account-info p {
-            margin: 10px 0;
+        .card {
+            background: white;
+            padding: 25px;
+            border-radius: 16px;
+            box-shadow: 0 5px 20px rgba(0,0,0,0.06);
         }
 
-        .label {
+        .card h2 {
+            margin-top: 0;
+        }
+
+        .number {
+            font-size: 35px;
             font-weight: bold;
         }
 
-        #loading {
+        .badges {
+            margin-top: 30px;
+            background: white;
+            border-radius: 16px;
+            padding: 25px;
+            box-shadow: 0 5px 20px rgba(0,0,0,0.06);
+        }
+
+        .badge-list {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 15px;
+        }
+
+        .badge {
+            border: 1px solid #ddd;
+            border-radius: 12px;
+            padding: 15px;
+            min-width: 180px;
+        }
+
+        .badge-icon {
+            font-size: 30px;
+        }
+
+        .badge-name {
+            font-weight: bold;
+            margin-top: 5px;
+        }
+
+        .badge-description {
+            color: #777;
+            font-size: 13px;
+            margin-top: 5px;
+        }
+
+        .games {
+            margin-top: 30px;
+            background: white;
+            border-radius: 16px;
+            padding: 25px;
+            box-shadow: 0 5px 20px rgba(0,0,0,0.06);
+        }
+
+        .game-placeholder {
+            padding: 30px;
+            border: 2px dashed #ddd;
+            border-radius: 12px;
             text-align: center;
-            margin-top: 100px;
-            font-size: 18px;
+            color: #888;
+        }
+
+        #error {
+            text-align: center;
+            padding: 50px;
+            color: #d33;
+        }
+
+        @media (max-width: 700px) {
+
+            .cards {
+                grid-template-columns: 1fr;
+            }
+
+            header {
+                padding: 0 12px;
+            }
+
+            .brand {
+                font-size: 18px;
+            }
         }
     </style>
 </head>
 
 <body>
 
-    <!-- Shown while checking the session -->
-    <div id="loading">
-        Loading Hoshino...
+<header>
+
+    <div class="brand">
+
+        <img
+            src="images/hoshinofulllogotransparent.ico"
+            alt="Hoshino"
+        >
+
+        Hoshino
+
     </div>
 
-    <!-- Hidden until we confirm the user is logged in -->
-    <div id="app" style="display: none;">
+    <div class="user-area">
 
-        <header>
+        <span id="username">
+            Loading...
+        </span>
 
-            <img
-                src="images/hoshinofulllogotransparent.ico"
-                class="logo"
-                alt="Hoshino"
+        <button
+            class="logout"
+            id="logoutButton"
+        >
+            Log Out
+        </button>
+
+    </div>
+
+</header>
+
+
+<main id="content">
+
+    <div class="welcome">
+
+        <h1>
+            Welcome back, <span id="welcomeUsername">...</span>!
+        </h1>
+
+        <p>
+            Welcome to Hoshino.
+        </p>
+
+        <p>
+            User ID:
+            <strong id="userId">...</strong>
+        </p>
+
+        <p>
+            Role:
+            <strong id="userRole">...</strong>
+        </p>
+
+    </div>
+
+
+    <div class="cards">
+
+        <div class="card">
+
+            <h2>🎮 Games</h2>
+
+            <div
+                class="number"
+                id="gamesPlayed"
             >
-
-            <div class="account">
-
-                <span id="username"></span>
-
-                <button onclick="logout()">
-                    Logout
-                </button>
-
+                0
             </div>
 
-        </header>
+            <p>
+                Games played
+            </p>
 
-        <main>
+        </div>
 
-            <div class="welcome-box">
 
-                <h1>
-                    Welcome to Hoshino,
-                    <span id="welcomeUsername"></span>!
-                </h1>
+        <div class="card">
 
-                <p>
-                    Welcome back to Hoshino.
-                </p>
+            <h2>🏅 Achievements</h2>
 
-                <div class="account-info">
-
-                    <p>
-                        <span class="label">Username:</span>
-                        <span id="accountUsername"></span>
-                    </p>
-
-                    <p>
-                        <span class="label">User ID:</span>
-                        <span id="userId"></span>
-                    </p>
-
-                    <p>
-                        <span class="label">Role:</span>
-                        <span id="role"></span>
-                    </p>
-
-                </div>
-
+            <div
+                class="number"
+                id="achievementCount"
+            >
+                0
             </div>
 
-        </main>
+            <p>
+                Badges earned
+            </p>
+
+        </div>
+
+
+        <div class="card">
+
+            <h2>👤 Account</h2>
+
+            <div
+                class="number"
+                id="accountId"
+            >
+                #
+            </div>
+
+            <p>
+                Hoshino user ID
+            </p>
+
+        </div>
 
     </div>
 
 
-    <script>
+    <section class="badges">
 
-        const API = "http://localhost:3000";
+        <h2>🏅 Your Badges</h2>
 
+        <div
+            class="badge-list"
+            id="badgeList"
+        >
+            Loading badges...
+        </div>
 
-        // Check whether the user is logged in
-        async function checkLogin() {
-
-            try {
-
-                const response = await fetch(
-                    API + "/api/me",
-                    {
-                        method: "GET",
-                        credentials: "include"
-                    }
-                );
-
-                const data = await response.json();
+    </section>
 
 
-                // User is NOT logged in
-                if (!data.loggedIn) {
+    <section class="games">
 
-                    window.location.href = "welcome.html";
+        <h2>🎮 Games</h2>
 
-                    return;
-                }
+        <div class="game-placeholder">
+            Hoshino games will appear here.
+        </div>
 
+    </section>
 
-                // User IS logged in
-                const user = data.user;
-
-
-                document.getElementById("username").textContent =
-                    user.username;
-
-                document.getElementById("welcomeUsername").textContent =
-                    user.username;
-
-                document.getElementById("accountUsername").textContent =
-                    user.username;
-
-                document.getElementById("userId").textContent =
-                    user.id;
-
-                document.getElementById("role").textContent =
-                    user.role;
+</main>
 
 
-                // Show the homepage
-                document.getElementById("loading").style.display =
-                    "none";
+<div id="error"></div>
 
-                document.getElementById("app").style.display =
-                    "block";
 
-            }
+<script>
 
-            catch (error) {
+const API = "http://localhost:3000";
 
-                console.error(
-                    "Could not connect to Hoshino API:",
-                    error
-                );
 
-                document.getElementById("loading").textContent =
-                    "Unable to connect to Hoshino.";
+async function api(path, options = {}) {
 
-            }
+    return fetch(API + path, {
+        credentials: "include",
+        ...options
+    });
+
+}
+
+
+// =====================================
+// CHECK LOGIN
+// =====================================
+
+async function checkLogin() {
+
+    try {
+
+        const response =
+            await api("/api/me");
+
+        if (!response.ok) {
+            throw new Error("Session check failed.");
+        }
+
+        const data =
+            await response.json();
+
+        // THIS IS THE IMPORTANT PART
+        // You must be logged in to see homepage.
+
+        if (!data.loggedIn) {
+
+            window.location.replace("welcome.html");
+
+            return null;
+        }
+
+        return data.user;
+
+    } catch (error) {
+
+        window.location.replace("welcome.html");
+
+        return null;
+    }
+}
+
+
+// =====================================
+// LOAD PROFILE
+// =====================================
+
+async function loadProfile() {
+
+    const response =
+        await api("/api/profile");
+
+    if (!response.ok) {
+        throw new Error("Could not load profile.");
+    }
+
+    return response.json();
+}
+
+
+// =====================================
+// LOAD BADGES
+// =====================================
+
+async function loadBadges() {
+
+    const response =
+        await api("/api/my-badges");
+
+    if (!response.ok) {
+        throw new Error("Could not load badges.");
+    }
+
+    return response.json();
+}
+
+
+// =====================================
+// LOAD STATS
+// =====================================
+
+async function loadStats() {
+
+    const response =
+        await api("/api/my-stats");
+
+    if (!response.ok) {
+        throw new Error("Could not load stats.");
+    }
+
+    return response.json();
+}
+
+
+// =====================================
+// DISPLAY BADGES
+// =====================================
+
+function displayBadges(badges) {
+
+    const list =
+        document.getElementById("badgeList");
+
+    if (!badges.length) {
+
+        list.innerHTML =
+            "<p>You haven't earned any badges yet.</p>";
+
+        return;
+    }
+
+    list.innerHTML = "";
+
+    for (const badge of badges) {
+
+        const element =
+            document.createElement("div");
+
+        element.className = "badge";
+
+        element.innerHTML = `
+            <div class="badge-icon">
+                ${badge.icon || "🏅"}
+            </div>
+
+            <div class="badge-name">
+                ${escapeHTML(badge.name)}
+            </div>
+
+            <div class="badge-description">
+                ${escapeHTML(badge.description)}
+            </div>
+        `;
+
+        list.appendChild(element);
+    }
+}
+
+
+// =====================================
+// HTML SAFETY
+// =====================================
+
+function escapeHTML(value) {
+
+    const div =
+        document.createElement("div");
+
+    div.textContent =
+        value ?? "";
+
+    return div.innerHTML;
+}
+
+
+// =====================================
+// LOGOUT
+// =====================================
+
+document
+    .getElementById("logoutButton")
+    .addEventListener("click", async () => {
+
+        try {
+
+            await api("/api/logout", {
+                method: "POST"
+            });
+
+        } finally {
+
+            window.location.replace("welcome.html");
 
         }
 
-
-        // Logout
-        async function logout() {
-
-            try {
-
-                await fetch(
-                    API + "/api/logout",
-                    {
-                        method: "POST",
-                        credentials: "include"
-                    }
-                );
-
-                // Send the user back to the logged-out welcome page
-                window.location.href = "welcome.html";
-
-            }
-
-            catch (error) {
-
-                console.error(
-                    "Logout failed:",
-                    error
-                );
-
-            }
-
-        }
+    });
 
 
-        // Run immediately when the page loads
-        checkLogin();
+// =====================================
+// START HOMEPAGE
+// =====================================
 
-    </script>
+async function startHomepage() {
+
+    const user =
+        await checkLogin();
+
+    if (!user) {
+        return;
+    }
+
+    try {
+
+        const [
+            profile,
+            badges,
+            stats
+        ] = await Promise.all([
+
+            loadProfile(),
+
+            loadBadges(),
+
+            loadStats()
+
+        ]);
+
+
+        document.getElementById("username")
+            .textContent =
+            profile.username;
+
+        document.getElementById("welcomeUsername")
+            .textContent =
+            profile.username;
+
+        document.getElementById("userId")
+            .textContent =
+            profile.id;
+
+        document.getElementById("accountId")
+            .textContent =
+            "#" + profile.id;
+
+        document.getElementById("userRole")
+            .textContent =
+            profile.role;
+
+        document.getElementById("gamesPlayed")
+            .textContent =
+            stats.gamesPlayed;
+
+        document.getElementById("achievementCount")
+            .textContent =
+            stats.achievements;
+
+        displayBadges(badges);
+
+    } catch (error) {
+
+        console.error(error);
+
+        document.getElementById("content").style.display =
+            "none";
+
+        document.getElementById("error").textContent =
+            "Unable to load your Hoshino account.";
+
+    }
+}
+
+
+startHomepage();
+
+</script>
 
 </body>
 </html>
