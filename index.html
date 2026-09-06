@@ -4,124 +4,323 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
 
-    <title>Hoshino</title>
-    <link rel="icon" type="image/x-icon" href="/images/hoshinologotransparent.ico">
+    <title>Hoshino — Maintenance</title>
+
+    <link rel="icon" href="images/hoshinologotransparent.ico">
 
     <style>
         * {
             box-sizing: border-box;
         }
 
-        html, body {
+        html,
+        body {
             margin: 0;
             width: 100%;
             min-height: 100%;
         }
 
         body {
-            min-height: 100vh;
+            font-family: Arial, Helvetica, sans-serif;
+            background: #f2f2f2;
+            color: #333;
+        }
+
+        /* TOP BAR */
+
+        .topbar {
+            height: 58px;
+            background: #ffffff;
+            border-bottom: 1px solid #d6d6d6;
+
+            display: flex;
+            align-items: center;
+
+            padding: 0 28px;
+
+            box-shadow: 0 1px 3px rgba(0, 0, 0, 0.08);
+        }
+
+        .logo {
+            height: 38px;
+            width: auto;
+        }
+
+        /* MAIN */
+
+        .page {
+            min-height: calc(100vh - 58px);
+
             display: flex;
             align-items: center;
             justify-content: center;
 
-            font-family: Arial, Helvetica, sans-serif;
-            background: #f7e8ee;
-            color: #333;
+            padding: 40px 20px;
         }
 
         .maintenance {
-            width: 100%;
-            max-width: 700px;
-            padding: 40px 25px;
+            width: 650px;
+            max-width: 100%;
+
+            background: #ffffff;
+
+            border: 1px solid #d4d4d4;
+            border-radius: 5px;
+
+            box-shadow:
+                0 2px 8px rgba(0, 0, 0, 0.10);
+
+            overflow: hidden;
+        }
+
+        /* HEADER */
+
+        .maintenance-header {
+            background: #fafafa;
+            border-bottom: 1px solid #ddd;
+
+            padding: 25px 30px;
+        }
+
+        .maintenance-header h1 {
+            margin: 0;
+
+            font-size: 27px;
+            font-weight: normal;
+
+            color: #444;
+        }
+
+        .maintenance-header p {
+            margin: 7px 0 0;
+
+            color: #888;
+            font-size: 14px;
+        }
+
+        /* CONTENT */
+
+        .content {
+            padding: 35px 30px 30px;
+
             text-align: center;
         }
 
-        .logo {
-            display: block;
-            width: 360px;
-            max-width: 85%;
-            height: auto;
-            margin: 0 auto 35px;
+        .icon {
+            width: 85px;
+            height: 85px;
+
+            margin: 0 auto 20px;
+
+            border-radius: 50%;
+
+            background: #f5f5f5;
+
+            border: 1px solid #ddd;
+
+            display: flex;
+            align-items: center;
+            justify-content: center;
+
+            font-size: 42px;
         }
 
-        h1 {
-            margin: 0;
-            font-size: 32px;
-            font-weight: 700;
+        .content h2 {
+            margin: 0 0 12px;
+
+            font-size: 23px;
+            font-weight: normal;
+
+            color: #444;
         }
 
-        .line {
-            width: 80px;
-            height: 3px;
-            margin: 22px auto;
-            background: #d88fa3;
-            border-radius: 10px;
-        }
+        .content p {
+            max-width: 500px;
 
-        p {
-            margin: 0;
-            font-size: 17px;
+            margin: 0 auto 12px;
+
+            line-height: 1.6;
+
+            font-size: 15px;
+
             color: #666;
         }
 
+        /* STATUS */
+
+        .status {
+            display: inline-flex;
+            align-items: center;
+            gap: 8px;
+
+            margin-top: 12px;
+
+            padding: 8px 13px;
+
+            border-radius: 4px;
+
+            background: #f7f7f7;
+
+            border: 1px solid #ddd;
+
+            font-size: 13px;
+
+            color: #777;
+        }
+
+        .status-dot {
+            width: 9px;
+            height: 9px;
+
+            border-radius: 50%;
+
+            background: #e0a000;
+        }
+
+        /* DISCORD */
+
         .discord {
             display: inline-block;
-            margin-top: 22px;
-            padding: 8px 16px;
-            border: 1px solid #d88fa3;
-            border-radius: 6px;
-            color: #b86f84;
+
+            margin-top: 25px;
+
+            padding: 11px 22px;
+
+            background: #ff69b4;
+
+            color: white;
+
             text-decoration: none;
+
+            border-radius: 4px;
+
             font-size: 14px;
-            transition: 0.2s;
+            font-weight: bold;
+
+            transition: background 0.15s ease;
         }
 
         .discord:hover {
-            background: #d88fa3;
-            color: white;
+            background: #ff4da6;
+        }
+
+        /* FOOTER */
+
+        .footer {
+            border-top: 1px solid #ddd;
+
+            background: #fafafa;
+
+            padding: 15px 25px;
+
+            text-align: center;
+
+            font-size: 12px;
+
+            color: #999;
         }
 
         @media (max-width: 600px) {
-            .logo {
-                width: 280px;
+
+            .topbar {
+                padding: 0 15px;
             }
 
-            h1 {
-                font-size: 25px;
+            .maintenance-header {
+                padding: 20px;
             }
 
-            p {
-                font-size: 15px;
+            .content {
+                padding: 30px 20px;
+            }
+
+            .maintenance-header h1 {
+                font-size: 23px;
             }
         }
     </style>
 </head>
 
 <body>
-    <main class="maintenance">
+
+    <header class="topbar">
 
         <img
-            class="logo"
-            src="/images/hoshinofulllogotransparent.ico"
+            src="images/hoshinofulllogotransparent.ico"
             alt="Hoshino"
+            class="logo"
         >
 
-        <h1>Hoshino is under maintenance</h1>
+    </header>
 
-        <div class="line"></div>
 
-        <p>We're working on something awesome. Please check back soon.</p>
+    <main class="page">
 
-        <a
-            class="discord"
-            href="https://discord.gg/KHVDj3VUCj"
-            target="_blank"
-            rel="noopener noreferrer"
-        >
-            Join our Discord
-        </a>
+        <section class="maintenance">
+
+            <div class="maintenance-header">
+
+                <h1>Hoshino</h1>
+
+                <p>
+                    We're working on something new.
+                </p>
+
+            </div>
+
+
+            <div class="content">
+
+                <div class="icon">
+                    🔧
+                </div>
+
+                <h2>
+                    Hoshino is currently under maintenance
+                </h2>
+
+                <p>
+                    We're currently working on Hoshino and getting
+                    everything ready for launch.
+                </p>
+
+                <p>
+                    Please check back later. We'll see you soon!
+                </p>
+
+
+                <div class="status">
+
+                    <span class="status-dot"></span>
+
+                    Maintenance in progress
+
+                </div>
+
+
+                <br>
+
+                <a
+                    class="discord"
+                    href="https://discord.gg/KHVDj3VUCj"
+                    target="_blank"
+                    rel="noopener noreferrer"
+                >
+                    Join the Hoshino Discord
+                </a>
+
+            </div>
+
+
+            <div class="footer">
+
+                Hoshino • 2016 Revival Project
+
+            </div>
+
+        </section>
 
     </main>
+
 </body>
 </html>
-
