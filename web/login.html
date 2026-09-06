@@ -4,671 +4,302 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
 
-    <title>Hoshino</title>
+    <title>Hoshino - Login</title>
 
-    <link rel="icon" href="images/hoshinologotransparent.ico">
+    <link rel="icon" href="../images/hoshinologotransparent.ico">
 
     <style>
         * {
             box-sizing: border-box;
         }
 
-        html,
         body {
             margin: 0;
-            min-height: 100%;
-        }
-
-        body {
-            font-family: Arial, Helvetica, sans-serif;
+            min-height: 100vh;
+            display: flex;
+            justify-content: center;
+            align-items: center;
             background: #f2f2f2;
-            color: #333;
+            font-family: Arial, Helvetica, sans-serif;
+            color: #222;
         }
 
-        .topbar {
-            height: 62px;
-            background: #fff;
-            border-bottom: 1px solid #d8d8d8;
-
-            display: flex;
-            align-items: center;
-
-            padding: 0 28px;
-
-            box-shadow: 0 1px 4px rgba(0,0,0,.08);
-        }
-
-        .logo-link {
-            display: flex;
-            align-items: center;
-            text-decoration: none;
-            cursor: pointer;
+        .box {
+            width: min(90%, 420px);
+            background: white;
+            border: 2px solid #222;
+            padding: 35px;
+            box-shadow: 8px 8px 0 #222;
         }
 
         .logo {
-            height: 42px;
-            width: auto;
             display: block;
-
-            transition:
-                opacity .15s ease,
-                transform .15s ease;
+            width: 80px;
+            height: 80px;
+            object-fit: contain;
+            margin: 0 auto 20px;
         }
 
-        .logo-link:hover .logo {
-            opacity: .85;
-            transform: scale(1.03);
-        }
-
-        .page {
-            min-height: calc(100vh - 62px);
-
-            display: flex;
-            align-items: center;
-            justify-content: center;
-
-            padding: 40px 20px;
-        }
-
-        .panel {
-            width: 410px;
-            max-width: 100%;
-
-            background: white;
-
-            border: 1px solid #d5d5d5;
-            border-radius: 6px;
-
-            box-shadow: 0 3px 12px rgba(0,0,0,.10);
-
-            overflow: hidden;
-        }
-
-        .panel-header {
-            padding: 25px 30px;
-
-            background: #fafafa;
-
-            border-bottom: 1px solid #ddd;
-
+        h1 {
             text-align: center;
-        }
-
-        .panel-header h1 {
-            margin: 0;
-
-            font-size: 26px;
-            font-weight: normal;
-
-            color: #444;
-        }
-
-        .panel-header p {
-            margin: 8px 0 0;
-
-            color: #888;
-            font-size: 14px;
-        }
-
-        .panel-body {
-            padding: 30px;
+            margin: 0 0 25px;
         }
 
         label {
             display: block;
-
-            margin: 0 0 6px;
-
-            font-size: 13px;
+            margin: 15px 0 7px;
             font-weight: bold;
-
-            color: #555;
         }
 
         input {
             width: 100%;
-
             padding: 12px;
-
-            margin-bottom: 17px;
-
-            border: 1px solid #ccc;
-            border-radius: 4px;
-
-            background: white;
-
+            border: 2px solid #222;
             font-size: 15px;
-
-            outline: none;
-
-            transition:
-                border-color .15s ease,
-                box-shadow .15s ease;
         }
 
-        input:focus {
-            border-color: #ff69b4;
-
-            box-shadow:
-                0 0 0 2px rgba(255,105,180,.12);
-        }
-
-        .login-button {
+        button {
             width: 100%;
-
+            margin-top: 22px;
             padding: 12px;
-
-            border: 0;
-            border-radius: 4px;
-
-            background: #ff69b4;
-
+            border: 2px solid #222;
+            background: #222;
             color: white;
-
-            font-size: 15px;
             font-weight: bold;
-
             cursor: pointer;
-
-            transition: background .15s ease;
         }
 
-        .login-button:hover {
-            background: #ff4da6;
+        button:hover {
+            background: white;
+            color: #222;
         }
 
-        .login-button:disabled {
-            opacity: .6;
+        button:disabled {
+            opacity: 0.6;
             cursor: wait;
         }
 
-        #message {
-            min-height: 20px;
-
+        .message {
             margin-top: 15px;
-
             text-align: center;
-
-            font-size: 13px;
+            font-weight: bold;
         }
 
-        .server-status {
+        .signup {
             margin-top: 20px;
-
             text-align: center;
-
-            font-size: 12px;
-
-            color: #999;
         }
 
-        .status-dot {
-            display: inline-block;
-
-            width: 8px;
-            height: 8px;
-
-            margin-right: 5px;
-
-            border-radius: 50%;
-
-            background: #aaa;
-        }
-
-        .footer {
-            padding: 15px;
-
-            text-align: center;
-
-            font-size: 12px;
-
-            color: #999;
-
-            border-top: 1px solid #ddd;
-
-            background: #fafafa;
-        }
-
-        @media (max-width: 500px) {
-            .topbar {
-                padding: 0 15px;
-            }
-
-            .panel-body {
-                padding: 25px 20px;
-            }
+        .signup a {
+            color: #222;
+            font-weight: bold;
         }
     </style>
 </head>
 
 <body>
 
-<header class="topbar">
+<div class="box">
 
-    <a
-        class="logo-link"
-        href="welcome.html"
-        title="Hoshino Home"
-        aria-label="Hoshino Home"
+    <img
+        src="../images/hoshinofulllogotransparent.ico"
+        class="logo"
+        alt="Hoshino"
     >
-        <img
-            class="logo"
-            src="images/hoshinofulllogotransparent.ico"
-            alt="Hoshino"
+
+    <h1>Sign In</h1>
+
+    <form id="loginForm">
+
+        <label for="username">
+            Username
+        </label>
+
+        <input
+            id="username"
+            name="username"
+            type="text"
+            autocomplete="username"
+            required
         >
-    </a>
 
-</header>
+        <label for="password">
+            Password
+        </label>
 
+        <input
+            id="password"
+            name="password"
+            type="password"
+            autocomplete="current-password"
+            required
+        >
 
-<main class="page">
+        <button
+            id="loginButton"
+            type="submit"
+        >
+            Sign In
+        </button>
 
-    <section class="panel">
+    </form>
 
-        <div class="panel-header">
+    <div
+        id="message"
+        class="message"
+    ></div>
 
-            <h1>Welcome to Hoshino</h1>
+    <div class="signup">
+        Don't have an account?
+        <a href="signup.html">Sign Up</a>
+    </div>
 
-            <p>
-                Sign in to your Hoshino account.
-            </p>
-
-        </div>
-
-
-        <div class="panel-body">
-
-            <form id="loginForm">
-
-                <label for="username">
-                    Username
-                </label>
-
-                <input
-                    id="username"
-                    type="text"
-                    autocomplete="username"
-                    placeholder="Enter your username"
-                    required
-                >
-
-
-                <label for="password">
-                    Password
-                </label>
-
-                <input
-                    id="password"
-                    type="password"
-                    autocomplete="current-password"
-                    placeholder="Enter your password"
-                    required
-                >
-
-
-                <button
-                    id="loginButton"
-                    class="login-button"
-                    type="submit"
-                >
-                    Log In
-                </button>
-
-            </form>
-
-
-            <div id="message"></div>
-
-
-            <div class="server-status">
-
-                <span
-                    id="statusDot"
-                    class="status-dot"
-                ></span>
-
-                <span id="serverStatus">
-                    Checking Hoshino server...
-                </span>
-
-            </div>
-
-        </div>
-
-
-        <div class="footer">
-            Hoshino • 2016 Revival Project
-        </div>
-
-    </section>
-
-</main>
-
+</div>
 
 <script>
 
-/* =========================================================
-   HOSHINO API
-========================================================= */
-
-/*
-    LOCAL DEVELOPMENT:
-
-    http://localhost:3000
-
-    If localhost doesn't work on your machine,
-    change this to:
-
-    http://127.0.0.1:3000
-*/
-
 const API = "http://localhost:3000";
-
-
-/* =========================================================
-   ELEMENTS
-========================================================= */
 
 const form =
     document.getElementById("loginForm");
 
-const loginButton =
+const button =
     document.getElementById("loginButton");
 
 const message =
     document.getElementById("message");
 
-const serverStatus =
-    document.getElementById("serverStatus");
 
-const statusDot =
-    document.getElementById("statusDot");
+form.addEventListener("submit", async function(event) {
 
+    event.preventDefault();
 
-/* =========================================================
-   API REQUEST HELPER
-========================================================= */
+    button.disabled = true;
+    button.textContent = "Signing in...";
+    message.textContent = "";
 
-async function api(path, options = {}) {
+    const username =
+        document.getElementById("username").value.trim();
 
-    const response = await fetch(
-        API + path,
-        {
-            ...options,
-
-            credentials: "include",
-
-            headers: {
-                ...(options.body
-                    ? {
-                        "Content-Type":
-                            "application/json"
-                    }
-                    : {}),
-
-                ...(options.headers || {})
-            }
-        }
-    );
-
-    return response;
-}
-
-
-/* =========================================================
-   SERVER CHECK
-========================================================= */
-
-async function checkServer() {
-
-    serverStatus.textContent =
-        "Checking Hoshino server...";
-
-    statusDot.style.background =
-        "#aaa";
+    const password =
+        document.getElementById("password").value;
 
     try {
 
-        const response =
-            await api("/api/health");
+        const response = await fetch(
+            API + "/api/login",
+            {
+                method: "POST",
 
-        if (!response.ok) {
-            throw new Error(
-                "HTTP " + response.status
-            );
-        }
+                headers: {
+                    "Content-Type": "application/json"
+                },
 
-        const data =
-            await response.json();
+                credentials: "include",
 
-        console.log(
-            "[Hoshino] API health:",
-            data
+                body: JSON.stringify({
+                    username: username,
+                    password: password
+                })
+            }
         );
 
-        serverStatus.textContent =
-            "Hoshino server online";
+        const data = await response.json();
 
-        statusDot.style.background =
-            "#48a868";
+        console.log("Login response:", data);
 
-        return true;
+        if (!response.ok) {
+
+            message.textContent =
+                data.message ||
+                data.error ||
+                "Invalid username or password.";
+
+            button.disabled = false;
+            button.textContent = "Sign In";
+
+            return;
+        }
+
+        /*
+         * Get the username returned by the server.
+         * Supports several common response formats.
+         */
+
+        const loggedInUsername =
+            data.user?.username ||
+            data.username ||
+            username;
+
+        /*
+         * Save the username locally so the homepage
+         * can display it immediately.
+         */
+
+        localStorage.setItem(
+            "hoshino_username",
+            loggedInUsername
+        );
+
+        /*
+         * Also save the returned account ID if available.
+         */
+
+        if (data.user?.id !== undefined) {
+
+            localStorage.setItem(
+                "hoshino_user_id",
+                data.user.id
+            );
+
+        } else if (data.id !== undefined) {
+
+            localStorage.setItem(
+                "hoshino_user_id",
+                data.id
+            );
+
+        }
+
+        /*
+         * Save the role if the server returned one.
+         */
+
+        if (data.user?.role) {
+
+            localStorage.setItem(
+                "hoshino_user_role",
+                data.user.role
+            );
+
+        } else if (data.role) {
+
+            localStorage.setItem(
+                "hoshino_user_role",
+                data.role
+            );
+
+        }
+
+        window.location.replace(
+            "homepage.html"
+        );
 
     } catch (error) {
 
         console.error(
-            "[Hoshino] Server connection failed:",
+            "Login error:",
             error
         );
-
-        serverStatus.textContent =
-            "Unable to connect to Hoshino server";
-
-        statusDot.style.background =
-            "#d9534f";
-
-        return false;
-    }
-}
-
-
-/* =========================================================
-   SESSION CHECK
-========================================================= */
-
-async function checkSession() {
-
-    try {
-
-        const response =
-            await api("/api/me");
-
-        if (!response.ok) {
-            return;
-        }
-
-        const data =
-            await response.json();
-
-        console.log(
-            "[Hoshino] Session:",
-            data
-        );
-
-        if (data.loggedIn === true) {
-
-            window.location.replace(
-                "homepage.html"
-            );
-        }
-
-    } catch (error) {
-
-        console.warn(
-            "[Hoshino] Session check failed:",
-            error
-        );
-    }
-}
-
-
-/* =========================================================
-   LOGIN
-========================================================= */
-
-form.addEventListener(
-    "submit",
-    async function(event) {
-
-        event.preventDefault();
-
-
-        const username =
-            document
-                .getElementById("username")
-                .value
-                .trim();
-
-        const password =
-            document
-                .getElementById("password")
-                .value;
-
-
-        if (!username || !password) {
-
-            message.textContent =
-                "Please enter your username and password.";
-
-            message.style.color =
-                "#d9534f";
-
-            return;
-        }
-
 
         message.textContent =
-            "Logging in...";
+            "Could not connect to Hoshino.";
 
-        message.style.color =
-            "#777";
-
-        loginButton.disabled = true;
-
-
-        try {
-
-            const response =
-                await api(
-                    "/api/login",
-                    {
-                        method: "POST",
-
-                        body: JSON.stringify({
-                            username: username,
-                            password: password
-                        })
-                    }
-                );
-
-
-            let data = {};
-
-            try {
-
-                data =
-                    await response.json();
-
-            } catch {
-
-                data = {};
-            }
-
-
-            console.log(
-                "[Hoshino] Login response:",
-                response.status,
-                data
-            );
-
-
-            if (!response.ok) {
-
-                message.textContent =
-                    data.error ||
-                    "Login failed.";
-
-                message.style.color =
-                    "#d9534f";
-
-                loginButton.disabled =
-                    false;
-
-                return;
-            }
-
-
-            message.textContent =
-                "Login successful!";
-
-            message.style.color =
-                "#48a868";
-
-
-            /*
-                Give the browser a moment to
-                store the session cookie before
-                moving to the homepage.
-            */
-
-            setTimeout(
-                function() {
-
-                    window.location.replace(
-                        "homepage.html"
-                    );
-
-                },
-                150
-            );
-
-        } catch (error) {
-
-            console.error(
-                "[Hoshino] Login connection error:",
-                error
-            );
-
-            message.textContent =
-                "Unable to connect to the Hoshino server.";
-
-            message.style.color =
-                "#d9534f";
-
-            loginButton.disabled =
-                false;
-        }
-
-    }
-);
-
-
-/* =========================================================
-   STARTUP
-========================================================= */
-
-(async function() {
-
-    const online =
-        await checkServer();
-
-    if (online) {
-
-        await checkSession();
-
+        button.disabled = false;
+        button.textContent = "Sign In";
     }
 
-})();
+});
 
 </script>
 
