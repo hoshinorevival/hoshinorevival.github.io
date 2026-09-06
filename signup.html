@@ -8,6 +8,13 @@
 
     <link rel="icon" href="images/hoshinologotransparent.ico">
 
+    <!-- Cloudflare Turnstile -->
+    <script
+        src="https://challenges.cloudflare.com/turnstile/v0/api.js"
+        async
+        defer>
+    </script>
+
     <style>
         * {
             box-sizing: border-box;
@@ -233,6 +240,15 @@
             line-height: 1.4;
         }
 
+        /* TURNSTILE */
+
+        .captcha {
+            display: flex;
+            justify-content: center;
+
+            margin: 20px 0;
+        }
+
         /* BUTTON */
 
         button {
@@ -345,8 +361,8 @@
 
             <div
                 id="message"
-                class="message"
-            ></div>
+                class="message">
+            </div>
 
 
             <!-- SIGN UP FORM -->
@@ -512,12 +528,23 @@
                 </div>
 
 
+                <!-- CLOUDFLARE TURNSTILE -->
+
+                <div class="captcha">
+
+                    <div
+                        class="cf-turnstile"
+                        data-sitekey="0x4AAAAAAEqc0Tuq-hqRSyKI">
+                    </div>
+
+                </div>
+
+
                 <!-- SIGN UP BUTTON -->
 
                 <button
                     id="signupButton"
-                    type="submit"
-                >
+                    type="submit">
                     Sign Up
                 </button>
 
@@ -528,8 +555,7 @@
 
             <a
                 class="login-link"
-                href="login.html"
-            >
+                href="login.html">
                 Already have an account? Log In
             </a>
 
@@ -538,8 +564,7 @@
 
             <div
                 id="serverStatus"
-                class="server-status"
-            >
+                class="server-status">
                 Checking Hoshino server...
             </div>
 
@@ -648,6 +673,23 @@
 
 
         /* ==============================
+           TURNSTILE CHECK
+        ============================== */
+
+        function getTurnstileToken() {
+
+            const response =
+                document.querySelector(
+                    '[name="cf-turnstile-response"]'
+                );
+
+            return response
+                ? response.value
+                : "";
+        }
+
+
+        /* ==============================
            FORM SUBMISSION
         ============================== */
 
@@ -731,10 +773,9 @@
 
                 /* AGE */
 
-                const age =
-                    calculateAge(birthDate);
-
-                if (age < 13) {
+                if (
+                    calculateAge(birthDate) < 13
+                ) {
 
                     showMessage(
                         "You must be at least 13 years old to create a Hoshino account.",
@@ -758,7 +799,23 @@
                 }
 
 
-                /* SEND REQUEST */
+                /* TURNSTILE */
+
+                const turnstileToken =
+                    getTurnstileToken();
+
+                if (!turnstileToken) {
+
+                    showMessage(
+                        "Please complete the Cloudflare verification.",
+                        "error"
+                    );
+
+                    return;
+                }
+
+
+                /* CREATE ACCOUNT */
 
                 signupButton.disabled = true;
 
@@ -790,7 +847,10 @@
                                         password,
 
                                     birthDate:
-                                        birthDate
+                                        birthDate,
+
+                                    turnstileToken:
+                                        turnstileToken
 
                                 })
                             }
