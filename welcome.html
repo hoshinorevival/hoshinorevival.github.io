@@ -3,493 +3,227 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-
-    <title>Hoshino</title>
-    <link rel="icon" type="image/x-icon" href="/images/hoshinologotransparent.ico">
+    <title>Welcome to Hoshino</title>
 
     <style>
         * {
             box-sizing: border-box;
         }
 
-        html,
         body {
             margin: 0;
-            padding: 0;
-            font-family: Arial, Helvetica, sans-serif;
-            background: #fff;
-            color: #393939;
-        }
-
-        /* NAVBAR */
-
-        .navbar {
-            position: fixed;
-            top: 0;
-            left: 0;
-            right: 0;
-            height: 60px;
-            background: #fff;
-            border-bottom: 1px solid #ddd;
-            z-index: 100;
-        }
-
-        .navbar-inner {
-            max-width: 1170px;
-            height: 60px;
-            margin: auto;
+            min-height: 100vh;
+            font-family: Arial, sans-serif;
+            background: #f5f5f7;
+            color: #222;
             display: flex;
             align-items: center;
-            padding: 0 15px;
+            justify-content: center;
         }
 
-        .brand {
-            width: 125px;
-            margin-right: 22px;
+        .container {
+            width: 380px;
+            max-width: 90%;
+            background: white;
+            padding: 35px;
+            border-radius: 18px;
+            box-shadow: 0 10px 35px rgba(0,0,0,0.12);
+            text-align: center;
         }
 
-        .brand img {
-            width: 125px;
-            height: auto;
-            display: block;
+        .logo {
+            width: 90px;
+            height: 90px;
+            object-fit: contain;
+            margin-bottom: 10px;
         }
 
-        .nav-links {
-            display: flex;
-            height: 60px;
-            align-items: center;
-            gap: 25px;
+        h1 {
+            margin: 5px 0;
+            font-size: 32px;
         }
 
-        .nav-links a {
-            color: #555;
-            text-decoration: none;
+        .subtitle {
+            color: #777;
+            margin-bottom: 25px;
+        }
+
+        input {
+            width: 100%;
+            padding: 13px;
+            margin: 7px 0;
+            border: 1px solid #ddd;
+            border-radius: 9px;
             font-size: 15px;
         }
 
-        .nav-links a:hover {
-            color: #e06b91;
-        }
-
-        .login {
-            margin-left: auto;
-            display: flex;
-            align-items: center;
-            gap: 7px;
-        }
-
-        .login input {
-            width: 135px;
-            height: 32px;
-            border: 1px solid #ccc;
-            border-radius: 3px;
-            padding: 0 9px;
-            font-size: 13px;
-        }
-
-        .login button {
-            height: 32px;
-            padding: 0 14px;
-            background: #fff;
-            border: 1px solid #aaa;
-            border-radius: 3px;
-            color: #555;
-            cursor: pointer;
-        }
-
-        .login button:hover {
-            background: #eee;
-        }
-
-        .forgot {
-            font-size: 11px;
-            color: #777;
-            text-decoration: none;
-            margin-left: 5px;
-            white-space: nowrap;
-        }
-
-        /* HERO */
-
-        .hero {
-            min-height: 100vh;
-            padding-top: 60px;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            background: #fff;
-        }
-
-        .hero-inner {
+        button {
             width: 100%;
-            max-width: 1170px;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            padding: 60px 25px;
-            gap: 80px;
-        }
-
-        .hero-logo {
-            width: 500px;
-            max-width: 100%;
-            text-align: center;
-        }
-
-        .hero-logo img {
-            width: 430px;
-            max-width: 90%;
-            height: auto;
-        }
-
-        .signup {
-            width: 360px;
-            max-width: 100%;
-        }
-
-        .signup h2 {
-            text-align: center;
-            font-size: 25px;
-            font-weight: normal;
-            margin: 0 0 25px;
-            color: #444;
-        }
-
-        .signup input {
-            width: 100%;
-            height: 42px;
-            margin-bottom: 12px;
-            border: 1px solid #ccc;
-            border-radius: 3px;
-            padding: 0 12px;
-            font-size: 14px;
-        }
-
-        .signup button {
-            width: 100%;
-            height: 44px;
+            padding: 13px;
+            margin-top: 12px;
             border: 0;
-            border-radius: 3px;
-            background: #e06b91;
+            border-radius: 9px;
+            background: #ff69b4;
             color: white;
             font-size: 16px;
+            font-weight: bold;
             cursor: pointer;
         }
 
-        .signup button:hover {
-            background: #d4577f;
+        button:hover {
+            background: #ff4da6;
         }
 
-        .terms {
-            text-align: center;
-            font-size: 11px;
-            color: #888;
-            line-height: 1.5;
-            margin-top: 13px;
+        #message {
+            margin-top: 15px;
+            min-height: 20px;
+            color: #d33;
         }
 
-        /* ABOUT */
-
-        .section {
-            min-height: 500px;
-            padding: 100px 25px;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            border-top: 1px solid #eee;
-        }
-
-        .section-inner {
-            max-width: 850px;
-            width: 100%;
-            text-align: center;
-        }
-
-        .section h2 {
-            font-size: 32px;
-            font-weight: normal;
-            margin: 0 0 20px;
-        }
-
-        .section p {
-            color: #777;
-            font-size: 16px;
-            line-height: 1.7;
-            margin: auto;
-            max-width: 650px;
-        }
-
-        /* DISCORD */
-
-        .discord {
-            display: inline-block;
-            margin-top: 30px;
-            padding: 10px 22px;
-            border: 1px solid #d88fa3;
-            border-radius: 3px;
-            color: #b86f84;
-            text-decoration: none;
-            font-size: 14px;
-        }
-
-        .discord:hover {
-            background: #d88fa3;
-            color: white;
-        }
-
-        /* FOOTER */
-
-        footer {
-            background: #f4f4f4;
-            border-top: 1px solid #ddd;
-            padding: 35px 20px;
-            text-align: center;
-        }
-
-        .footer-links {
-            display: flex;
-            justify-content: center;
-            flex-wrap: wrap;
-            gap: 25px;
-            margin-bottom: 20px;
-        }
-
-        .footer-links a {
-            color: #777;
-            text-decoration: none;
+        .status {
             font-size: 13px;
-        }
-
-        .footer-links a:hover {
-            color: #e06b91;
-        }
-
-        .copyright {
             color: #999;
-            font-size: 12px;
-        }
-
-        /* MOBILE */
-
-        @media (max-width: 850px) {
-
-            .navbar {
-                height: auto;
-            }
-
-            .navbar-inner {
-                height: auto;
-                min-height: 60px;
-                flex-wrap: wrap;
-                padding: 10px 15px;
-            }
-
-            .nav-links {
-                height: 40px;
-                order: 3;
-                width: 100%;
-                justify-content: center;
-            }
-
-            .login {
-                display: none;
-            }
-
-            .hero {
-                padding-top: 100px;
-            }
-
-            .hero-inner {
-                flex-direction: column;
-                gap: 50px;
-            }
-
-            .hero-logo {
-                width: 100%;
-            }
-
-            .signup {
-                width: 360px;
-            }
+            margin-top: 20px;
         }
     </style>
 </head>
 
 <body>
 
-    <!-- NAVIGATION -->
+<div class="container">
 
-    <nav class="navbar">
+    <img
+        src="images/hoshinofulllogotransparent.ico"
+        class="logo"
+        alt="Hoshino"
+    >
 
-        <div class="navbar-inner">
+    <h1>Welcome to Hoshino</h1>
 
-            <a class="brand" href="#">
-                <img
-                    src="/images/hoshinofulllogotransparent.ico"
-                    alt="Hoshino"
-                >
-            </a>
-
-            <div class="nav-links">
-                <a href="#play">Play</a>
-                <a href="#about">About</a>
-                <a href="#platforms">Platforms</a>
-            </div>
-
-            <form class="login">
-
-                <input
-                    type="text"
-                    placeholder="Username"
-                >
-
-                <input
-                    type="password"
-                    placeholder="Password"
-                >
-
-                <button type="submit">
-                    Log In
-                </button>
-
-                <a class="forgot" href="#">
-                    Forgot Username/Password?
-                </a>
-
-            </form>
-
-        </div>
-
-    </nav>
-
-
-    <!-- MAIN LANDING AREA -->
-
-    <section class="hero" id="play">
-
-        <div class="hero-inner">
-
-            <div class="hero-logo">
-
-                <img
-                    src="/images/hoshinofulllogotransparent.ico"
-                    alt="Hoshino"
-                >
-
-            </div>
-
-
-            <div class="signup">
-
-                <h2>
-                    Sign up and start having fun!
-                </h2>
-
-                <input
-                    type="text"
-                    placeholder="Username"
-                >
-
-                <input
-                    type="password"
-                    placeholder="Password"
-                >
-
-                <input
-                    type="password"
-                    placeholder="Confirm Password"
-                >
-
-                <button type="button">
-                    Sign Up
-                </button>
-
-                <div class="terms">
-                    By signing up, you agree to the Hoshino
-                    Terms of Use and Privacy Policy.
-                </div>
-
-            </div>
-
-        </div>
-
-    </section>
-
-
-    <!-- ABOUT -->
-
-    <section class="section" id="about">
-
-        <div class="section-inner">
-
-            <h2>
-                What is Hoshino?
-            </h2>
-
-            <p>
-                Hoshino is a community-driven Roblox revival
-                inspired by the classic era of Roblox.
-                Discover games, create experiences, customize
-                your avatar, and play with friends.
-            </p>
-
-            <a
-                class="discord"
-                href="https://discord.gg/KHVDj3VUCj"
-                target="_blank"
-                rel="noopener noreferrer"
-            >
-                Join our Discord
-            </a>
-
-        </div>
-
-    </section>
-
-
-    <!-- PLATFORMS -->
-
-    <section class="section" id="platforms">
-
-        <div class="section-inner">
-
-            <h2>
-                Play Hoshino
-            </h2>
-
-            <p>
-                Hoshino is being developed around the classic
-                desktop Roblox experience.
-            </p>
-
-        </div>
-
-    </section>
-
-
-    <!-- FOOTER -->
-
-    <footer>
-
-        <div class="footer-links">
-
-            <a href="#about">About Us</a>
-            <a href="#">Blog</a>
-            <a href="#">Help</a>
-            <a href="#">Terms</a>
-            <a href="#">Privacy</a>
-
-        </div>
-
-        <footer>
-    <div class="footer-links">
-        <a href="#about">About Us</a>
-        <a href="#platforms">Platforms</a>
-        <a href="https://discord.gg/KHVDj3VUCj" target="_blank" rel="noopener noreferrer">Discord</a>
+    <div class="subtitle">
+        Your Hoshino account
     </div>
-</footer>
 
-    </footer>
+    <form id="loginForm">
+
+        <input
+            id="username"
+            type="text"
+            placeholder="Username"
+            required
+            autocomplete="username"
+        >
+
+        <input
+            id="password"
+            type="password"
+            placeholder="Password"
+            required
+            autocomplete="current-password"
+        >
+
+        <button type="submit">
+            Log In
+        </button>
+
+    </form>
+
+    <div id="message"></div>
+
+    <div class="status">
+        Hoshino API connection required
+    </div>
+
+</div>
+
+<script>
+const API = "http://localhost:3000";
+
+const form = document.getElementById("loginForm");
+const message = document.getElementById("message");
+
+// Check whether we're already logged in
+async function checkSession() {
+    try {
+        const response = await fetch(API + "/api/me", {
+            method: "GET",
+            credentials: "include"
+        });
+
+        if (!response.ok) {
+            return;
+        }
+
+        const data = await response.json();
+
+        if (data.loggedIn === true) {
+            window.location.replace("homepage.html");
+        }
+
+    } catch (error) {
+        message.textContent =
+            "Unable to connect to the Hoshino server.";
+    }
+}
+
+form.addEventListener("submit", async (event) => {
+
+    event.preventDefault();
+
+    message.textContent = "Logging in...";
+    message.style.color = "#777";
+
+    const username =
+        document.getElementById("username").value.trim();
+
+    const password =
+        document.getElementById("password").value;
+
+    try {
+
+        const response = await fetch(API + "/api/login", {
+            method: "POST",
+
+            headers: {
+                "Content-Type": "application/json"
+            },
+
+            credentials: "include",
+
+            body: JSON.stringify({
+                username,
+                password
+            })
+        });
+
+        const data = await response.json();
+
+        if (!response.ok) {
+
+            message.style.color = "#d33";
+
+            message.textContent =
+                data.error || "Login failed.";
+
+            return;
+        }
+
+        message.style.color = "#2a9d5b";
+        message.textContent = "Login successful!";
+
+        window.location.replace("homepage.html");
+
+    } catch (error) {
+
+        message.style.color = "#d33";
+
+        message.textContent =
+            "Unable to connect to the Hoshino server.";
+    }
+});
+
+checkSession();
+</script>
 
 </body>
 </html>
