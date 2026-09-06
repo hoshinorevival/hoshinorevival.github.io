@@ -4,20 +4,23 @@ const helmet = require("helmet");
 const Database = require("better-sqlite3");
 const bcrypt = require("bcrypt");
 const session = require("express-session");
+const SqliteStore = require("better-sqlite3-session-store")(session);
 
 const app = express();
 
 const PORT = process.env.PORT || 3000;
-const IS_PRODUCTION = process.env.NODE_ENV === "production";
+
+const IS_PRODUCTION =
+    process.env.NODE_ENV === "production";
 
 const SESSION_SECRET =
     process.env.SESSION_SECRET ||
-    "CHANGE_THIS_TO_A_LONG_RANDOM_SECRET";
+    "HOSHINO-DEVELOPMENT-CHANGE-THIS-SECRET";
 
 
-/* =========================================
+/* =========================================================
    DATABASE
-========================================= */
+========================================================= */
 
 const db = new Database("hoshino.db");
 
@@ -26,9 +29,25 @@ db.pragma("foreign_keys = ON");
 db.pragma("busy_timeout = 5000");
 
 
-/* =========================================
+/* =========================================================
+   SESSION TABLE
+========================================================= */
+
+db.exec(`
+    CREATE TABLE IF NOT EXISTS sessions (
+        sid TEXT PRIMARY KEY,
+        sess TEXT NOT NULL,
+        expired INTEGER NOT NULL
+    );
+
+    CREATE INDEX IF NOT EXISTS IDX_sessions_expired
+    ON sessions(expired);
+`);
+
+
+/* =========================================================
    SECURITY
-========================================= */
+========================================================= */
 
 app.disable("x-powered-by");
 
@@ -52,9 +71,9 @@ app.use(
 );
 
 
-/* =========================================
+/* =========================================================
    CORS
-========================================= */
+========================================================= */
 
 const allowedOrigins = [
     "https://hoshinorevival.github.io"
@@ -64,22 +83,28 @@ app.use(
     cors({
         origin: function (origin, callback) {
 
-            // Allow requests with no Origin
-            // such as local tools/server requests.
             if (!origin) {
                 return callback(null, true);
             }
 
+            const localOrigin =
+                /^https?:\/\/localhost(?::\d+)?$/;
+
+            const localIP =
+                /^https?:\/\/127\.0\.0\.1(?::\d+)?$/;
+
             if (
                 allowedOrigins.includes(origin) ||
-                /^https?:\/\/localhost(?::\d+)?$/.test(origin) ||
-                /^https?:\/\/127\.0\.0\.1(?::\d+)?$/.test(origin)
+                localOrigin.test(origin) ||
+                localIP.test(origin)
             ) {
                 return callback(null, true);
             }
 
-            return callback(
-                new Error("Origin not allowed by CORS.")
+            callback(
+                new Error(
+                    "Origin not allowed."
+                )
             );
         },
 
@@ -88,15 +113,25 @@ app.use(
 );
 
 
-/* =========================================
-   SESSION
-========================================= */
+/* =========================================================
+   PERSISTENT SESSION
+========================================================= */
 
 app.use(
     session({
         name: "hoshino.sid",
 
         secret: SESSION_SECRET,
+
+        store: new SqliteStore({
+            client: db,
+
+            expired: {
+                clear: true,
+                intervalMs:
+                    15 * 60 * 1000
+            }
+        }),
 
         resave: false,
 
@@ -113,28 +148,35 @@ app.use(
                 ? "none"
                 : "lax",
 
-            // 30 days
-            maxAge: 1000 * 60 * 60 * 24 * 30
+            path: "/",
+
+            maxAge:
+                1000 *
+                60 *
+                60 *
+                24 *
+                30
         }
     })
 );
 
 
-/* =========================================
-   REQUEST LOGGER
-========================================= */
+/* =========================================================
+   LOGGER
+========================================================= */
 
 app.use((req, res, next) => {
 
-    const started = Date.now();
+    const start = Date.now();
 
     res.on("finish", () => {
 
-        const duration =
-            Date.now() - started;
+        const time =
+            Date.now() - start;
 
         console.log(
-            `${req.method} ${req.originalUrl} ${res.statusCode} ${duration}ms`
+            `${req.method} ${req.originalUrl} ` +
+            `${res.statusCode} ${time}ms`
         );
     });
 
@@ -142,9 +184,9 @@ app.use((req, res, next) => {
 });
 
 
-/* =========================================
-   HELPERS
-========================================= */
+/* =========================================================
+   AUTH HELPERS
+========================================================= */
 
 function requireAuth(req, res, next) {
 
@@ -154,7 +196,8 @@ function requireAuth(req, res, next) {
     ) {
         return res.status(401).json({
             success: false,
-            message: "You must be signed in."
+            message:
+                "You must be signed in."
         });
     }
 
@@ -170,26 +213,33 @@ function requireOwner(req, res, next) {
     ) {
         return res.status(401).json({
             success: false,
-            message: "You must be signed in."
+            message:
+                "You must be signed in."
         });
     }
 
     const user =
-        db.prepare(
-            `
-            SELECT id, username, role
+        db.prepare(`
+            SELECT
+                id,
+                username,
+                role
             FROM users
             WHERE id = ?
-            `
-        ).get(req.session.userId);
+        `).get(
+            req.session.userId
+        );
 
     if (!user) {
 
-        req.session.destroy(() => {});
+        req.session.destroy(
+            () => {}
+        );
 
         return res.status(401).json({
             success: false,
-            message: "Invalid session."
+            message:
+                "Invalid session."
         });
     }
 
@@ -197,7 +247,8 @@ function requireOwner(req, res, next) {
 
         return res.status(403).json({
             success: false,
-            message: "Owner access required."
+            message:
+                "Owner access required."
         });
     }
 
@@ -207,37 +258,39 @@ function requireOwner(req, res, next) {
 }
 
 
-/* =========================================
+/* =========================================================
    ROOT
-========================================= */
+========================================================= */
 
 app.get("/", (req, res) => {
 
     res.json({
         name: "Hoshino",
         status: "online",
-        message: "Hoshino API is running."
+        message:
+            "Hoshino API is running."
     });
 });
 
 
-/* =========================================
+/* =========================================================
    HEALTH
-========================================= */
+========================================================= */
 
 app.get("/api/health", (req, res) => {
 
     res.json({
         name: "Hoshino",
         status: "online",
-        message: "Hoshino API is running."
+        message:
+            "Hoshino API is running."
     });
 });
 
 
-/* =========================================
+/* =========================================================
    STATUS
-========================================= */
+========================================================= */
 
 app.get("/api/status", (req, res) => {
 
@@ -249,9 +302,9 @@ app.get("/api/status", (req, res) => {
 });
 
 
-/* =========================================
+/* =========================================================
    REGISTER
-========================================= */
+========================================================= */
 
 app.post("/api/register", async (req, res) => {
 
@@ -270,14 +323,13 @@ app.post("/api/register", async (req, res) => {
         ) {
             return res.status(400).json({
                 success: false,
-                message: "Missing required information."
+                message:
+                    "Missing required information."
             });
         }
 
-
         const cleanUsername =
             username.trim();
-
 
         if (
             !/^[A-Za-z0-9_]{3,20}$/.test(
@@ -291,7 +343,6 @@ app.post("/api/register", async (req, res) => {
             });
         }
 
-
         if (password.length < 6) {
 
             return res.status(400).json({
@@ -301,16 +352,14 @@ app.post("/api/register", async (req, res) => {
             });
         }
 
-
         const existing =
-            db.prepare(
-                `
+            db.prepare(`
                 SELECT id
                 FROM users
                 WHERE username = ?
-                `
-            ).get(cleanUsername);
-
+            `).get(
+                cleanUsername
+            );
 
         if (existing) {
 
@@ -321,17 +370,14 @@ app.post("/api/register", async (req, res) => {
             });
         }
 
-
         const passwordHash =
             await bcrypt.hash(
                 password,
                 12
             );
 
-
         const result =
-            db.prepare(
-                `
+            db.prepare(`
                 INSERT INTO users
                 (
                     username,
@@ -348,24 +394,21 @@ app.post("/api/register", async (req, res) => {
                     'user',
                     datetime('now')
                 )
-                `
-            ).run(
+            `).run(
                 cleanUsername,
                 passwordHash,
                 birthDate
             );
 
-
         return res.status(201).json({
             success: true,
             message:
                 "Account created successfully.",
-            userId: result.lastInsertRowid
+            userId:
+                result.lastInsertRowid
         });
 
-    }
-
-    catch (error) {
+    } catch (error) {
 
         console.error(
             "Registration error:",
@@ -381,9 +424,9 @@ app.post("/api/register", async (req, res) => {
 });
 
 
-/* =========================================
+/* =========================================================
    LOGIN
-========================================= */
+========================================================= */
 
 app.post("/api/login", async (req, res) => {
 
@@ -393,7 +436,6 @@ app.post("/api/login", async (req, res) => {
             username,
             password
         } = req.body;
-
 
         if (
             typeof username !== "string" ||
@@ -406,10 +448,8 @@ app.post("/api/login", async (req, res) => {
             });
         }
 
-
         const user =
-            db.prepare(
-                `
+            db.prepare(`
                 SELECT
                     id,
                     username,
@@ -419,11 +459,9 @@ app.post("/api/login", async (req, res) => {
                     created_at
                 FROM users
                 WHERE username = ?
-                `
-            ).get(
+            `).get(
                 username.trim()
             );
-
 
         if (!user) {
 
@@ -434,15 +472,13 @@ app.post("/api/login", async (req, res) => {
             });
         }
 
-
-        const passwordMatches =
+        const valid =
             await bcrypt.compare(
                 password,
                 user.password_hash
             );
 
-
-        if (!passwordMatches) {
+        if (!valid) {
 
             return res.status(401).json({
                 success: false,
@@ -453,8 +489,8 @@ app.post("/api/login", async (req, res) => {
 
 
         /*
-            Destroy any old session first.
-            This prevents session fixation.
+            Create a completely new session
+            after successful authentication.
         */
 
         req.session.regenerate(
@@ -476,22 +512,12 @@ app.post("/api/login", async (req, res) => {
 
 
                 /*
-                    Store ONLY the user ID
-                    inside the session.
+                    Only store the account ID.
                 */
 
                 req.session.userId =
                     user.id;
 
-
-                req.session.username =
-                    user.username;
-
-
-                /*
-                    Explicitly save the session
-                    before responding.
-                */
 
                 req.session.save(
                     (saveError) => {
@@ -511,7 +537,13 @@ app.post("/api/login", async (req, res) => {
                         }
 
 
-                        return res.json({
+                        console.log(
+                            `User ${user.username} ` +
+                            `logged in. Session saved.`
+                        );
+
+
+                        res.json({
 
                             success: true,
 
@@ -520,27 +552,26 @@ app.post("/api/login", async (req, res) => {
 
                             user: {
                                 id: user.id,
-                                username: user.username,
-                                role: user.role
+                                username:
+                                    user.username,
+                                role:
+                                    user.role
                             }
 
                         });
-
                     }
                 );
             }
         );
 
-    }
-
-    catch (error) {
+    } catch (error) {
 
         console.error(
             "Login error:",
             error
         );
 
-        return res.status(500).json({
+        res.status(500).json({
             success: false,
             message:
                 "Login failed."
@@ -549,9 +580,9 @@ app.post("/api/login", async (req, res) => {
 });
 
 
-/* =========================================
-   CURRENT SESSION
-========================================= */
+/* =========================================================
+   CURRENT USER / SESSION
+========================================================= */
 
 app.get("/api/me", (req, res) => {
 
@@ -566,10 +597,8 @@ app.get("/api/me", (req, res) => {
         });
     }
 
-
     const user =
-        db.prepare(
-            `
+        db.prepare(`
             SELECT
                 id,
                 username,
@@ -578,15 +607,15 @@ app.get("/api/me", (req, res) => {
                 created_at
             FROM users
             WHERE id = ?
-            `
-        ).get(
+        `).get(
             req.session.userId
         );
 
-
     if (!user) {
 
-        req.session.destroy(() => {});
+        req.session.destroy(
+            () => {}
+        );
 
         return res.json({
             loggedIn: false,
@@ -596,30 +625,36 @@ app.get("/api/me", (req, res) => {
 
 
     /*
-        Refresh the session lifetime
-        because rolling=true is enabled.
+        rolling: true means the session
+        lifetime is refreshed when used.
     */
 
     req.session.touch();
 
 
     res.json({
+
         loggedIn: true,
 
         user: {
             id: user.id,
-            username: user.username,
-            role: user.role,
-            birthDate: user.birth_date,
-            createdAt: user.created_at
+            username:
+                user.username,
+            role:
+                user.role,
+            birthDate:
+                user.birth_date,
+            createdAt:
+                user.created_at
         }
+
     });
 });
 
 
-/* =========================================
+/* =========================================================
    LOGOUT
-========================================= */
+========================================================= */
 
 app.post("/api/logout", (req, res) => {
 
@@ -627,10 +662,13 @@ app.post("/api/logout", (req, res) => {
 
         return res.json({
             success: true,
-            message: "Already logged out."
+            message:
+                "Already logged out."
         });
     }
 
+    const sessionID =
+        req.session.id;
 
     req.session.destroy(
         (error) => {
@@ -654,11 +692,22 @@ app.post("/api/logout", (req, res) => {
                 "hoshino.sid",
                 {
                     httpOnly: true,
-                    secure: IS_PRODUCTION,
-                    sameSite: IS_PRODUCTION
-                        ? "none"
-                        : "lax"
+
+                    secure:
+                        IS_PRODUCTION,
+
+                    sameSite:
+                        IS_PRODUCTION
+                            ? "none"
+                            : "lax",
+
+                    path: "/"
                 }
+            );
+
+
+            console.log(
+                `Session ${sessionID} destroyed.`
             );
 
 
@@ -672,9 +721,9 @@ app.post("/api/logout", (req, res) => {
 });
 
 
-/* =========================================
+/* =========================================================
    PROFILE
-========================================= */
+========================================================= */
 
 app.get(
     "/api/profile",
@@ -682,8 +731,7 @@ app.get(
     (req, res) => {
 
         const user =
-            db.prepare(
-                `
+            db.prepare(`
                 SELECT
                     id,
                     username,
@@ -692,11 +740,9 @@ app.get(
                     created_at
                 FROM users
                 WHERE id = ?
-                `
-            ).get(
+            `).get(
                 req.session.userId
             );
-
 
         if (!user) {
 
@@ -707,7 +753,6 @@ app.get(
             });
         }
 
-
         res.json({
             success: true,
             user
@@ -716,9 +761,9 @@ app.get(
 );
 
 
-/* =========================================
-   MY STATS
-========================================= */
+/* =========================================================
+   STATS
+========================================================= */
 
 app.get(
     "/api/my-stats",
@@ -726,39 +771,36 @@ app.get(
     (req, res) => {
 
         const badges =
-            db.prepare(
-                `
+            db.prepare(`
                 SELECT COUNT(*) AS count
                 FROM user_badges
                 WHERE user_id = ?
-                `
-            ).get(
+            `).get(
                 req.session.userId
             );
-
 
         res.json({
             success: true,
 
             stats: {
-                badges: badges.count
+                badges:
+                    badges.count
             }
         });
     }
 );
 
 
-/* =========================================
+/* =========================================================
    BADGES
-========================================= */
+========================================================= */
 
 app.get(
     "/api/badges",
     (req, res) => {
 
         const badges =
-            db.prepare(
-                `
+            db.prepare(`
                 SELECT
                     id,
                     name,
@@ -767,9 +809,7 @@ app.get(
                     created_at
                 FROM badges
                 ORDER BY id ASC
-                `
-            ).all();
-
+            `).all();
 
         res.json({
             success: true,
@@ -779,9 +819,9 @@ app.get(
 );
 
 
-/* =========================================
+/* =========================================================
    MY BADGES
-========================================= */
+========================================================= */
 
 app.get(
     "/api/my-badges",
@@ -789,8 +829,7 @@ app.get(
     (req, res) => {
 
         const badges =
-            db.prepare(
-                `
+            db.prepare(`
                 SELECT
                     b.id,
                     b.name,
@@ -802,11 +841,9 @@ app.get(
                     ON b.id = ub.badge_id
                 WHERE ub.user_id = ?
                 ORDER BY ub.awarded_at ASC
-                `
-            ).all(
+            `).all(
                 req.session.userId
             );
-
 
         res.json({
             success: true,
@@ -816,9 +853,9 @@ app.get(
 );
 
 
-/* =========================================
+/* =========================================================
    USER BADGES
-========================================= */
+========================================================= */
 
 app.get(
     "/api/users/:id/badges",
@@ -826,7 +863,6 @@ app.get(
 
         const userId =
             Number(req.params.id);
-
 
         if (!Number.isInteger(userId)) {
 
@@ -837,10 +873,8 @@ app.get(
             });
         }
 
-
         const badges =
-            db.prepare(
-                `
+            db.prepare(`
                 SELECT
                     b.id,
                     b.name,
@@ -852,9 +886,7 @@ app.get(
                     ON b.id = ub.badge_id
                 WHERE ub.user_id = ?
                 ORDER BY ub.awarded_at ASC
-                `
-            ).all(userId);
-
+            `).all(userId);
 
         res.json({
             success: true,
@@ -864,9 +896,9 @@ app.get(
 );
 
 
-/* =========================================
+/* =========================================================
    CHANGE PASSWORD
-========================================= */
+========================================================= */
 
 app.post(
     "/api/change-password",
@@ -880,7 +912,6 @@ app.post(
                 newPassword
             } = req.body;
 
-
             if (
                 typeof currentPassword !== "string" ||
                 typeof newPassword !== "string"
@@ -892,7 +923,6 @@ app.post(
                 });
             }
 
-
             if (newPassword.length < 6) {
 
                 return res.status(400).json({
@@ -902,20 +932,16 @@ app.post(
                 });
             }
 
-
             const user =
-                db.prepare(
-                    `
+                db.prepare(`
                     SELECT
                         id,
                         password_hash
                     FROM users
                     WHERE id = ?
-                    `
-                ).get(
+                `).get(
                     req.session.userId
                 );
-
 
             if (!user) {
 
@@ -926,13 +952,11 @@ app.post(
                 });
             }
 
-
             const valid =
                 await bcrypt.compare(
                     currentPassword,
                     user.password_hash
                 );
-
 
             if (!valid) {
 
@@ -943,25 +967,20 @@ app.post(
                 });
             }
 
-
             const newHash =
                 await bcrypt.hash(
                     newPassword,
                     12
                 );
 
-
-            db.prepare(
-                `
+            db.prepare(`
                 UPDATE users
                 SET password_hash = ?
                 WHERE id = ?
-                `
-            ).run(
+            `).run(
                 newHash,
                 user.id
             );
-
 
             res.json({
                 success: true,
@@ -969,9 +988,7 @@ app.post(
                     "Password changed successfully."
             });
 
-        }
-
-        catch (error) {
+        } catch (error) {
 
             console.error(
                 "Password change error:",
@@ -988,9 +1005,9 @@ app.post(
 );
 
 
-/* =========================================
-   OWNER - FIND USER
-========================================= */
+/* =========================================================
+   OWNER USER LOOKUP
+========================================================= */
 
 app.get(
     "/api/owner/users/:id",
@@ -999,7 +1016,6 @@ app.get(
 
         const id =
             Number(req.params.id);
-
 
         if (!Number.isInteger(id)) {
 
@@ -1010,10 +1026,8 @@ app.get(
             });
         }
 
-
         const user =
-            db.prepare(
-                `
+            db.prepare(`
                 SELECT
                     id,
                     username,
@@ -1022,9 +1036,7 @@ app.get(
                     created_at
                 FROM users
                 WHERE id = ?
-                `
-            ).get(id);
-
+            `).get(id);
 
         if (!user) {
 
@@ -1035,7 +1047,6 @@ app.get(
             });
         }
 
-
         res.json({
             success: true,
             user
@@ -1044,9 +1055,9 @@ app.get(
 );
 
 
-/* =========================================
-   OWNER - AWARD BADGE
-========================================= */
+/* =========================================================
+   OWNER AWARD BADGE
+========================================================= */
 
 app.post(
     "/api/owner/users/:userId/badges/:badgeId",
@@ -1059,7 +1070,6 @@ app.post(
         const badgeId =
             Number(req.params.badgeId);
 
-
         if (
             !Number.isInteger(userId) ||
             !Number.isInteger(badgeId)
@@ -1071,18 +1081,15 @@ app.post(
             });
         }
 
-
         const user =
             db.prepare(
                 "SELECT id FROM users WHERE id = ?"
             ).get(userId);
 
-
         const badge =
             db.prepare(
                 "SELECT id FROM badges WHERE id = ?"
             ).get(badgeId);
-
 
         if (!user || !badge) {
 
@@ -1093,9 +1100,7 @@ app.post(
             });
         }
 
-
-        db.prepare(
-            `
+        db.prepare(`
             INSERT OR IGNORE INTO user_badges
             (
                 user_id,
@@ -1108,12 +1113,10 @@ app.post(
                 ?,
                 datetime('now')
             )
-            `
-        ).run(
+        `).run(
             userId,
             badgeId
         );
-
 
         res.json({
             success: true,
@@ -1124,9 +1127,9 @@ app.post(
 );
 
 
-/* =========================================
-   OWNER - REMOVE BADGE
-========================================= */
+/* =========================================================
+   OWNER REMOVE BADGE
+========================================================= */
 
 app.delete(
     "/api/owner/users/:userId/badges/:badgeId",
@@ -1139,7 +1142,6 @@ app.delete(
         const badgeId =
             Number(req.params.badgeId);
 
-
         if (
             !Number.isInteger(userId) ||
             !Number.isInteger(badgeId)
@@ -1151,18 +1153,14 @@ app.delete(
             });
         }
 
-
-        db.prepare(
-            `
+        db.prepare(`
             DELETE FROM user_badges
             WHERE user_id = ?
             AND badge_id = ?
-            `
-        ).run(
+        `).run(
             userId,
             badgeId
         );
-
 
         res.json({
             success: true,
@@ -1173,9 +1171,9 @@ app.delete(
 );
 
 
-/* =========================================
-   404
-========================================= */
+/* =========================================================
+   API 404
+========================================================= */
 
 app.use(
     (req, res) => {
@@ -1189,9 +1187,9 @@ app.use(
 );
 
 
-/* =========================================
+/* =========================================================
    ERROR HANDLER
-========================================= */
+========================================================= */
 
 app.use(
     (error, req, res, next) => {
@@ -1201,11 +1199,9 @@ app.use(
             error
         );
 
-
         if (res.headersSent) {
             return next(error);
         }
-
 
         res.status(500).json({
             success: false,
@@ -1216,9 +1212,9 @@ app.use(
 );
 
 
-/* =========================================
-   START SERVER
-========================================= */
+/* =========================================================
+   START
+========================================================= */
 
 const server =
     app.listen(
@@ -1226,22 +1222,28 @@ const server =
         "0.0.0.0",
         () => {
 
+            console.log("");
             console.log(
                 "================================"
             );
-
             console.log(
-                "       HOSHINO API SERVER"
+                "        HOSHINO API"
             );
-
             console.log(
                 "================================"
             );
-
             console.log(
                 `API: http://localhost:${PORT}`
             );
-
+            console.log(
+                "Database: hoshino.db"
+            );
+            console.log(
+                "Sessions: SQLite"
+            );
+            console.log(
+                "Session lifetime: 30 days"
+            );
             console.log(
                 `Environment: ${
                     IS_PRODUCTION
@@ -1249,28 +1251,23 @@ const server =
                         : "development"
                 }`
             );
-
-            console.log(
-                "Session persistence: 30 days"
-            );
-
             console.log(
                 "================================"
             );
+            console.log("");
         }
     );
 
 
-/* =========================================
-   GRACEFUL SHUTDOWN
-========================================= */
+/* =========================================================
+   SHUTDOWN
+========================================================= */
 
 function shutdown(signal) {
 
     console.log(
-        `${signal} received. Shutting down...`
+        `${signal} received.`
     );
-
 
     server.close(() => {
 
