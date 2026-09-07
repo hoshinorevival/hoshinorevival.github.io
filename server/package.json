@@ -1,0 +1,9 @@
+{
+  "name": "hoshino-server",
+  "version": "0.1.0",
+  "description": "HOSHINO 2016 Revival Server",
+  "main": "server.js",
+  "scripts": {
+    "start": "node server.js"
+  }
+}
