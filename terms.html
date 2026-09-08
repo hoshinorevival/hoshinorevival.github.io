@@ -1,4 +1,3 @@
-```html
 <!DOCTYPE html>
 <html lang="en">
 <head>
@@ -8,6 +7,11 @@
     <title>Terms of Use - HOSHINO</title>
 
     <style>
+        /* =========================================================
+           HOSHINO TERMS OF USE
+           Classic 2016-inspired interface
+           ========================================================= */
+
         * {
             box-sizing: border-box;
         }
@@ -18,891 +22,1824 @@
 
         body {
             margin: 0;
-            background: #f3f3f3;
+
+            font-family:
+                Arial,
+                Helvetica,
+                sans-serif;
+
             color: #333;
-            font-family: Arial, Helvetica, sans-serif;
+
             line-height: 1.65;
+
+            background-color: #e9e9e9;
+
+            background-image:
+                url("e942d5c326e104bddf1d2c8ce3e0e9a7.png");
+
+            background-size: cover;
+            background-position: center top;
+            background-repeat: no-repeat;
+            background-attachment: fixed;
+
+            overflow-x: hidden;
         }
 
+
+        /* =========================================================
+           FIXED TOP NAVIGATION
+           ========================================================= */
+
         .topbar {
-            height: 52px;
-            background: #fff;
-            border-bottom: 1px solid #d5d5d5;
+            position: fixed;
+
+            top: 0;
+            left: 0;
+            right: 0;
+
+            width: 100%;
+            height: 50px;
+
+            background: #0877bd;
+
+            border-bottom: 1px solid #005f9e;
+
             display: flex;
             align-items: center;
-            padding: 0 28px;
-            position: sticky;
-            top: 0;
-            z-index: 100;
-            box-shadow: 0 1px 3px rgba(0,0,0,0.08);
+
+            padding: 0 18px;
+
+            box-shadow:
+                0 2px 5px rgba(0, 0, 0, 0.28);
+
+            z-index: 1000;
+
+            animation: navbarDrop 0.45s ease-out;
+        }
+
+
+        @keyframes navbarDrop {
+
+            from {
+                transform: translateY(-100%);
+                opacity: 0;
+            }
+
+            to {
+                transform: translateY(0);
+                opacity: 1;
+            }
+
+        }
+
+
+        /* =========================================================
+           LOGO
+           ========================================================= */
+
+        .topbar-logo {
+            height: 50px;
+
+            display: flex;
+            align-items: center;
+
+            margin-right: 25px;
+        }
+
+        .topbar-logo a {
+            height: 50px;
+
+            display: flex;
+            align-items: center;
         }
 
         .topbar-logo img {
             width: 105px;
-            max-height: 40px;
+
+            max-height: 38px;
+
+            height: auto;
+
             object-fit: contain;
+
             display: block;
+
+            transition:
+                transform 0.15s ease,
+                opacity 0.15s ease;
         }
 
-        .topbar-logo {
-            margin-right: 35px;
+        .topbar-logo img:hover {
+            transform: scale(1.04);
+
+            opacity: 0.92;
         }
+
+
+        /* =========================================================
+           NAVIGATION
+           ========================================================= */
 
         .nav {
             display: flex;
-            height: 100%;
+
+            height: 50px;
         }
 
         .nav a {
+            height: 50px;
+
             display: flex;
             align-items: center;
-            padding: 0 18px;
-            color: #555;
+
+            padding: 0 17px;
+
+            color: #ffffff;
+
             text-decoration: none;
-            font-size: 14px;
+
+            font-size: 13px;
+
+            border-left: 1px solid transparent;
+            border-right: 1px solid transparent;
+
+            transition:
+                background 0.12s ease,
+                padding 0.12s ease;
         }
 
         .nav a:hover {
-            background: #f2f2f2;
-            color: #222;
+            background: #066aa9;
         }
 
-        .layout {
-            max-width: 1250px;
-            margin: 0 auto;
-            display: grid;
-            grid-template-columns: 255px 1fr;
-            gap: 25px;
-            padding: 35px 20px 70px;
+        .nav a:active {
+            background: #005d99;
         }
+
+        .nav a.active {
+            background: #005f9f;
+
+            box-shadow:
+                inset 0 -3px 0 rgba(255, 255, 255, 0.85);
+        }
+
+
+        /* =========================================================
+           PAGE LAYOUT
+           ========================================================= */
+
+        .layout {
+            position: relative;
+
+            max-width: 1250px;
+
+            margin: 0 auto;
+
+            display: grid;
+
+            grid-template-columns: 255px 1fr;
+
+            gap: 22px;
+
+            padding:
+                82px
+                20px
+                110px;
+        }
+
+
+        /* =========================================================
+           SIDEBAR
+           ========================================================= */
 
         .sidebar {
             position: sticky;
-            top: 82px;
+
+            top: 70px;
+
             align-self: start;
-            background: #fff;
-            border: 1px solid #d5d5d5;
-            box-shadow: 0 1px 4px rgba(0,0,0,0.08);
-            max-height: calc(100vh - 105px);
+
+            max-height:
+                calc(100vh - 90px);
+
             overflow-y: auto;
+
+            background: rgba(255, 255, 255, 0.97);
+
+            border:
+                1px solid #c7c7c7;
+
+            box-shadow:
+                0 2px 7px rgba(0, 0, 0, 0.22);
+
+            animation:
+                sidebarAppear 0.55s ease-out;
         }
 
-        .sidebar-title {
-            padding: 18px 18px 14px;
-            font-size: 18px;
-            font-weight: bold;
-            border-bottom: 1px solid #ddd;
+
+        @keyframes sidebarAppear {
+
+            from {
+                opacity: 0;
+
+                transform:
+                    translateX(-15px);
+            }
+
+            to {
+                opacity: 1;
+
+                transform:
+                    translateX(0);
+            }
+
         }
+
+
+        /* SIDEBAR SCROLLBAR */
+
+        .sidebar::-webkit-scrollbar {
+            width: 7px;
+        }
+
+        .sidebar::-webkit-scrollbar-track {
+            background: #eeeeee;
+        }
+
+        .sidebar::-webkit-scrollbar-thumb {
+            background: #bcbcbc;
+        }
+
+        .sidebar::-webkit-scrollbar-thumb:hover {
+            background: #999999;
+        }
+
+
+        .sidebar-title {
+            padding:
+                17px
+                17px
+                14px;
+
+            font-size: 18px;
+
+            font-weight: bold;
+
+            color: #333;
+
+            background:
+                linear-gradient(
+                    to bottom,
+                    #ffffff,
+                    #eeeeee
+                );
+
+            border-bottom:
+                1px solid #cccccc;
+
+            position: sticky;
+
+            top: 0;
+
+            z-index: 2;
+        }
+
+
+        .sidebar-subtitle {
+            padding:
+                8px
+                17px;
+
+            background: #0877bd;
+
+            color: #ffffff;
+
+            font-size: 11px;
+
+            text-transform: uppercase;
+
+            letter-spacing: 0.4px;
+
+            border-bottom:
+                1px solid #005f9e;
+        }
+
 
         .sidebar a {
             display: block;
-            padding: 9px 18px;
+
+            padding:
+                8px
+                17px;
+
             color: #555;
+
             text-decoration: none;
-            font-size: 13px;
-            border-bottom: 1px solid #f0f0f0;
+
+            font-size: 12px;
+
+            border-bottom:
+                1px solid #eeeeee;
+
+            position: relative;
+
+            transition:
+                background 0.12s ease,
+                color 0.12s ease,
+                padding-left 0.12s ease;
         }
+
+
+        .sidebar a::before {
+            content: "";
+
+            position: absolute;
+
+            left: 0;
+
+            top: 0;
+
+            bottom: 0;
+
+            width: 3px;
+
+            background: #0877bd;
+
+            transform:
+                scaleY(0);
+
+            transition:
+                transform 0.12s ease;
+        }
+
 
         .sidebar a:hover {
-            background: #f2f2f2;
-            color: #111;
+            background: #f0f7fb;
+
+            color: #0877bd;
+
+            padding-left: 21px;
         }
+
+
+        .sidebar a:hover::before {
+            transform:
+                scaleY(1);
+        }
+
+
+        /* =========================================================
+           DOCUMENT
+           ========================================================= */
 
         .document {
-            background: #fff;
-            border: 1px solid #d5d5d5;
-            box-shadow: 0 1px 5px rgba(0,0,0,0.08);
-            padding: 50px 65px;
+            background:
+                rgba(255, 255, 255, 0.97);
+
+            border:
+                1px solid #c7c7c7;
+
+            box-shadow:
+                0 2px 10px rgba(0, 0, 0, 0.25);
+
+            padding:
+                50px
+                65px;
+
+            animation:
+                documentAppear 0.55s ease-out;
         }
 
-        .document-header {
-            border-bottom: 1px solid #ddd;
-            padding-bottom: 30px;
-            margin-bottom: 35px;
+
+        @keyframes documentAppear {
+
+            from {
+                opacity: 0;
+
+                transform:
+                    translateY(12px);
+            }
+
+            to {
+                opacity: 1;
+
+                transform:
+                    translateY(0);
+            }
+
         }
+
+
+        /* =========================================================
+           DOCUMENT HEADER
+           ========================================================= */
+
+        .document-header {
+            border-bottom:
+                1px solid #d5d5d5;
+
+            padding-bottom:
+                28px;
+
+            margin-bottom:
+                35px;
+        }
+
 
         .document-header img {
             width: 190px;
+
             max-width: 70%;
+
             height: auto;
-            margin-bottom: 20px;
+
+            display: block;
+
+            margin-bottom:
+                18px;
+
+            transition:
+                transform 0.2s ease;
         }
+
+
+        .document-header img:hover {
+            transform:
+                scale(1.025);
+        }
+
 
         h1 {
             font-size: 34px;
+
             font-weight: normal;
-            margin: 0 0 10px;
+
             color: #222;
+
+            margin:
+                0 0 7px;
         }
 
-        h2 {
-            font-size: 25px;
-            font-weight: normal;
-            margin-top: 55px;
-            margin-bottom: 18px;
-            padding-bottom: 8px;
-            border-bottom: 1px solid #ddd;
-            color: #222;
-            scroll-margin-top: 75px;
-        }
-
-        h3 {
-            font-size: 19px;
-            margin-top: 30px;
-            color: #333;
-            scroll-margin-top: 75px;
-        }
-
-        p {
-            margin: 12px 0;
-        }
-
-        ul,
-        ol {
-            padding-left: 28px;
-        }
-
-        li {
-            margin: 7px 0;
-        }
-
-        .notice {
-            background: #f5f5f5;
-            border: 1px solid #d7d7d7;
-            padding: 18px 20px;
-            margin: 25px 0;
-        }
 
         .date {
             color: #777;
+
             font-size: 13px;
+
+            margin:
+                0;
         }
+
+
+        /* =========================================================
+           NOTICE
+           ========================================================= */
+
+        .notice {
+            position: relative;
+
+            background:
+                #f4f4f4;
+
+            border:
+                1px solid #d2d2d2;
+
+            padding:
+                17px
+                20px;
+
+            margin:
+                25px 0;
+
+            box-shadow:
+                inset 0 1px 0 rgba(255,255,255,0.8);
+
+            transition:
+                border-color 0.15s ease,
+                box-shadow 0.15s ease;
+        }
+
+
+        .notice:hover {
+            border-color:
+                #b8cddd;
+
+            box-shadow:
+                inset 3px 0 0 #0877bd,
+                inset 0 1px 0 rgba(255,255,255,0.8);
+        }
+
+
+        /* =========================================================
+           SECTION HEADINGS
+           ========================================================= */
+
+        h2 {
+            font-size: 25px;
+
+            font-weight: normal;
+
+            color: #222;
+
+            margin:
+                58px 0 17px;
+
+            padding-bottom:
+                9px;
+
+            border-bottom:
+                1px solid #d5d5d5;
+
+            scroll-margin-top:
+                70px;
+
+            position: relative;
+        }
+
+
+        h2::after {
+            content: "";
+
+            display: block;
+
+            width: 55px;
+
+            height: 3px;
+
+            background: #0877bd;
+
+            position: absolute;
+
+            left: 0;
+
+            bottom: -1px;
+        }
+
+
+        h3 {
+            font-size: 19px;
+
+            color: #333;
+
+            margin:
+                30px 0 10px;
+
+            scroll-margin-top:
+                70px;
+        }
+
+
+        p {
+            margin:
+                12px 0;
+        }
+
+
+        ul,
+        ol {
+            padding-left:
+                28px;
+        }
+
+
+        li {
+            margin:
+                7px 0;
+        }
+
 
         .important {
             font-weight: bold;
         }
 
-        .footer {
-            text-align: center;
-            color: #888;
-            font-size: 12px;
-            padding: 25px;
+
+        /* =========================================================
+           LINKS
+           ========================================================= */
+
+        .document a {
+            color: #0877bd;
+
+            transition:
+                color 0.12s ease;
         }
+
+        .document a:hover {
+            color: #00558d;
+        }
+
+
+        /* =========================================================
+           END CARD
+           ========================================================= */
+
+        .end-card {
+            margin-top:
+                55px;
+
+            padding:
+                28px;
+
+            background:
+                linear-gradient(
+                    to bottom,
+                    #f8f8f8,
+                    #eeeeee
+                );
+
+            border:
+                1px solid #cccccc;
+
+            text-align:
+                center;
+
+            box-shadow:
+                0 2px 5px rgba(0,0,0,0.08);
+
+            animation:
+                endCardPulse 4s ease-in-out infinite;
+        }
+
+
+        @keyframes endCardPulse {
+
+            0%,
+            100% {
+                box-shadow:
+                    0 2px 5px rgba(0,0,0,0.08);
+            }
+
+            50% {
+                box-shadow:
+                    0 3px 10px rgba(8,119,189,0.13);
+            }
+
+        }
+
+
+        .end-card strong {
+            font-size:
+                18px;
+        }
+
+
+        /* =========================================================
+           FOOTER
+           ========================================================= */
+
+        .footer {
+            text-align:
+                center;
+
+            color:
+                #ffffff;
+
+            font-size:
+                12px;
+
+            padding:
+                25px
+                15px
+                55px;
+
+            text-shadow:
+                0 1px 3px rgba(0,0,0,0.85);
+
+            position:
+                relative;
+
+            z-index:
+                2;
+        }
+
 
         .footer a {
-            color: #777;
-            text-decoration: none;
-            margin: 0 8px;
+            color:
+                #ffffff;
+
+            text-decoration:
+                none;
+
+            margin:
+                0 8px;
         }
+
 
         .footer a:hover {
-            text-decoration: underline;
+            text-decoration:
+                underline;
         }
+
+
+        /* =========================================================
+           BOTTOM BLACK FADE
+           ========================================================= */
+
+        .bottom-gradient {
+            position:
+                fixed;
+
+            left:
+                0;
+
+            right:
+                0;
+
+            bottom:
+                0;
+
+            height:
+                95px;
+
+            background:
+                linear-gradient(
+                    to bottom,
+                    rgba(0,0,0,0),
+                    rgba(0,0,0,0.58)
+                );
+
+            pointer-events:
+                none;
+
+            z-index:
+                900;
+        }
+
+
+        /* =========================================================
+           BACK TO TOP BUTTON
+           ========================================================= */
+
+        .back-top {
+            position:
+                fixed;
+
+            right:
+                22px;
+
+            bottom:
+                22px;
+
+            z-index:
+                950;
+
+            background:
+                #0877bd;
+
+            color:
+                #ffffff;
+
+            border:
+                1px solid #005f9e;
+
+            text-decoration:
+                none;
+
+            padding:
+                8px 12px;
+
+            font-size:
+                12px;
+
+            box-shadow:
+                0 2px 5px rgba(0,0,0,0.35);
+
+            opacity:
+                0.9;
+
+            transition:
+                transform 0.15s ease,
+                background 0.15s ease;
+        }
+
+
+        .back-top:hover {
+            background:
+                #066aa9;
+
+            transform:
+                translateY(-2px);
+        }
+
+
+        /* =========================================================
+           MOBILE
+           ========================================================= */
 
         @media (max-width: 850px) {
+
             .layout {
-                grid-template-columns: 1fr;
+                grid-template-columns:
+                    1fr;
+
+                padding:
+                    70px
+                    12px
+                    90px;
             }
+
 
             .sidebar {
-                position: relative;
-                top: 0;
-                max-height: none;
+                position:
+                    relative;
+
+                top:
+                    0;
+
+                max-height:
+                    none;
+
+                order:
+                    1;
             }
+
 
             .document {
-                padding: 35px 25px;
+                order:
+                    2;
+
+                padding:
+                    35px 25px;
             }
+
 
             .nav a {
-                padding: 0 8px;
-                font-size: 12px;
+                padding:
+                    0 8px;
+
+                font-size:
+                    12px;
             }
+
 
             .topbar {
-                padding: 0 12px;
+                padding:
+                    0 10px;
             }
 
+
             .topbar-logo {
-                margin-right: 10px;
+                margin-right:
+                    8px;
             }
+
+
+            .topbar-logo img {
+                width:
+                    90px;
+            }
+
         }
+
+
+        @media (max-width: 520px) {
+
+            .topbar-logo img {
+                width:
+                    78px;
+            }
+
+
+            .nav a {
+                padding:
+                    0 5px;
+
+                font-size:
+                    10px;
+            }
+
+
+            .document {
+                padding:
+                    28px 18px;
+            }
+
+
+            h1 {
+                font-size:
+                    28px;
+            }
+
+
+            h2 {
+                font-size:
+                    22px;
+            }
+
+
+            .document-header img {
+                width:
+                    160px;
+            }
+
+
+            .back-top {
+                right:
+                    10px;
+
+                bottom:
+                    12px;
+            }
+
+        }
+
+
+        /* =========================================================
+           REDUCED MOTION
+           ========================================================= */
+
+        @media (prefers-reduced-motion: reduce) {
+
+            html {
+                scroll-behavior:
+                    auto;
+            }
+
+            *,
+            *::before,
+            *::after {
+                animation-duration:
+                    0.01ms !important;
+
+                animation-iteration-count:
+                    1 !important;
+
+                transition-duration:
+                    0.01ms !important;
+            }
+
+        }
+
     </style>
 </head>
 
-<body>
 
-<header class="topbar">
-
-    <div class="topbar-logo">
-        <a href="index.html">
-            <img src="e942d5c326e104bddf1d2c8ce3e0e9a7.png" alt="HOSHINO">
-        </a>
-    </div>
-
-    <nav class="nav">
-        <a href="index.html">Games</a>
-        <a href="index.html">Catalog</a>
-        <a href="index.html">Develop</a>
-        <a href="terms.html">Terms</a>
-    </nav>
-
-</header>
+<body id="top">
 
 
-<div class="layout">
+    <!-- =========================================================
+         FIXED NAVIGATION
+         ========================================================= -->
 
-    <aside class="sidebar">
+    <header class="topbar">
 
-        <div class="sidebar-title">
-            HOSHINO Terms
+        <div class="topbar-logo">
+
+            <a href="index.html">
+
+                <img
+                    src="image_2026-09-08_175006165.png"
+                    alt="HOSHINO"
+                >
+
+            </a>
+
         </div>
 
-        <a href="#introduction">1. Introduction</a>
-        <a href="#acceptance">2. Acceptance of Terms</a>
-        <a href="#eligibility">3. Eligibility</a>
-        <a href="#accounts">4. HOSHINO Accounts</a>
-        <a href="#security">5. Account Security</a>
-        <a href="#conduct">6. User Conduct</a>
-        <a href="#content">7. User Content</a>
-        <a href="#moderation">8. Moderation</a>
-        <a href="#intellectual">9. Intellectual Property</a>
-        <a href="#games">10. Games & Experiences</a>
-        <a href="#developers">11. Developers</a>
-        <a href="#virtual">12. Virtual Items</a>
-        <a href="#purchases">13. Purchases & Payments</a>
-        <a href="#refunds">14. Refunds</a>
-        <a href="#privacy">15. Privacy</a>
-        <a href="#thirdparty">16. Third-Party Services</a>
-        <a href="#availability">17. Service Availability</a>
-        <a href="#termination">18. Suspension & Termination</a>
-        <a href="#disclaimer">19. Disclaimers</a>
-        <a href="#liability">20. Limitation of Liability</a>
-        <a href="#indemnification">21. Indemnification</a>
-        <a href="#changes">22. Changes to HOSHINO</a>
-        <a href="#termchanges">23. Changes to These Terms</a>
-        <a href="#law">24. Governing Law</a>
-        <a href="#contact">25. Contact</a>
-        <a href="#effective">26. Effective Date</a>
 
-    </aside>
+        <nav class="nav">
+
+            <a href="index.html">
+                Games
+            </a>
+
+            <a href="index.html">
+                Catalog
+            </a>
+
+            <a href="index.html">
+                Develop
+            </a>
+
+            <a
+                href="terms.html"
+                class="active"
+            >
+                Terms
+            </a>
+
+        </nav>
+
+    </header>
 
 
-    <main class="document">
 
-        <div class="document-header">
+    <!-- =========================================================
+         DOCUMENT LAYOUT
+         ========================================================= -->
 
-            <img src="e942d5c326e104bddf1d2c8ce3e0e9a7.png" alt="HOSHINO">
+    <div class="layout">
 
-            <h1>Terms of Use</h1>
 
-            <p class="date">
-                Last Updated: September 8, 2026
+        <!-- =====================================================
+             SIDEBAR
+             ===================================================== -->
+
+        <aside class="sidebar">
+
+            <div class="sidebar-title">
+                HOSHINO Terms
+            </div>
+
+            <div class="sidebar-subtitle">
+                Table of Contents
+            </div>
+
+
+            <a href="#introduction">
+                1. Introduction
+            </a>
+
+            <a href="#acceptance">
+                2. Acceptance of Terms
+            </a>
+
+            <a href="#eligibility">
+                3. Eligibility
+            </a>
+
+            <a href="#accounts">
+                4. HOSHINO Accounts
+            </a>
+
+            <a href="#security">
+                5. Account Security
+            </a>
+
+            <a href="#conduct">
+                6. User Conduct
+            </a>
+
+            <a href="#content">
+                7. User Content
+            </a>
+
+            <a href="#moderation">
+                8. Moderation
+            </a>
+
+            <a href="#intellectual">
+                9. Intellectual Property
+            </a>
+
+            <a href="#games">
+                10. Games & Experiences
+            </a>
+
+            <a href="#developers">
+                11. Developers
+            </a>
+
+            <a href="#virtual">
+                12. Virtual Items
+            </a>
+
+            <a href="#purchases">
+                13. Purchases & Payments
+            </a>
+
+            <a href="#refunds">
+                14. Refunds
+            </a>
+
+            <a href="#privacy">
+                15. Privacy
+            </a>
+
+            <a href="#thirdparty">
+                16. Third-Party Services
+            </a>
+
+            <a href="#availability">
+                17. Service Availability
+            </a>
+
+            <a href="#termination">
+                18. Suspension & Termination
+            </a>
+
+            <a href="#disclaimer">
+                19. Disclaimers
+            </a>
+
+            <a href="#liability">
+                20. Limitation of Liability
+            </a>
+
+            <a href="#indemnification">
+                21. Indemnification
+            </a>
+
+            <a href="#changes">
+                22. Changes to HOSHINO
+            </a>
+
+            <a href="#termchanges">
+                23. Changes to These Terms
+            </a>
+
+            <a href="#law">
+                24. Governing Law
+            </a>
+
+            <a href="#contact">
+                25. Contact
+            </a>
+
+            <a href="#effective">
+                26. Effective Date
+            </a>
+
+        </aside>
+
+
+
+        <!-- =====================================================
+             DOCUMENT
+             ===================================================== -->
+
+        <main class="document">
+
+
+            <!-- HEADER -->
+
+            <div class="document-header">
+
+                <img
+                    src="image_2026-09-08_175006165.png"
+                    alt="HOSHINO"
+                >
+
+                <h1>
+                    Terms of Use
+                </h1>
+
+                <p class="date">
+                    Last Updated: September 8, 2026
+                </p>
+
+
+                <div class="notice">
+
+                    Welcome to HOSHINO.
+
+                    These Terms of Use describe the rules,
+                    responsibilities, and conditions that apply when using
+                    the HOSHINO website, services, games, software,
+                    communities, development tools, and related features.
+
+                </div>
+
+            </div>
+
+
+
+            <!-- =================================================
+                 TERMS
+                 ================================================= -->
+
+
+            <h2 id="introduction">
+                1. Introduction
+            </h2>
+
+            <p>
+                HOSHINO is a community-driven project designed to recreate
+                and preserve the general experience and atmosphere of
+                earlier online gaming platforms and their communities.
+            </p>
+
+            <p>
+                These Terms of Use ("Terms") apply to your access to and
+                use of HOSHINO and any related websites, services,
+                applications, software, games, development tools,
+                community spaces, and other features operated as part
+                of HOSHINO.
+            </p>
+
+            <p>
+                HOSHINO may be updated, changed, expanded, reduced,
+                replaced, temporarily unavailable, or discontinued at
+                any time.
+            </p>
+
+            <p>
+                By accessing HOSHINO, you acknowledge that you have read
+                and understood these Terms and agree to follow them.
+            </p>
+
+
+
+            <h2 id="acceptance">
+                2. Acceptance of Terms
+            </h2>
+
+            <p>
+                Your use of HOSHINO constitutes acceptance of these Terms.
+                If you do not agree with these Terms, you should not access
+                or use HOSHINO services.
+            </p>
+
+            <p>
+                These Terms apply whether you access HOSHINO through a
+                computer, mobile device, browser, game client, development
+                tool, API, community platform, or another supported method.
+            </p>
+
+            <p>
+                Additional rules may apply to specific features, events,
+                communities, games, development programs, or services.
+            </p>
+
+
+
+            <h2 id="eligibility">
+                3. Eligibility
+            </h2>
+
+            <p>
+                You are responsible for ensuring that you are legally
+                permitted to use HOSHINO in your location.
+            </p>
+
+            <p>
+                Certain features may have additional age requirements or
+                restrictions. HOSHINO may restrict access to particular
+                features where required by law or where reasonably
+                necessary for safety.
+            </p>
+
+            <p>
+                If you are a minor, you should use HOSHINO with the
+                knowledge and permission of a parent or legal guardian
+                when required by applicable law.
+            </p>
+
+
+
+            <h2 id="accounts">
+                4. HOSHINO Accounts
+            </h2>
+
+            <p>
+                Certain HOSHINO features may require an account.
+            </p>
+
+            <p>
+                When creating an account, you agree to provide information
+                that is reasonably accurate and not intentionally misleading.
+            </p>
+
+            <p>
+                You must not create accounts for the purpose of impersonating
+                another person, organization, developer, moderator, or
+                HOSHINO representative.
+            </p>
+
+
+
+            <h2 id="security">
+                5. Account Security
+            </h2>
+
+            <p>
+                You are responsible for maintaining the security of your
+                account credentials.
+            </p>
+
+            <p>
+                You should not share passwords, authentication tokens,
+                recovery codes, private keys, or other account security
+                information.
+            </p>
+
+            <p>
+                If you believe your account has been compromised, contact
+                HOSHINO through an official support or community channel.
+            </p>
+
+
+
+            <h2 id="conduct">
+                6. User Conduct
+            </h2>
+
+            <p>
+                HOSHINO is intended to be a place where people can play,
+                create, experiment, communicate, and participate in a
+                community. Users are expected to behave responsibly.
+            </p>
+
+            <p>
+                You must not use HOSHINO to:
+            </p>
+
+            <ul>
+                <li>Threaten or harass other users.</li>
+                <li>Intentionally target another person with abusive behavior.</li>
+                <li>Impersonate HOSHINO staff or another individual.</li>
+                <li>Attempt to steal another user's account.</li>
+                <li>Distribute malicious software.</li>
+                <li>Attempt to damage HOSHINO infrastructure.</li>
+                <li>Attempt unauthorized access to systems or accounts.</li>
+                <li>Spam or intentionally disrupt community spaces.</li>
+                <li>Upload illegal content.</li>
+                <li>Use HOSHINO to facilitate criminal activity.</li>
+                <li>Attempt to bypass reasonable security measures.</li>
+                <li>Abuse bugs or vulnerabilities in ways that harm others.</li>
+            </ul>
+
+
+
+            <h3>
+                Respectful Communication
+            </h3>
+
+            <p>
+                Users should communicate with one another in a reasonably
+                respectful manner. HOSHINO may moderate content that creates
+                a serious safety issue, threatens others, or substantially
+                disrupts the community.
+            </p>
+
+
+
+            <h2 id="content">
+                7. User Content
+            </h2>
+
+            <p>
+                "User Content" means content submitted, uploaded, published,
+                created, transmitted, or otherwise made available by users.
+            </p>
+
+            <p>
+                User Content may include usernames, profiles, game creations,
+                models, scripts, images, text, audio, videos, comments,
+                descriptions, and other material.
+            </p>
+
+            <p>
+                You retain ownership of User Content to the extent that you
+                legally own it.
+            </p>
+
+            <p>
+                By submitting User Content to a HOSHINO service, you grant
+                HOSHINO the permissions reasonably necessary to host,
+                display, transmit, process, reproduce, and operate that
+                content as part of the service.
+            </p>
+
+
+
+            <h2 id="moderation">
+                8. Moderation
+            </h2>
+
+            <p>
+                HOSHINO may use human moderation, automated systems,
+                reports, technical controls, or a combination of these
+                methods to protect users and maintain the operation of
+                the platform.
+            </p>
+
+            <p>
+                Moderation actions may include removing content, limiting
+                visibility, restricting features, issuing warnings,
+                suspending accounts, or terminating accounts.
+            </p>
+
+
+
+            <h2 id="intellectual">
+                9. Intellectual Property
+            </h2>
+
+            <p>
+                HOSHINO and its original software, branding, source code,
+                designs, documentation, logos, and other original materials
+                may be protected by intellectual property laws.
+            </p>
+
+            <p>
+                Nothing in these Terms transfers ownership of HOSHINO
+                intellectual property to you.
+            </p>
+
+            <p>
+                Third-party names, trademarks, games, artwork, software,
+                and other materials remain the property of their respective
+                owners.
+            </p>
+
+
+
+            <h2 id="games">
+                10. Games & Experiences
+            </h2>
+
+            <p>
+                HOSHINO may provide games and interactive experiences
+                created by HOSHINO developers or community members.
+            </p>
+
+            <p>
+                Individual games may have their own rules, gameplay systems,
+                content policies, or requirements.
+            </p>
+
+            <p>
+                HOSHINO does not guarantee that every game will remain
+                available permanently.
+            </p>
+
+
+
+            <h2 id="developers">
+                11. Developers
+            </h2>
+
+            <p>
+                Developers may use tools supplied by HOSHINO to create
+                games, experiences, scripts, models, websites, or other
+                projects.
+            </p>
+
+            <p>
+                Developers are responsible for the content and functionality
+                of projects they publish.
+            </p>
+
+            <p>
+                Developers must not intentionally distribute malicious code,
+                credential-stealing software, destructive programs, or tools
+                designed to compromise users.
+            </p>
+
+
+
+            <h2 id="virtual">
+                12. Virtual Items
+            </h2>
+
+            <p>
+                HOSHINO may introduce virtual currencies, virtual items,
+                cosmetic items, badges, points, or other digital features.
+            </p>
+
+            <p>
+                Unless expressly stated otherwise, virtual items do not
+                represent real-world money, property, or ownership.
+            </p>
+
+
+
+            <h2 id="purchases">
+                13. Purchases & Payments
+            </h2>
+
+            <p>
+                If HOSHINO introduces paid features, additional purchase
+                terms may apply.
+            </p>
+
+            <p>
+                Prices, availability, taxes, payment methods, and purchase
+                conditions may vary depending on location and service.
+            </p>
+
+
+
+            <h2 id="refunds">
+                14. Refunds
+            </h2>
+
+            <p>
+                Refund policies may vary depending on the product, payment
+                provider, jurisdiction, and applicable law.
+            </p>
+
+            <p>
+                Where required by applicable law, users retain any mandatory
+                consumer rights relating to refunds or cancellations.
+            </p>
+
+
+
+            <h2 id="privacy">
+                15. Privacy
+            </h2>
+
+            <p>
+                HOSHINO may process information necessary to operate its
+                services, maintain security, prevent abuse, and provide
+                requested features.
+            </p>
+
+            <p>
+                For additional information about privacy, please review
+                the applicable Privacy Policy.
             </p>
 
             <div class="notice">
-                Welcome to HOSHINO. These Terms of Use describe the rules,
-                responsibilities, and conditions that apply when using the
-                HOSHINO website, services, games, software, communities,
-                development tools, and related features.
+
+                <strong>Privacy Policy</strong>
+
+                <p>
+                    For reference, the following link points to the archived
+                    privacy policy you requested:
+                </p>
+
+                <a
+                    href="https://web.archive.org/web/20151227163501/http://www.roblox.com/info/Privacy.aspx"
+                    target="_blank"
+                    rel="noopener noreferrer"
+                >
+                    View Privacy Policy
+                </a>
+
             </div>
 
+
+
+            <h2 id="thirdparty">
+                16. Third-Party Services
+            </h2>
+
+            <p>
+                HOSHINO may link to or integrate with third-party websites,
+                platforms, hosting providers, communication services, APIs,
+                software, or other services.
+            </p>
+
+            <p>
+                Third-party services may have their own terms and privacy
+                policies.
+            </p>
+
+
+
+            <h2 id="availability">
+                17. Service Availability
+            </h2>
+
+            <p>
+                HOSHINO is provided as an evolving project.
+            </p>
+
+            <p>
+                Services may experience downtime because of maintenance,
+                development, hosting problems, software failures, networking
+                problems, security incidents, or other circumstances.
+            </p>
+
+            <p>
+                HOSHINO does not guarantee uninterrupted availability.
+            </p>
+
+
+
+            <h2 id="termination">
+                18. Suspension & Termination
+            </h2>
+
+            <p>
+                HOSHINO may suspend or terminate access where reasonably
+                necessary to enforce these Terms, protect users, protect
+                infrastructure, respond to abuse, or comply with legal
+                obligations.
+            </p>
+
+            <p>
+                Users may stop using HOSHINO at any time.
+            </p>
+
+
+
+            <h2 id="disclaimer">
+                19. Disclaimers
+            </h2>
+
+            <p>
+                To the maximum extent permitted by applicable law, HOSHINO
+                is provided on an "as is" and "as available" basis.
+            </p>
+
+            <p>
+                HOSHINO does not guarantee that the service will always be
+                available, error-free, secure, accurate, or compatible with
+                every device or software environment.
+            </p>
+
+
+
+            <h2 id="liability">
+                20. Limitation of Liability
+            </h2>
+
+            <p>
+                To the maximum extent permitted by applicable law, HOSHINO
+                and individuals contributing to the project will not be
+                liable for indirect, incidental, special, consequential,
+                or similar damages arising from use of the service.
+            </p>
+
+            <p>
+                Nothing in these Terms is intended to exclude liability that
+                cannot legally be excluded or limited.
+            </p>
+
+
+
+            <h2 id="indemnification">
+                21. Indemnification
+            </h2>
+
+            <p>
+                To the extent permitted by applicable law, users agree to
+                reasonably cooperate with HOSHINO in connection with claims
+                arising from their unlawful use of the service or violation
+                of these Terms.
+            </p>
+
+
+
+            <h2 id="changes">
+                22. Changes to HOSHINO
+            </h2>
+
+            <p>
+                HOSHINO is actively developed.
+            </p>
+
+            <p>
+                Features, interfaces, game systems, APIs, websites, account
+                systems, moderation systems, and other components may change
+                over time.
+            </p>
+
+
+
+            <h2 id="termchanges">
+                23. Changes to These Terms
+            </h2>
+
+            <p>
+                These Terms may be updated from time to time.
+            </p>
+
+            <p>
+                When significant changes are made, HOSHINO may provide notice
+                through the website, community channels, or another reasonable
+                method.
+            </p>
+
+
+
+            <h2 id="law">
+                24. Governing Law
+            </h2>
+
+            <p>
+                These Terms are intended to operate subject to applicable
+                laws and regulations.
+            </p>
+
+            <p>
+                If a provision of these Terms is found to be unenforceable,
+                the remaining provisions should continue to operate to the
+                extent permitted by law.
+            </p>
+
+
+
+            <h2 id="contact">
+                25. Contact
+            </h2>
+
+            <p>
+                Questions regarding HOSHINO, these Terms, or operation of
+                the project may be directed through the official HOSHINO
+                community channels.
+            </p>
+
+
+            <div class="notice">
+
+                <strong>
+                    HOSHINO Discord Community
+                </strong>
+
+                <br><br>
+
+                <a
+                    href="https://discord.gg/tFnZjawuYR"
+                    target="_blank"
+                    rel="noopener noreferrer"
+                >
+                    Join the HOSHINO Discord Server
+                </a>
+
+            </div>
+
+
+
+            <h2 id="effective">
+                26. Effective Date
+            </h2>
+
+            <p>
+                These Terms of Use are effective as of
+                September 8, 2026.
+            </p>
+
+            <p>
+                This document may be updated as HOSHINO develops and
+                its services change.
+            </p>
+
+
+
+            <!-- END -->
+
+            <div class="end-card">
+
+                <strong>
+                    End of Terms of Use
+                </strong>
+
+                <p>
+                    Thank you for being part of HOSHINO.
+                </p>
+
+                <p>
+                    HOSHINO is a developing project, and its services
+                    may change substantially over time. Please check
+                    this page periodically for updates.
+                </p>
+
+            </div>
+
+        </main>
+
+    </div>
+
+
+
+    <!-- =========================================================
+         FOOTER
+         ========================================================= -->
+
+    <footer class="footer">
+
+        <div>
+            © 2026 HOSHINO
         </div>
 
+        <div style="margin-top: 10px;">
 
-        <h2 id="introduction">1. Introduction</h2>
-
-        <p>
-            HOSHINO is a community-driven project designed to recreate and
-            preserve the general experience and atmosphere of earlier online
-            gaming platforms and their communities.
-        </p>
-
-        <p>
-            These Terms of Use ("Terms") apply to your access to and use of
-            HOSHINO and any related websites, services, applications,
-            software, games, development tools, community spaces, and other
-            features operated as part of HOSHINO.
-        </p>
-
-        <p>
-            HOSHINO may be updated, changed, expanded, reduced, replaced,
-            temporarily unavailable, or discontinued at any time.
-        </p>
-
-        <p>
-            By accessing HOSHINO, you acknowledge that you have read and
-            understood these Terms and agree to follow them.
-        </p>
-
-
-        <h2 id="acceptance">2. Acceptance of Terms</h2>
-
-        <p>
-            Your use of HOSHINO constitutes acceptance of these Terms.
-            If you do not agree with these Terms, you should not access or
-            use HOSHINO services.
-        </p>
-
-        <p>
-            These Terms apply whether you access HOSHINO through a computer,
-            mobile device, browser, game client, development tool, API,
-            community platform, or another supported method.
-        </p>
-
-        <p>
-            Additional rules may apply to specific features, events,
-            communities, games, development programs, or services.
-        </p>
-
-
-        <h2 id="eligibility">3. Eligibility</h2>
-
-        <p>
-            You are responsible for ensuring that you are legally permitted
-            to use HOSHINO in your location.
-        </p>
-
-        <p>
-            Certain features may have additional age requirements or
-            restrictions. HOSHINO may restrict access to particular features
-            where required by law or where reasonably necessary for safety.
-        </p>
-
-        <p>
-            If you are a minor, you should use HOSHINO with the knowledge and
-            permission of a parent or legal guardian when required by the laws
-            applicable to you.
-        </p>
-
-
-        <h2 id="accounts">4. HOSHINO Accounts</h2>
-
-        <p>
-            Certain HOSHINO features may require an account.
-        </p>
-
-        <p>
-            When creating an account, you agree to provide information that
-            is reasonably accurate and not intentionally misleading.
-        </p>
-
-        <p>
-            You must not create accounts for the purpose of impersonating
-            another person, organization, developer, moderator, or HOSHINO
-            representative.
-        </p>
-
-        <p>
-            You are responsible for activity performed through your account
-            unless you can reasonably demonstrate that the activity occurred
-            without your authorization.
-        </p>
-
-
-        <h2 id="security">5. Account Security</h2>
-
-        <p>
-            You are responsible for maintaining the security of your account
-            credentials.
-        </p>
-
-        <p>
-            You should not share passwords, authentication tokens, recovery
-            codes, private keys, or other account security information.
-        </p>
-
-        <p>
-            If you believe your account has been compromised, you should
-            contact HOSHINO through an available official support channel.
-        </p>
-
-        <p>
-            HOSHINO is not responsible for losses caused by your failure to
-            protect your credentials, except where applicable law provides
-            otherwise.
-        </p>
-
-
-        <h2 id="conduct">6. User Conduct</h2>
-
-        <p>
-            HOSHINO is intended to be a place where people can play,
-            create, experiment, communicate, and participate in a community.
-            Users are expected to behave responsibly.
-        </p>
-
-        <p>You must not use HOSHINO to:</p>
-
-        <ul>
-            <li>Threaten or harass other users.</li>
-            <li>Intentionally target another person with abusive behavior.</li>
-            <li>Impersonate HOSHINO staff or another individual.</li>
-            <li>Attempt to steal another user's account.</li>
-            <li>Distribute malicious software.</li>
-            <li>Attempt to damage HOSHINO infrastructure.</li>
-            <li>Attempt unauthorized access to systems or accounts.</li>
-            <li>Spam or intentionally disrupt community spaces.</li>
-            <li>Upload illegal content.</li>
-            <li>Use HOSHINO to facilitate criminal activity.</li>
-            <li>Attempt to bypass reasonable security measures.</li>
-            <li>Abuse bugs or vulnerabilities in ways that harm other users.</li>
-        </ul>
-
-        <h3>Respectful Communication</h3>
-
-        <p>
-            Users should communicate with one another in a reasonably
-            respectful manner. HOSHINO may moderate content that creates a
-            serious safety issue, threatens others, or substantially disrupts
-            the community.
-        </p>
-
-
-        <h2 id="content">7. User Content</h2>
-
-        <p>
-            "User Content" means content submitted, uploaded, published,
-            created, transmitted, or otherwise made available by users.
-        </p>
-
-        <p>
-            User Content may include usernames, profiles, game creations,
-            models, scripts, images, text, audio, videos, comments,
-            descriptions, and other material.
-        </p>
-
-        <p>
-            You retain ownership of User Content to the extent that you
-            legally own it.
-        </p>
-
-        <p>
-            By submitting User Content to a HOSHINO service, you grant HOSHINO
-            the permissions reasonably necessary to host, display, transmit,
-            process, reproduce, and operate that content as part of the
-            service.
-        </p>
-
-        <p>
-            You represent that you have the rights necessary to submit the
-            content you upload.
-        </p>
-
-
-        <h2 id="moderation">8. Moderation</h2>
-
-        <p>
-            HOSHINO may use human moderation, automated systems, reports,
-            technical controls, or a combination of these methods to protect
-            users and maintain the operation of the platform.
-        </p>
-
-        <p>
-            Moderation actions may include removing content, limiting
-            visibility, restricting features, issuing warnings, suspending
-            accounts, or terminating accounts.
-        </p>
-
-        <p>
-            HOSHINO does not guarantee that every violation will be detected
-            or that every moderation decision will be perfect.
-        </p>
-
-
-        <h2 id="intellectual">9. Intellectual Property</h2>
-
-        <p>
-            HOSHINO and its original software, branding, source code,
-            designs, documentation, logos, and other original materials may
-            be protected by intellectual property laws.
-        </p>
-
-        <p>
-            Nothing in these Terms transfers ownership of HOSHINO intellectual
-            property to you.
-        </p>
-
-        <p>
-            You may not represent HOSHINO materials as your own when you do
-            not have permission to do so.
-        </p>
-
-        <p>
-            Third-party names, trademarks, games, artwork, software, and other
-            materials remain the property of their respective owners.
-        </p>
-
-
-        <h2 id="games">10. Games & Experiences</h2>
-
-        <p>
-            HOSHINO may provide games and interactive experiences created by
-            HOSHINO developers or community members.
-        </p>
-
-        <p>
-            Individual games may have their own rules, gameplay systems,
-            content policies, or requirements.
-        </p>
-
-        <p>
-            HOSHINO does not guarantee that every game will remain available
-            permanently.
-        </p>
-
-        <p>
-            Games may be modified, updated, reset, removed, or temporarily
-            disabled.
-        </p>
-
-
-        <h2 id="developers">11. Developers</h2>
-
-        <p>
-            Developers may use tools supplied by HOSHINO to create games,
-            experiences, scripts, models, websites, or other projects.
-        </p>
-
-        <p>
-            Developers are responsible for the content and functionality of
-            projects they publish.
-        </p>
-
-        <p>
-            Developers must not intentionally distribute malicious code,
-            credential-stealing software, destructive programs, or tools
-            designed to compromise users.
-        </p>
-
-        <p>
-            HOSHINO may remove developer content that violates these Terms or
-            creates a significant risk to the platform or its users.
-        </p>
-
-
-        <h2 id="virtual">12. Virtual Items</h2>
-
-        <p>
-            HOSHINO may introduce virtual currencies, virtual items,
-            cosmetic items, badges, points, or other digital features.
-        </p>
-
-        <p>
-            Unless expressly stated otherwise, virtual items do not represent
-            real-world money, property, or ownership.
-        </p>
-
-        <p>
-            Virtual items may be changed, removed, reset, or discontinued.
-        </p>
-
-        <p>
-            Users must not attempt to exploit bugs to generate unauthorized
-            virtual items or currency.
-        </p>
-
-
-        <h2 id="purchases">13. Purchases & Payments</h2>
-
-        <p>
-            If HOSHINO introduces paid features, additional purchase terms
-            may apply.
-        </p>
-
-        <p>
-            Prices, availability, taxes, payment methods, and purchase
-            conditions may vary depending on location and service.
-        </p>
-
-        <p>
-            You should review the purchase information presented to you
-            before completing a transaction.
-        </p>
-
-        <p>
-            HOSHINO does not currently promise that any particular paid
-            feature will be introduced.
-        </p>
-
-
-        <h2 id="refunds">14. Refunds</h2>
-
-        <p>
-            Refund policies may vary depending on the product, payment
-            provider, jurisdiction, and applicable law.
-        </p>
-
-        <p>
-            Where required by applicable law, users retain any mandatory
-            consumer rights relating to refunds or cancellations.
-        </p>
-
-        <p>
-            Additional refund instructions may be provided when a paid
-            service is introduced.
-        </p>
-
-
-        <h2 id="privacy">15. Privacy</h2>
-
-        <p>
-            HOSHINO may process information necessary to operate its services,
-            maintain security, prevent abuse, and provide requested features.
-        </p>
-
-        <p>
-            For additional information about privacy, please review the
-            applicable Privacy Policy.
-        </p>
-
-        <p>
-            Privacy practices may differ between HOSHINO-operated services
-            and third-party services linked from HOSHINO.
-        </p>
-
-
-        <h2 id="thirdparty">16. Third-Party Services</h2>
-
-        <p>
-            HOSHINO may link to or integrate with third-party websites,
-            platforms, hosting providers, communication services, APIs,
-            software, or other services.
-        </p>
-
-        <p>
-            Third-party services may have their own terms and privacy
-            policies.
-        </p>
-
-        <p>
-            HOSHINO is not responsible for the policies, availability, or
-            content of third-party services that it does not control.
-        </p>
-
-
-        <h2 id="availability">17. Service Availability</h2>
-
-        <p>
-            HOSHINO is provided as an evolving project.
-        </p>
-
-        <p>
-            Services may experience downtime because of maintenance,
-            development, hosting problems, software failures, networking
-            problems, security incidents, or other circumstances.
-        </p>
-
-        <p>
-            HOSHINO does not guarantee uninterrupted availability.
-        </p>
-
-        <p>
-            Features may be experimental and may change without notice.
-        </p>
-
-
-        <h2 id="termination">18. Suspension & Termination</h2>
-
-        <p>
-            HOSHINO may suspend or terminate access where reasonably necessary
-            to enforce these Terms, protect users, protect infrastructure,
-            respond to abuse, or comply with legal obligations.
-        </p>
-
-        <p>
-            Users may stop using HOSHINO at any time.
-        </p>
-
-        <p>
-            Some provisions of these Terms may continue to apply after an
-            account or service relationship ends, including provisions
-            relating to intellectual property, disclaimers, liability, and
-            dispute-related matters.
-        </p>
-
-
-        <h2 id="disclaimer">19. Disclaimers</h2>
-
-        <p>
-            To the maximum extent permitted by applicable law, HOSHINO is
-            provided on an "as is" and "as available" basis.
-        </p>
-
-        <p>
-            HOSHINO does not guarantee that the service will always be
-            available, error-free, secure, accurate, or compatible with every
-            device or software environment.
-        </p>
-
-        <p>
-            Users are responsible for determining whether HOSHINO is suitable
-            for their particular circumstances.
-        </p>
-
-
-        <h2 id="liability">20. Limitation of Liability</h2>
-
-        <p>
-            To the maximum extent permitted by applicable law, HOSHINO and
-            individuals contributing to the project will not be liable for
-            indirect, incidental, special, consequential, or similar damages
-            arising from the use of the service.
-        </p>
-
-        <p>
-            Nothing in these Terms is intended to exclude liability that
-            cannot legally be excluded or limited.
-        </p>
-
-
-        <h2 id="indemnification">21. Indemnification</h2>
-
-        <p>
-            To the extent permitted by applicable law, users agree to
-            reasonably cooperate with HOSHINO in connection with claims
-            arising from their unlawful use of the service or their violation
-            of these Terms.
-        </p>
-
-        <p>
-            This section does not apply to the extent such an obligation
-            cannot legally be imposed.
-        </p>
-
-
-        <h2 id="changes">22. Changes to HOSHINO</h2>
-
-        <p>
-            HOSHINO is actively developed.
-        </p>
-
-        <p>
-            Features, interfaces, game systems, APIs, websites, account
-            systems, moderation systems, and other components may change over
-            time.
-        </p>
-
-        <p>
-            HOSHINO may add new features, remove old features, redesign
-            existing systems, or temporarily disable features.
-        </p>
-
-
-        <h2 id="termchanges">23. Changes to These Terms</h2>
-
-        <p>
-            These Terms may be updated from time to time.
-        </p>
-
-        <p>
-            When significant changes are made, HOSHINO may provide notice
-            through the website, community channels, or another reasonable
-            method.
-        </p>
-
-        <p>
-            Continuing to use HOSHINO after updated Terms become effective may
-            constitute acceptance of the updated Terms where permitted by
-            applicable law.
-        </p>
-
-
-        <h2 id="law">24. Governing Law</h2>
-
-        <p>
-            These Terms are intended to operate subject to applicable laws
-            and regulations.
-        </p>
-
-        <p>
-            If a provision of these Terms is found to be unenforceable,
-            the remaining provisions should continue to operate to the extent
-            permitted by law.
-        </p>
-
-        <p>
-            Nothing in these Terms is intended to remove rights that cannot
-            legally be removed.
-        </p>
-
-
-        <h2 id="contact">25. Contact</h2>
-
-        <p>
-            Questions regarding HOSHINO, these Terms, or the operation of the
-            project may be directed through the official HOSHINO community
-            channels.
-        </p>
-
-        <div class="notice">
-            <strong>HOSHINO Discord Community</strong><br>
-            <a href="https://discord.gg/tFnZjawuYR"
-               target="_blank"
-               rel="noopener noreferrer">
-                Join the HOSHINO Discord Server
+            <a href="index.html">
+                HOSHINO
             </a>
-        </div>
 
+            <a href="terms.html">
+                Terms of Use
+            </a>
 
-        <h2 id="effective">26. Effective Date</h2>
-
-        <p>
-            These Terms of Use are effective as of September 8, 2026.
-        </p>
-
-        <p>
-            This document may be updated as HOSHINO develops and its services
-            change.
-        </p>
-
-        <div class="notice">
-
-            <strong>End of Terms of Use</strong>
-
-            <p>
-                Thank you for being part of HOSHINO.
-            </p>
-
-            <p>
-                HOSHINO is a developing project, and its services may change
-                substantially over time. Please check this page periodically
-                for updates.
-            </p>
+            <a
+                href="https://web.archive.org/web/20151227163501/http://www.roblox.com/info/Privacy.aspx"
+                target="_blank"
+                rel="noopener noreferrer"
+            >
+                Privacy Policy
+            </a>
 
         </div>
 
-    </main>
-
-</div>
+    </footer>
 
 
-<footer class="footer">
 
-    <div>
-        © 2026 HOSHINO
-    </div>
+    <!-- =========================================================
+         BACK TO TOP
+         ========================================================= -->
 
-    <div style="margin-top: 10px;">
+    <a
+        href="#top"
+        class="back-top"
+    >
+        ↑ Top
+    </a>
 
-        <a href="index.html">
-            HOSHINO
-        </a>
 
-        <a href="terms.html">
-            Terms of Use
-        </a>
 
-        <a href="https://web.archive.org/web/20151227163501/http://www.roblox.com/info/Privacy.aspx"
-           target="_blank"
-           rel="noopener noreferrer">
-            Privacy Policy
-        </a>
+    <!-- =========================================================
+         BOTTOM BLACK GRADIENT
+         ========================================================= -->
 
-    </div>
+    <div class="bottom-gradient"></div>
 
-</footer>
 
 </body>
 </html>
-```
