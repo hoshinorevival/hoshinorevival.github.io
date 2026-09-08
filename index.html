@@ -1,524 +1,264 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-
-    <title>HOSHINO</title>
-
-    <style>
-        * {
-            box-sizing: border-box;
-        }
-
-        html,
-        body {
-            margin: 0;
-            padding: 0;
-            min-height: 100%;
-            font-family: Arial, Helvetica, sans-serif;
-            color: #333;
-        }
-
-        /* =========================================
-           BACKGROUND
-           NO WHITE GRADIENT
-           ========================================= */
-
-        body {
-            background-color: #eeeeee;
-
-            background-image:
-                url("e942d5c326e104bddf1d2c8ce3e0e9a7.png");
-
-            background-size: cover;
-            background-position: center top;
-            background-repeat: no-repeat;
-            background-attachment: fixed;
-        }
-
-
-        /* =========================================
-           FIXED 2016-STYLE NAVBAR
-           ========================================= */
-
-        .topbar {
-            position: fixed;
-            top: 0;
-            left: 0;
-            right: 0;
-
-            width: 100%;
-            height: 50px;
-
-            background: #0877bd;
-
-            border-bottom: 1px solid #005f9e;
-
-            display: flex;
-            align-items: center;
-
-            padding: 0 18px;
-
-            box-shadow:
-                0 2px 5px rgba(0, 0, 0, 0.28);
-
-            z-index: 1000;
-        }
-
-
-        /* LOGO */
-
-        .topbar-logo {
-            height: 50px;
-
-            display: flex;
-            align-items: center;
-
-            margin-right: 25px;
-        }
-
-        .topbar-logo a {
-            display: flex;
-            align-items: center;
-
-            height: 50px;
-        }
-
-        .topbar-logo img {
-            width: 105px;
-            max-height: 38px;
-
-            height: auto;
-
-            object-fit: contain;
-
-            display: block;
-        }
-
-
-        /* NAVIGATION */
-
-        .nav {
-            display: flex;
-
-            height: 50px;
-        }
-
-        .nav a {
-            height: 50px;
-
-            display: flex;
-            align-items: center;
-
-            padding: 0 17px;
-
-            color: #ffffff;
-
-            text-decoration: none;
-
-            font-size: 13px;
-
-            border-left: 1px solid transparent;
-            border-right: 1px solid transparent;
-
-            transition: background 0.12s ease;
-        }
-
-        .nav a:hover {
-            background: #066aa9;
-        }
-
-        .nav a:active {
-            background: #005d99;
-        }
-
-
-        /* =========================================
-           MAIN PAGE
-           ========================================= */
-
-        .page {
-            min-height: 100vh;
-
-            display: flex;
-            justify-content: center;
-            align-items: center;
-
-            padding: 110px 20px 100px;
-        }
-
-
-        /* =========================================
-           MAINTENANCE PANEL
-           ========================================= */
-
-        .maintenance-box {
-            width: 700px;
-            max-width: 100%;
-
-            background: rgba(255, 255, 255, 0.96);
-
-            border: 1px solid #c7c7c7;
-
-            box-shadow:
-                0 2px 10px rgba(0, 0, 0, 0.30);
-
-            padding: 45px 55px;
-
-            text-align: center;
-        }
-
-
-        /* HOSHINO LOGO */
-
-        .main-logo {
-            width: 245px;
-            max-width: 80%;
-
-            height: auto;
-
-            display: block;
-
-            margin: 0 auto 25px;
-        }
-
-
-        /* TITLE */
-
-        .maintenance-box h1 {
-            margin: 0 0 17px;
-
-            font-size: 28px;
-
-            font-weight: normal;
-
-            color: #333;
-        }
-
-
-        /* DESCRIPTION */
-
-        .maintenance-box p {
-            margin: 0 auto 27px;
-
-            max-width: 590px;
-
-            font-size: 15px;
-
-            line-height: 1.6;
-
-            color: #666;
-        }
-
-
-        /* STATUS */
-
-        .status {
-            display: inline-block;
-
-            padding: 8px 17px;
-
-            background: #eeeeee;
-
-            border: 1px solid #c8c8c8;
-
-            color: #555;
-
-            font-size: 13px;
-
-            margin-bottom: 26px;
-
-            box-shadow:
-                inset 0 1px 0 rgba(255,255,255,0.8);
-        }
-
-
-        /* =========================================
-           BUTTONS
-           ========================================= */
-
-        .buttons {
-            display: flex;
-
-            justify-content: center;
-
-            flex-wrap: wrap;
-
-            gap: 8px;
-        }
-
-        .button {
-            display: inline-block;
-
-            padding: 10px 22px;
-
-            background: #0879bd;
-
-            border: 1px solid #00639e;
-
-            color: #ffffff;
-
-            text-decoration: none;
-
-            font-size: 13px;
-
-            border-radius: 2px;
-
-            box-shadow:
-                inset 0 1px 0 rgba(255,255,255,0.18),
-                0 1px 2px rgba(0,0,0,0.15);
-
-            transition:
-                background 0.12s ease,
-                border-color 0.12s ease;
-        }
-
-        .button:hover {
-            background: #076dad;
-
-            border-color: #00578f;
-        }
-
-
-        /* =========================================
-           FOOTER
-           ========================================= */
-
-        .footer {
-            text-align: center;
-
-            padding: 25px 15px 50px;
-
-            color: #ffffff;
-
-            font-size: 12px;
-
-            text-shadow:
-                0 1px 2px rgba(0,0,0,0.8);
-
-            position: relative;
-
-            z-index: 2;
-        }
-
-        .footer a {
-            color: #ffffff;
-
-            text-decoration: none;
-
-            margin: 0 8px;
-        }
-
-        .footer a:hover {
-            text-decoration: underline;
-        }
-
-
-        /* =========================================
-           FIXED BLACK BOTTOM GRADIENT
-           ========================================= */
-
-        .bottom-gradient {
-            position: fixed;
-
-            left: 0;
-            right: 0;
-            bottom: 0;
-
-            height: 95px;
-
-            background:
-                linear-gradient(
-                    to bottom,
-                    rgba(0, 0, 0, 0),
-                    rgba(0, 0, 0, 0.55)
-                );
-
-            pointer-events: none;
-
-            z-index: 900;
-        }
-
-
-        /* =========================================
-           MOBILE
-           ========================================= */
-
-        @media (max-width: 650px) {
-
-            .topbar {
-                padding: 0 8px;
-            }
-
-            .topbar-logo {
-                margin-right: 5px;
-            }
-
-            .topbar-logo img {
-                width: 88px;
-            }
-
-            .nav a {
-                padding: 0 8px;
-                font-size: 11px;
-            }
-
-            .maintenance-box {
-                padding: 35px 22px;
-            }
-
-            .maintenance-box h1 {
-                font-size: 24px;
-            }
-
-            .maintenance-box p {
-                font-size: 14px;
-            }
-
-            .main-logo {
-                width: 205px;
-            }
-        }
-    </style>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>HOSHINO</title>
+
+<style>
+*{box-sizing:border-box}
+
+html,body{
+    margin:0;
+    min-height:100%;
+    font-family:Arial,Helvetica,sans-serif;
+    color:#222;
+}
+
+body{
+    background:#111 url("e942d5c326e104bddf1d2c8ce3e0e9a7.png") center top/cover fixed no-repeat;
+}
+
+body::after{
+    content:"";
+    position:fixed;
+    inset:0;
+    pointer-events:none;
+    background:linear-gradient(to bottom,
+        rgba(0,0,0,0) 65%,
+        rgba(0,0,0,.72) 100%);
+    z-index:-1;
+}
+
+.topbar{
+    position:sticky;
+    top:0;
+    z-index:1000;
+    height:58px;
+    background:rgba(255,255,255,.97);
+    border-bottom:1px solid #c8c8c8;
+    box-shadow:0 2px 7px rgba(0,0,0,.25);
+    display:flex;
+    align-items:center;
+    padding:0 30px;
+}
+
+.logo{
+    height:43px;
+    width:auto;
+    object-fit:contain;
+}
+
+.nav{
+    display:flex;
+    height:100%;
+    margin-left:35px;
+}
+
+.nav a{
+    display:flex;
+    align-items:center;
+    padding:0 20px;
+    color:#444;
+    text-decoration:none;
+    font-size:14px;
+    transition:.18s;
+}
+
+.nav a:hover{
+    background:#eee;
+    color:#111;
+}
+
+.hero{
+    min-height:calc(100vh - 58px);
+    display:flex;
+    justify-content:center;
+    align-items:center;
+    padding:70px 20px 120px;
+}
+
+.card{
+    width:min(850px,100%);
+    text-align:center;
+    background:rgba(255,255,255,.96);
+    border:1px solid #c9c9c9;
+    box-shadow:0 8px 30px rgba(0,0,0,.35);
+    padding:65px 50px;
+    animation:appear .6s ease;
+}
+
+.card-logo{
+    width:220px;
+    max-width:70%;
+    margin-bottom:25px;
+}
+
+h1{
+    color:#1976c9;
+    font-size:38px;
+    margin:0 0 20px;
+    font-weight:normal;
+}
+
+p{
+    font-size:17px;
+    line-height:1.65;
+    color:#555;
+    max-width:680px;
+    margin:0 auto 28px;
+}
+
+.status{
+    display:inline-block;
+    background:#e9f5ff;
+    border:1px solid #a9d8f5;
+    color:#1670ad;
+    padding:11px 22px;
+    margin-bottom:30px;
+    font-size:14px;
+    font-weight:bold;
+}
+
+.buttons{
+    display:flex;
+    justify-content:center;
+    gap:12px;
+    flex-wrap:wrap;
+}
+
+.button{
+    display:inline-block;
+    padding:12px 25px;
+    text-decoration:none;
+    background:#1685d8;
+    color:white;
+    border:1px solid #096bab;
+    border-radius:3px;
+    box-shadow:inset 0 1px rgba(255,255,255,.25);
+    transition:.18s;
+}
+
+.button:hover{
+    background:#0f72bd;
+    transform:translateY(-1px);
+}
+
+.button.secondary{
+    background:#f4f4f4;
+    color:#444;
+    border-color:#c7c7c7;
+}
+
+.button.secondary:hover{
+    background:#e8e8e8;
+}
+
+.footer{
+    text-align:center;
+    color:white;
+    font-size:12px;
+    padding:25px;
+    text-shadow:0 1px 3px #000;
+}
+
+.footer a{
+    color:white;
+    margin:0 8px;
+}
+
+@keyframes appear{
+    from{opacity:0;transform:translateY(15px)}
+    to{opacity:1;transform:translateY(0)}
+}
+
+@media(max-width:650px){
+    .topbar{
+        padding:0 12px;
+    }
+
+    .nav{
+        margin-left:10px;
+    }
+
+    .nav a{
+        padding:0 8px;
+        font-size:12px;
+    }
+
+    .card{
+        padding:45px 25px;
+    }
+
+    h1{
+        font-size:30px;
+    }
+}
+</style>
 </head>
-
 
 <body>
 
+<header class="topbar">
+    <a href="index.html">
+        <img class="logo"
+             src="image_2026-09-08_175006165.png"
+             alt="HOSHINO">
+    </a>
 
-    <!-- =========================================
-         FIXED NAVIGATION
-         ========================================= -->
+    <nav class="nav">
+        <a href="index.html">Games</a>
+        <a href="index.html">Catalog</a>
+        <a href="index.html">Develop</a>
+        <a href="terms.html">Terms</a>
+        <a href="privacy.html">Privacy</a>
+    </nav>
+</header>
 
-    <header class="topbar">
+<main class="hero">
+    <section class="card">
 
-        <div class="topbar-logo">
+        <img class="card-logo"
+             src="image_2026-09-08_175006165.png"
+             alt="HOSHINO">
 
-            <a href="index.html">
+        <h1>HOSHINO is under maintenance</h1>
 
-                <img
-                    src="image_2026-09-08_175006165.png"
-                    alt="HOSHINO"
-                >
+        <p>
+            We're getting everything ready for release!
+            HOSHINO is currently unavailable while we finish
+            the new experience. Please check back soon!
+        </p>
 
-            </a>
-
+        <div class="status">
+            ⚙ Preparing for release
         </div>
 
-
-        <nav class="nav">
-
-            <a href="#">
-                Games
+        <div class="buttons">
+            <a class="button"
+               href="https://discord.gg/tFnZjawuYR"
+               target="_blank"
+               rel="noopener noreferrer">
+                Join Discord Server
             </a>
 
-            <a href="#">
-                Catalog
-            </a>
-
-            <a href="#">
-                Develop
-            </a>
-
-            <a href="terms.html">
-                Terms
-            </a>
-
-        </nav>
-
-    </header>
-
-
-    <!-- =========================================
-         MAIN CONTENT
-         ========================================= -->
-
-    <main class="page">
-
-        <section class="maintenance-box">
-
-            <img
-                src="image_2026-09-08_175006165.png"
-                alt="HOSHINO"
-                class="main-logo"
-            >
-
-
-            <h1>
-                HOSHINO is under maintenance
-            </h1>
-
-
-            <p>
-                We're getting everything ready for release!
-                HOSHINO is currently unavailable while we finish
-                the new experience. Please check back soon!
-            </p>
-
-
-            <div class="status">
-                Preparing for release
-            </div>
-
-
-            <div class="buttons">
-
-                <a
-                    href="https://discord.gg/tFnZjawuYR"
-                    class="button"
-                    target="_blank"
-                    rel="noopener noreferrer"
-                >
-                    Join Discord Server
-                </a>
-
-
-                <a
-                    href="terms.html"
-                    class="button"
-                >
-                    Terms of Use
-                </a>
-
-            </div>
-
-        </section>
-
-    </main>
-
-
-    <!-- FOOTER -->
-
-    <footer class="footer">
-
-        <div>
-            © 2026 HOSHINO
-        </div>
-
-        <div style="margin-top: 10px;">
-
-            <a href="terms.html">
+            <a class="button secondary" href="terms.html">
                 Terms of Use
             </a>
 
-            <a
-                href="https://web.archive.org/web/20151227163501/http://www.roblox.com/info/Privacy.aspx"
-                target="_blank"
-                rel="noopener noreferrer"
-            >
+            <a class="button secondary" href="privacy.html">
                 Privacy Policy
             </a>
-
         </div>
 
-    </footer>
+    </section>
+</main>
 
-
-    <!-- BOTTOM SCREEN GRADIENT -->
-
-    <div class="bottom-gradient"></div>
-
+<footer class="footer">
+    © 2026 HOSHINO ·
+    <a href="terms.html">Terms of Use</a> ·
+    <a href="privacy.html">Privacy Policy</a>
+</footer>
 
 </body>
 </html>
