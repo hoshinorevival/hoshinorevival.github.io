@@ -1,0 +1,585 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width,initial-scale=1.0">
+<title>Privacy Policy - HOSHINO</title>
+
+<style>
+*{box-sizing:border-box}
+
+html{
+    scroll-behavior:smooth;
+}
+
+body{
+    margin:0;
+    background:#eee;
+    color:#333;
+    font-family:Arial,Helvetica,sans-serif;
+    line-height:1.7;
+}
+
+.topbar{
+    height:58px;
+    position:sticky;
+    top:0;
+    z-index:1000;
+    display:flex;
+    align-items:center;
+    padding:0 30px;
+    background:rgba(255,255,255,.98);
+    border-bottom:1px solid #c7c7c7;
+    box-shadow:0 2px 7px rgba(0,0,0,.2);
+}
+
+.topbar-logo img{
+    width:110px;
+    max-height:45px;
+    object-fit:contain;
+    display:block;
+}
+
+.nav{
+    display:flex;
+    height:100%;
+    margin-left:30px;
+}
+
+.nav a{
+    display:flex;
+    align-items:center;
+    padding:0 18px;
+    color:#555;
+    text-decoration:none;
+    font-size:14px;
+    transition:.15s;
+}
+
+.nav a:hover{
+    background:#eee;
+    color:#111;
+}
+
+.layout{
+    max-width:1300px;
+    margin:auto;
+    display:grid;
+    grid-template-columns:265px 1fr;
+    gap:28px;
+    padding:35px 20px 80px;
+}
+
+.sidebar{
+    position:sticky;
+    top:82px;
+    align-self:start;
+    max-height:calc(100vh - 105px);
+    overflow-y:auto;
+    background:#fff;
+    border:1px solid #ccc;
+    box-shadow:0 2px 8px rgba(0,0,0,.1);
+}
+
+.sidebar-title{
+    padding:20px;
+    font-size:19px;
+    font-weight:bold;
+    color:#1976c9;
+    border-bottom:1px solid #ddd;
+}
+
+.sidebar a{
+    display:block;
+    padding:9px 18px;
+    color:#555;
+    text-decoration:none;
+    font-size:13px;
+    border-bottom:1px solid #eee;
+    transition:.15s;
+}
+
+.sidebar a:hover{
+    background:#eaf5fd;
+    color:#0874bd;
+    padding-left:23px;
+}
+
+.document{
+    background:#fff;
+    border:1px solid #ccc;
+    box-shadow:0 2px 10px rgba(0,0,0,.1);
+    padding:55px 70px;
+    animation:appear .5s ease;
+}
+
+.document-header{
+    border-bottom:1px solid #ddd;
+    padding-bottom:30px;
+    margin-bottom:35px;
+}
+
+.document-header img{
+    width:190px;
+    max-width:70%;
+    margin-bottom:20px;
+}
+
+h1{
+    font-size:36px;
+    font-weight:normal;
+    color:#222;
+    margin:0 0 8px;
+}
+
+h2{
+    color:#1976c9;
+    font-size:25px;
+    font-weight:normal;
+    border-bottom:1px solid #ddd;
+    padding-bottom:8px;
+    margin-top:55px;
+    scroll-margin-top:80px;
+}
+
+h3{
+    font-size:19px;
+    color:#444;
+    margin-top:30px;
+}
+
+p{
+    margin:13px 0;
+}
+
+li{
+    margin:7px 0;
+}
+
+.date{
+    color:#777;
+    font-size:13px;
+}
+
+.notice{
+    background:#eef8ff;
+    border:1px solid #b8dff6;
+    padding:18px 20px;
+    margin:25px 0;
+}
+
+.notice a{
+    color:#0876bd;
+}
+
+.footer{
+    text-align:center;
+    color:#777;
+    padding:30px;
+    font-size:12px;
+}
+
+.footer a{
+    color:#555;
+    margin:0 8px;
+}
+
+@keyframes appear{
+    from{
+        opacity:0;
+        transform:translateY(12px);
+    }
+    to{
+        opacity:1;
+        transform:translateY(0);
+    }
+}
+
+@media(max-width:850px){
+
+    .layout{
+        grid-template-columns:1fr;
+    }
+
+    .sidebar{
+        position:relative;
+        top:0;
+        max-height:none;
+    }
+
+    .document{
+        padding:35px 25px;
+    }
+
+    .nav a{
+        padding:0 8px;
+        font-size:12px;
+    }
+
+    .topbar{
+        padding:0 12px;
+    }
+}
+</style>
+</head>
+
+<body>
+
+<header class="topbar">
+
+<div class="topbar-logo">
+<a href="index.html">
+<img src="image_2026-09-08_175006165.png" alt="HOSHINO">
+</a>
+</div>
+
+<nav class="nav">
+<a href="index.html">Games</a>
+<a href="index.html">Catalog</a>
+<a href="index.html">Develop</a>
+<a href="terms.html">Terms</a>
+<a href="privacy.html">Privacy</a>
+</nav>
+
+</header>
+
+<div class="layout">
+
+<aside class="sidebar">
+
+<div class="sidebar-title">
+HOSHINO Privacy
+</div>
+
+<a href="#introduction">1. Introduction</a>
+<a href="#information">2. Information We Collect</a>
+<a href="#account">3. Account Information</a>
+<a href="#technical">4. Technical Information</a>
+<a href="#content">5. User Content</a>
+<a href="#usage">6. How We Use Information</a>
+<a href="#security">7. Security</a>
+<a href="#sharing">8. Information Sharing</a>
+<a href="#thirdparty">9. Third-Party Services</a>
+<a href="#cookies">10. Cookies & Storage</a>
+<a href="#communications">11. Communications</a>
+<a href="#children">12. Children & Minors</a>
+<a href="#retention">13. Data Retention</a>
+<a href="#rights">14. Your Rights</a>
+<a href="#deletion">15. Account & Data Deletion</a>
+<a href="#international">16. International Processing</a>
+<a href="#changes">17. Changes to Policy</a>
+<a href="#contact">18. Contact</a>
+<a href="#effective">19. Effective Date</a>
+
+</aside>
+
+<main class="document">
+
+<div class="document-header">
+
+<img src="image_2026-09-08_175006165.png" alt="HOSHINO">
+
+<h1>Privacy Policy</h1>
+
+<p class="date">
+Last Updated: September 8, 2026
+</p>
+
+<div class="notice">
+<strong>Your privacy matters.</strong><br>
+This Privacy Policy explains what information HOSHINO may
+collect, how that information may be used, and the choices
+available to users.
+</div>
+
+</div>
+
+<h2 id="introduction">1. Introduction</h2>
+
+<p>
+HOSHINO is a community-driven online gaming and development
+project. This Privacy Policy describes how information may
+be handled when you use HOSHINO websites, services, games,
+accounts, development tools, APIs, and community features.
+</p>
+
+<p>
+This policy should be read together with the HOSHINO Terms of Use.
+</p>
+
+<h2 id="information">2. Information We Collect</h2>
+
+<p>
+Depending on the features you use, HOSHINO may collect or
+receive different categories of information.
+</p>
+
+<ul>
+<li>Account information.</li>
+<li>Username and profile information.</li>
+<li>Game and gameplay information.</li>
+<li>Technical information.</li>
+<li>Device and browser information.</li>
+<li>IP address and approximate network information.</li>
+<li>Information you voluntarily submit.</li>
+<li>Reports and moderation information.</li>
+</ul>
+
+<p>
+HOSHINO does not necessarily collect every category listed
+above from every user.
+</p>
+
+<h2 id="account">3. Account Information</h2>
+
+<p>
+If accounts are supported, HOSHINO may process information
+associated with your account, such as your username, account
+identifier, authentication information, profile information,
+and account settings.
+</p>
+
+<p>
+Authentication information should be protected and should
+not be publicly shared.
+</p>
+
+<h2 id="technical">4. Technical Information</h2>
+
+<p>
+When you access HOSHINO, technical information may be processed
+to operate and secure the service.
+</p>
+
+<p>
+This may include IP address, browser type, operating system,
+device information, connection information, error information,
+and basic server logs.
+</p>
+
+<h2 id="content">5. User Content</h2>
+
+<p>
+HOSHINO may process content that you voluntarily submit,
+including usernames, game creations, scripts, images, text,
+audio, videos, comments, and other material.
+</p>
+
+<p>
+User Content may be processed so that HOSHINO can display,
+store, transmit, moderate, and operate the content as part
+of the service.
+</p>
+
+<h2 id="usage">6. How We Use Information</h2>
+
+<p>
+Information may be used to:
+</p>
+
+<ul>
+<li>Provide and operate HOSHINO services.</li>
+<li>Maintain accounts and authentication.</li>
+<li>Provide games and interactive features.</li>
+<li>Maintain security.</li>
+<li>Detect abuse and malicious activity.</li>
+<li>Investigate reports and violations.</li>
+<li>Debug technical problems.</li>
+<li>Improve reliability and functionality.</li>
+<li>Communicate important service information.</li>
+<li>Comply with applicable legal obligations.</li>
+</ul>
+
+<h2 id="security">7. Security</h2>
+
+<p>
+HOSHINO may use reasonable technical and organizational
+measures designed to protect information from unauthorized
+access, alteration, disclosure, or destruction.
+</p>
+
+<p>
+However, no internet service can guarantee absolute security.
+</p>
+
+<h2 id="sharing">8. Information Sharing</h2>
+
+<p>
+HOSHINO may share information when reasonably necessary
+to operate the service, maintain security, provide requested
+features, comply with legal obligations, or protect users
+and infrastructure.
+</p>
+
+<p>
+HOSHINO does not intend to sell personal information as a
+general business practice.
+</p>
+
+<h2 id="thirdparty">9. Third-Party Services</h2>
+
+<p>
+HOSHINO may rely on third-party providers for hosting,
+communications, authentication, analytics, infrastructure,
+or other technical services.
+</p>
+
+<p>
+Third-party services may process information according to
+their own privacy policies.
+</p>
+
+<h2 id="cookies">10. Cookies & Storage</h2>
+
+<p>
+HOSHINO may use cookies, local storage, session storage,
+or similar technologies when necessary to provide features,
+remember settings, maintain sessions, or improve security.
+</p>
+
+<p>
+Your browser may provide controls for managing cookies
+and local storage.
+</p>
+
+<h2 id="communications">11. Communications</h2>
+
+<p>
+HOSHINO may communicate with users about service updates,
+security matters, account activity, maintenance, or other
+important information.
+</p>
+
+<p>
+Community communications may also occur through third-party
+platforms such as Discord.
+</p>
+
+<h2 id="children">12. Children & Minors</h2>
+
+<p>
+HOSHINO is intended to operate in accordance with applicable
+age and privacy requirements.
+</p>
+
+<p>
+Where applicable, additional protections may apply to children
+and minors.
+</p>
+
+<p>
+Parents or legal guardians who believe that a child has
+provided information inappropriately may contact HOSHINO
+through an official community channel.
+</p>
+
+<h2 id="retention">13. Data Retention</h2>
+
+<p>
+Information may be retained for as long as reasonably necessary
+to provide services, maintain security, resolve disputes,
+enforce rules, comply with legal requirements, or maintain
+appropriate technical records.
+</p>
+
+<h2 id="rights">14. Your Rights</h2>
+
+<p>
+Depending on your location, you may have legal rights relating
+to personal information, including rights to access, correct,
+delete, restrict, or otherwise control certain information.
+</p>
+
+<p>
+These rights may be subject to legal limitations and exceptions.
+</p>
+
+<h2 id="deletion">15. Account & Data Deletion</h2>
+
+<p>
+Where account deletion is supported, users may request deletion
+of their account and associated information through an available
+official HOSHINO support channel.
+</p>
+
+<p>
+Some information may need to be retained where required for
+security, legal, fraud-prevention, or other legitimate purposes.
+</p>
+
+<h2 id="international">16. International Processing</h2>
+
+<p>
+HOSHINO and its service providers may operate infrastructure
+in different countries or regions.
+</p>
+
+<p>
+As a result, information may be processed outside the country
+where you live, subject to applicable legal requirements.
+</p>
+
+<h2 id="changes">17. Changes to This Privacy Policy</h2>
+
+<p>
+This Privacy Policy may be updated as HOSHINO develops.
+</p>
+
+<p>
+When significant changes are made, HOSHINO may provide notice
+through the website, community channels, or another reasonable
+method.
+</p>
+
+<h2 id="contact">18. Contact</h2>
+
+<div class="notice">
+
+<strong>HOSHINO Discord Community</strong><br><br>
+
+<a href="https://discord.gg/tFnZjawuYR"
+target="_blank"
+rel="noopener noreferrer">
+Join the HOSHINO Discord Server
+</a>
+
+</div>
+
+<h2 id="effective">19. Effective Date</h2>
+
+<p>
+This Privacy Policy is effective as of September 8, 2026.
+</p>
+
+<div class="notice">
+
+<strong>HOSHINO Privacy Policy</strong>
+
+<p>
+Thank you for taking the time to review HOSHINO's Privacy Policy.
+</p>
+
+<p>
+This document may be updated as the HOSHINO project grows
+and its services change.
+</p>
+
+</div>
+
+</main>
+</div>
+
+<footer class="footer">
+
+© 2026 HOSHINO ·
+
+<a href="index.html">HOSHINO</a>
+
+<a href="terms.html">Terms of Use</a>
+
+<a href="privacy.html">Privacy Policy</a>
+
+</footer>
+
+</body>
+</html>
