@@ -1,9 +1,11 @@
+```html
 <!DOCTYPE html>
 <html lang="en">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>HOSHINO - Under Maintenance</title>
+
+    <title>HOSHINO</title>
 
     <style>
         * {
@@ -15,44 +17,38 @@
             padding: 0;
             min-height: 100%;
             font-family: Arial, Helvetica, sans-serif;
-            background: #e9e9e9;
             color: #333;
+            background: #f2f2f2;
         }
 
         body {
             background-image:
-                linear-gradient(rgba(255,255,255,0.25), rgba(255,255,255,0.25)),
+                linear-gradient(rgba(255,255,255,0.78), rgba(255,255,255,0.78)),
                 url("images/maintenance-background.jpg");
             background-size: cover;
             background-position: center;
             background-attachment: fixed;
         }
 
-        /* TOP BAR */
-
         .topbar {
             height: 52px;
-            background: #f5f5f5;
-            border-bottom: 1px solid #c9c9c9;
-            box-shadow: 0 1px 3px rgba(0,0,0,0.18);
-        }
-
-        .topbar-inner {
-            width: 1000px;
-            max-width: calc(100% - 30px);
-            height: 52px;
-            margin: auto;
+            background: #ffffff;
+            border-bottom: 1px solid #d6d6d6;
             display: flex;
             align-items: center;
+            padding: 0 28px;
+            box-shadow: 0 1px 3px rgba(0,0,0,0.08);
         }
 
-        .logo {
-            font-size: 25px;
-            font-weight: bold;
-            color: #222;
-            text-decoration: none;
-            margin-right: 30px;
-            letter-spacing: -1px;
+        .topbar-logo {
+            margin-right: 35px;
+        }
+
+        .topbar-logo img {
+            width: 105px;
+            max-height: 40px;
+            object-fit: contain;
+            display: block;
         }
 
         .nav {
@@ -72,184 +68,123 @@
         }
 
         .nav a:hover {
-            background: #e8e8e8;
+            background: #f4f4f4;
             color: #222;
-            border-left-color: #d0d0d0;
-            border-right-color: #d0d0d0;
+            border-color: #ddd;
         }
 
-        /* PAGE */
-
         .page {
-            width: 1000px;
-            max-width: calc(100% - 30px);
-            margin: 70px auto;
+            min-height: calc(100vh - 52px);
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            padding: 60px 20px;
         }
 
         .maintenance-box {
-            max-width: 650px;
-            margin: auto;
+            width: 700px;
+            max-width: 100%;
             background: rgba(255,255,255,0.97);
-            border: 1px solid #c8c8c8;
-            box-shadow: 0 2px 7px rgba(0,0,0,0.22);
-        }
-
-        .box-header {
-            padding: 13px 18px;
-            background: linear-gradient(#f9f9f9, #e8e8e8);
-            border-bottom: 1px solid #c9c9c9;
-            font-size: 18px;
-            font-weight: bold;
-            color: #444;
-        }
-
-        .box-content {
-            padding: 40px 45px;
+            border: 1px solid #d4d4d4;
+            box-shadow: 0 2px 8px rgba(0,0,0,0.12);
+            padding: 45px 55px;
             text-align: center;
         }
 
-        .hoshino-title {
-            font-size: 44px;
-            font-weight: bold;
-            letter-spacing: -2px;
-            color: #222;
-            margin-bottom: 12px;
-        }
-
-        .maintenance-title {
-            font-size: 26px;
-            font-weight: normal;
-            color: #333;
-            margin: 0 0 15px;
-        }
-
-        .description {
-            font-size: 15px;
-            line-height: 1.6;
-            color: #666;
-            max-width: 520px;
+        .main-logo {
+            width: 240px;
+            max-width: 80%;
+            height: auto;
+            display: block;
             margin: 0 auto 25px;
         }
 
-        /* STATUS */
+        .maintenance-box h1 {
+            margin: 0 0 18px;
+            font-size: 28px;
+            font-weight: normal;
+            color: #333;
+        }
+
+        .maintenance-box p {
+            margin: 0 auto 28px;
+            max-width: 580px;
+            font-size: 16px;
+            line-height: 1.6;
+            color: #666;
+        }
 
         .status {
             display: inline-block;
-            padding: 10px 18px;
-            background: #f3f3f3;
-            border: 1px solid #ccc;
-            border-radius: 2px;
-            font-size: 14px;
+            padding: 9px 18px;
+            background: #eeeeee;
+            border: 1px solid #d2d2d2;
             color: #555;
-            margin-bottom: 25px;
+            font-size: 14px;
+            margin-bottom: 28px;
         }
-
-        .status-dot {
-            display: inline-block;
-            width: 9px;
-            height: 9px;
-            background: #f0a000;
-            border-radius: 50%;
-            margin-right: 7px;
-        }
-
-        /* BUTTONS */
 
         .buttons {
-            margin-top: 5px;
+            display: flex;
+            justify-content: center;
+            flex-wrap: wrap;
+            gap: 10px;
         }
 
         .button {
             display: inline-block;
-            padding: 10px 20px;
-            margin: 4px;
-            border: 1px solid #aaa;
-            border-radius: 3px;
-            background: linear-gradient(#fff, #e5e5e5);
-            color: #444;
+            padding: 11px 22px;
+            background: #eeeeee;
+            border: 1px solid #c9c9c9;
+            color: #333;
             text-decoration: none;
             font-size: 14px;
-            box-shadow: inset 0 1px 0 rgba(255,255,255,0.8);
+            border-radius: 3px;
+            box-shadow: inset 0 1px rgba(255,255,255,0.8);
         }
 
         .button:hover {
-            background: linear-gradient(#f8f8f8, #dcdcdc);
+            background: #e2e2e2;
+            border-color: #b9b9b9;
         }
-
-        .button.primary {
-            color: white;
-            border-color: #1471b8;
-            background: linear-gradient(#3fa1e4, #1976b9);
-            text-shadow: 0 -1px rgba(0,0,0,0.25);
-        }
-
-        .button.primary:hover {
-            background: linear-gradient(#51abe8, #2382c4);
-        }
-
-        /* FOOTER */
 
         .footer {
-            width: 1000px;
-            max-width: calc(100% - 30px);
-            margin: -35px auto 30px;
             text-align: center;
-            color: #777;
+            padding: 25px 15px 35px;
+            color: #888;
             font-size: 12px;
         }
 
         .footer a {
             color: #777;
             text-decoration: none;
+            margin: 0 8px;
         }
 
         .footer a:hover {
             text-decoration: underline;
         }
 
-        /* MOBILE */
-
-        @media (max-width: 700px) {
+        @media (max-width: 600px) {
             .topbar {
-                height: auto;
+                padding: 0 12px;
             }
 
-            .topbar-inner {
-                height: auto;
-                min-height: 52px;
-                flex-wrap: wrap;
-                padding: 8px 0;
-            }
-
-            .logo {
-                margin-right: 15px;
-            }
-
-            .nav {
-                height: 42px;
-                width: 100%;
-                overflow-x: auto;
+            .topbar-logo {
+                margin-right: 8px;
             }
 
             .nav a {
-                padding: 0 12px;
-                white-space: nowrap;
+                padding: 0 8px;
+                font-size: 12px;
             }
 
-            .page {
-                margin: 35px auto;
+            .maintenance-box {
+                padding: 35px 22px;
             }
 
-            .box-content {
-                padding: 30px 20px;
-            }
-
-            .hoshino-title {
-                font-size: 36px;
-            }
-
-            .maintenance-title {
-                font-size: 22px;
+            .maintenance-box h1 {
+                font-size: 24px;
             }
         }
     </style>
@@ -258,72 +193,76 @@
 <body>
 
     <header class="topbar">
-        <div class="topbar-inner">
-
-            <a href="index.html" class="logo">HOSHINO</a>
-
-            <nav class="nav">
-                <a href="#">Games</a>
-                <a href="#">Catalog</a>
-                <a href="#">Develop</a>
-                <a href="terms.html">Terms</a>
-            </nav>
-
+        <div class="topbar-logo">
+            <img src="e942d5c326e104bddf1d2c8ce3e0e9a7.png" alt="HOSHINO">
         </div>
-    </header>
 
+        <nav class="nav">
+            <a href="#">Games</a>
+            <a href="#">Catalog</a>
+            <a href="#">Develop</a>
+            <a href="terms.html">Terms</a>
+        </nav>
+    </header>
 
     <main class="page">
 
         <section class="maintenance-box">
 
-            <div class="box-header">
-                HOSHINO
+            <img
+                src="e942d5c326e104bddf1d2c8ce3e0e9a7.png"
+                alt="HOSHINO"
+                class="main-logo"
+            >
+
+            <h1>HOSHINO is under maintenance</h1>
+
+            <p>
+                We're getting everything ready for release! HOSHINO is currently
+                unavailable while we finish the new experience. Please check back soon!
+            </p>
+
+            <div class="status">
+                Preparing for release
             </div>
 
-            <div class="box-content">
+            <div class="buttons">
+                <a
+                    href="https://discord.gg/tFnZjawuYR"
+                    class="button"
+                    target="_blank"
+                    rel="noopener noreferrer"
+                >
+                    Join Discord Server
+                </a>
 
-                <div class="hoshino-title">
-                    HOSHINO
-                </div>
-
-                <h1 class="maintenance-title">
-                    HOSHINO is under maintenance
-                </h1>
-
-                <p class="description">
-                    We're getting everything ready for release!
-                    HOSHINO is currently unavailable while we finish
-                    the new experience. Please check back soon!
-                </p>
-
-                <div class="status">
-                    <span class="status-dot"></span>
-                    Preparing for release
-                </div>
-
-                <div class="buttons">
-                    <a class="button primary" href="#">
-                        Back to HOSHINO
-                    </a>
-
-                    <a class="button" href="terms.html">
-                        Terms of Use
-                    </a>
-                </div>
-
+                <a href="terms.html" class="button">
+                    Terms of Use
+                </a>
             </div>
 
         </section>
 
     </main>
 
-
     <footer class="footer">
-        © 2026 HOSHINO. All rights reserved.
-        &nbsp;|&nbsp;
-        <a href="terms.html">Terms of Use</a>
+        <div>
+            © 2026 HOSHINO
+        </div>
+
+        <div style="margin-top: 10px;">
+            <a href="terms.html">Terms of Use</a>
+
+            <a
+                href="https://web.archive.org/web/20151227163501/http://www.roblox.com/info/Privacy.aspx"
+                target="_blank"
+                rel="noopener noreferrer"
+            >
+                Privacy Policy
+            </a>
+        </div>
     </footer>
 
 </body>
 </html>
+```
