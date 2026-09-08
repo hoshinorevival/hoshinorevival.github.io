@@ -1,3 +1,4 @@
+```html
 <!DOCTYPE html>
 <html lang="en">
 <head>
@@ -22,30 +23,46 @@
 
         body {
             background-image:
-                linear-gradient(rgba(255,255,255,0.78), rgba(255,255,255,0.78)),
-                url("images/maintenance-background.jpg");
+                linear-gradient(
+                    rgba(255, 255, 255, 0.78),
+                    rgba(255, 255, 255, 0.78)
+                ),
+                url("e942d5c326e104bddf1d2c8ce3e0e9a7.png");
+
             background-size: cover;
             background-position: center;
             background-attachment: fixed;
         }
 
+        /* TOP NAVIGATION */
+
         .topbar {
             height: 52px;
             background: #ffffff;
             border-bottom: 1px solid #d6d6d6;
+
             display: flex;
             align-items: center;
+
             padding: 0 28px;
-            box-shadow: 0 1px 3px rgba(0,0,0,0.08);
+
+            box-shadow: 0 1px 3px rgba(0, 0, 0, 0.08);
+
+            position: relative;
+            z-index: 10;
         }
 
         .topbar-logo {
             margin-right: 35px;
+            display: flex;
+            align-items: center;
         }
 
         .topbar-logo img {
             width: 105px;
             max-height: 40px;
+            height: auto;
+
             object-fit: contain;
             display: block;
         }
@@ -58,10 +75,14 @@
         .nav a {
             display: flex;
             align-items: center;
+
             padding: 0 18px;
+
             color: #555;
             text-decoration: none;
+
             font-size: 14px;
+
             border-left: 1px solid transparent;
             border-right: 1px solid transparent;
         }
@@ -69,94 +90,156 @@
         .nav a:hover {
             background: #f4f4f4;
             color: #222;
+
             border-color: #ddd;
         }
 
+        /* MAIN PAGE */
+
         .page {
             min-height: calc(100vh - 52px);
+
             display: flex;
             justify-content: center;
             align-items: center;
+
             padding: 60px 20px;
         }
+
+        /* MAINTENANCE BOX */
 
         .maintenance-box {
             width: 700px;
             max-width: 100%;
-            background: rgba(255,255,255,0.97);
+
+            background: rgba(255, 255, 255, 0.97);
+
             border: 1px solid #d4d4d4;
-            box-shadow: 0 2px 8px rgba(0,0,0,0.12);
+
+            box-shadow:
+                0 2px 8px rgba(0, 0, 0, 0.12);
+
             padding: 45px 55px;
+
             text-align: center;
         }
+
+        /* MAIN HOSHINO LOGO */
 
         .main-logo {
             width: 240px;
             max-width: 80%;
+
             height: auto;
+
             display: block;
+
             margin: 0 auto 25px;
         }
 
+        /* TITLE */
+
         .maintenance-box h1 {
             margin: 0 0 18px;
+
             font-size: 28px;
             font-weight: normal;
+
             color: #333;
         }
 
+        /* DESCRIPTION */
+
         .maintenance-box p {
             margin: 0 auto 28px;
+
             max-width: 580px;
+
             font-size: 16px;
+
             line-height: 1.6;
+
             color: #666;
         }
 
+        /* STATUS */
+
         .status {
             display: inline-block;
+
             padding: 9px 18px;
+
             background: #eeeeee;
+
             border: 1px solid #d2d2d2;
+
             color: #555;
+
             font-size: 14px;
+
             margin-bottom: 28px;
         }
 
+        /* BUTTONS */
+
         .buttons {
             display: flex;
+
             justify-content: center;
+
             flex-wrap: wrap;
+
             gap: 10px;
         }
 
         .button {
             display: inline-block;
+
             padding: 11px 22px;
+
             background: #eeeeee;
+
             border: 1px solid #c9c9c9;
+
             color: #333;
+
             text-decoration: none;
+
             font-size: 14px;
+
             border-radius: 3px;
-            box-shadow: inset 0 1px rgba(255,255,255,0.8);
+
+            box-shadow:
+                inset 0 1px rgba(255, 255, 255, 0.8);
+
+            transition:
+                background 0.15s ease,
+                border-color 0.15s ease;
         }
 
         .button:hover {
             background: #e2e2e2;
+
             border-color: #b9b9b9;
         }
 
+        /* FOOTER */
+
         .footer {
             text-align: center;
+
             padding: 25px 15px 35px;
+
             color: #888;
+
             font-size: 12px;
         }
 
         .footer a {
             color: #777;
+
             text-decoration: none;
+
             margin: 0 8px;
         }
 
@@ -164,7 +247,10 @@
             text-decoration: underline;
         }
 
+        /* MOBILE */
+
         @media (max-width: 600px) {
+
             .topbar {
                 padding: 0 12px;
             }
@@ -173,8 +259,13 @@
                 margin-right: 8px;
             }
 
+            .topbar-logo img {
+                width: 90px;
+            }
+
             .nav a {
                 padding: 0 8px;
+
                 font-size: 12px;
             }
 
@@ -185,47 +276,100 @@
             .maintenance-box h1 {
                 font-size: 24px;
             }
+
+            .maintenance-box p {
+                font-size: 14px;
+            }
+
+            .main-logo {
+                width: 200px;
+            }
         }
     </style>
 </head>
 
 <body>
 
+    <!-- TOP NAVIGATION -->
+
     <header class="topbar">
+
         <div class="topbar-logo">
-            <img src="e942d5c326e104bddf1d2c8ce3e0e9a7.png" alt="HOSHINO">
+
+            <a href="index.html">
+
+                <img
+                    src="image_2026-09-08_175006165.png"
+                    alt="HOSHINO"
+                >
+
+            </a>
+
         </div>
 
         <nav class="nav">
-            <a href="#">Games</a>
-            <a href="#">Catalog</a>
-            <a href="#">Develop</a>
-            <a href="terms.html">Terms</a>
+
+            <a href="#">
+                Games
+            </a>
+
+            <a href="#">
+                Catalog
+            </a>
+
+            <a href="#">
+                Develop
+            </a>
+
+            <a href="terms.html">
+                Terms
+            </a>
+
         </nav>
+
     </header>
+
+
+    <!-- MAIN CONTENT -->
 
     <main class="page">
 
         <section class="maintenance-box">
 
+            <!-- HOSHINO LOGO -->
+
             <img
-                src="e942d5c326e104bddf1d2c8ce3e0e9a7.png"
+                src="image_2026-09-08_175006165.png"
                 alt="HOSHINO"
                 class="main-logo"
             >
 
-            <h1>HOSHINO is under maintenance</h1>
+
+            <!-- MAINTENANCE MESSAGE -->
+
+            <h1>
+                HOSHINO is under maintenance
+            </h1>
+
 
             <p>
-                We're getting everything ready for release! HOSHINO is currently
-                unavailable while we finish the new experience. Please check back soon!
+                We're getting everything ready for release!
+                HOSHINO is currently unavailable while we finish
+                the new experience. Please check back soon!
             </p>
+
+
+            <!-- STATUS -->
 
             <div class="status">
                 Preparing for release
             </div>
 
+
+            <!-- BUTTONS -->
+
             <div class="buttons">
+
                 <a
                     href="https://discord.gg/tFnZjawuYR"
                     class="button"
@@ -235,22 +379,36 @@
                     Join Discord Server
                 </a>
 
-                <a href="terms.html" class="button">
+
+                <a
+                    href="terms.html"
+                    class="button"
+                >
                     Terms of Use
                 </a>
+
             </div>
 
         </section>
 
     </main>
 
+
+    <!-- FOOTER -->
+
     <footer class="footer">
+
         <div>
             © 2026 HOSHINO
         </div>
 
+
         <div style="margin-top: 10px;">
-            <a href="terms.html">Terms of Use</a>
+
+            <a href="terms.html">
+                Terms of Use
+            </a>
+
 
             <a
                 href="https://web.archive.org/web/20151227163501/http://www.roblox.com/info/Privacy.aspx"
@@ -259,8 +417,11 @@
             >
                 Privacy Policy
             </a>
+
         </div>
+
     </footer>
 
 </body>
 </html>
+```
